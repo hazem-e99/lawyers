@@ -19,6 +19,8 @@ import Sessions from './pages/sessions/Sessions';
 import SessionForm from './pages/sessions/SessionForm';
 import Calendar from './pages/calendar/Calendar';
 import Documents from './pages/documents/Documents';
+import Library from './pages/library/Library';
+import Editor from './pages/library/Editor';
 import Users from './pages/users/Users';
 import UserForm from './pages/users/UserForm';
 import Profile from './pages/Profile';
@@ -94,6 +96,10 @@ function App() {
 
         {/* المستندات */}
         <Route path="/documents" element={<Documents />} />
+
+        {/* المكتبة */}
+        <Route path="/library" element={<Library />} />
+        <Route path="/library/editor/:id" element={<Editor />} />
 
         {/* المستخدمين */}
         <Route path="/users" element={<Users />} />

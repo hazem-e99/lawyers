@@ -1,0 +1,569 @@
+/**
+ * أنماط محرر المستندات - تصميم شبيه بـ Word
+ * Editor Page Styles - Word-like Design
+ */
+
+// Import variables
+@import './variables';
+
+// Editor Page Container
+.editor-page {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 80px);
+    background: #e7e9ed;
+    margin: -1.5rem;
+    overflow: hidden;
+}
+
+// Loading State
+.editor-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #f0f2f5;
+    color: #374151;
+
+    .loading-spinner {
+        width: 3rem;
+        height: 3rem;
+        border: 3px solid #e5e7eb;
+        border-top-color: #2563eb;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        font-size: 1rem;
+        font-weight: 500;
+    }
+}
+
+// Editor Header - Word-like Ribbon
+.editor-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+    gap: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex: 1;
+        min-width: 0;
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+
+            svg {
+                font-size: 0.875rem;
+            }
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.25);
+            }
+        }
+
+        .document-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+            min-width: 0;
+
+            .title-input {
+                flex: 1;
+                padding: 0.5rem 0.75rem;
+                border: 1px solid transparent;
+                border-radius: 4px;
+                font-size: 1rem;
+                font-weight: 600;
+                color: white;
+                background: rgba(255, 255, 255, 0.1);
+                transition: all 0.2s ease;
+                min-width: 0;
+                max-width: 300px;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.15);
+                }
+
+                &:focus {
+                    outline: none;
+                    background: rgba(255, 255, 255, 0.2);
+                    border-color: rgba(255, 255, 255, 0.3);
+                }
+
+                &::placeholder {
+                    color: rgba(255, 255, 255, 0.6);
+                }
+            }
+
+            .unsaved-badge {
+                flex-shrink: 0;
+                padding: 0.2rem 0.5rem;
+                background: #fbbf24;
+                color: #78350f;
+                font-size: 0.7rem;
+                font-weight: 600;
+                border-radius: 4px;
+            }
+        }
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-shrink: 0;
+
+        .last-saved {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .btn-save,
+        .btn-export {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 0.875rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+
+            svg {
+                font-size: 0.875rem;
+            }
+        }
+
+        .btn-save {
+            background: #10b981;
+            color: white;
+
+            &:hover:not(:disabled) {
+                background: #059669;
+            }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+        }
+
+        .btn-export {
+            background: white;
+            color: #1d4ed8;
+
+            &:hover:not(:disabled) {
+                background: #f0f9ff;
+            }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+        }
+    }
+}
+
+// Editor Container - Paper View
+.editor-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    overflow-y: auto;
+    background: #e7e9ed;
+
+    .quill-editor {
+        width: 100%;
+        max-width: 816px; // A4 width in pixels at 96dpi
+        background: white;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1), 0 0 6px rgba(0, 0, 0, 0.05);
+        border-radius: 2px;
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - 200px);
+
+        // Quill Toolbar - Word-like
+        .ql-toolbar {
+            direction: ltr;
+            background: #f8f9fa;
+            border: none !important;
+            border-bottom: 1px solid #e5e7eb !important;
+            padding: 8px 12px !important;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+
+            .ql-formats {
+                margin: 0 4px !important;
+                padding: 0 4px;
+                border-left: 1px solid #e5e7eb;
+
+                &:first-child {
+                    border-left: none;
+                }
+            }
+
+            button {
+                width: 28px !important;
+                height: 28px !important;
+                padding: 4px !important;
+                border-radius: 4px !important;
+                transition: all 0.15s ease;
+
+                &:hover {
+                    background: #e5e7eb !important;
+                }
+
+                &.ql-active {
+                    background: #dbeafe !important;
+                    color: #1d4ed8 !important;
+                }
+
+                svg {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+
+            .ql-picker {
+                height: 28px;
+
+                .ql-picker-label {
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    border: 1px solid transparent !important;
+
+                    &:hover {
+                        background: #e5e7eb;
+                    }
+                }
+
+                &.ql-expanded .ql-picker-label {
+                    border-color: #3b82f6 !important;
+                }
+
+                .ql-picker-options {
+                    border: 1px solid #e5e7eb !important;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+                    border-radius: 6px !important;
+                    padding: 4px !important;
+                }
+
+                .ql-picker-item {
+                    padding: 4px 8px;
+                    border-radius: 4px;
+
+                    &:hover {
+                        background: #f3f4f6;
+                    }
+                }
+            }
+        }
+
+        // Quill Editor Container
+        .ql-container {
+            flex: 1;
+            border: none !important;
+            font-family: 'Amiri', 'Times New Roman', serif;
+            font-size: 14pt;
+            overflow-y: visible;
+        }
+
+        // Quill Editor - Document Area
+        .ql-editor {
+            padding: 96px 96px; // 1 inch margins
+            line-height: 1.5;
+            min-height: 1056px; // A4 height
+            direction: rtl;
+            text-align: right;
+
+            &.ql-blank::before {
+                left: unset;
+                right: 96px;
+                color: #9ca3af;
+                font-style: normal;
+                font-family: 'Almarai', sans-serif;
+            }
+
+            // Typography - Word-like
+            h1 {
+                font-size: 24pt;
+                font-weight: bold;
+                margin-bottom: 12pt;
+                color: #000;
+                font-family: 'Amiri', 'Times New Roman', serif;
+            }
+
+            h2 {
+                font-size: 18pt;
+                font-weight: bold;
+                margin-bottom: 10pt;
+                color: #000;
+                font-family: 'Amiri', 'Times New Roman', serif;
+            }
+
+            h3 {
+                font-size: 14pt;
+                font-weight: bold;
+                margin-bottom: 8pt;
+                color: #000;
+                font-family: 'Amiri', 'Times New Roman', serif;
+            }
+
+            p {
+                margin-bottom: 12pt;
+                color: #000;
+                font-family: 'Amiri', 'Times New Roman', serif;
+            }
+
+            ul,
+            ol {
+                padding-right: 24pt;
+                padding-left: 0;
+                margin-bottom: 12pt;
+
+                li {
+                    margin-bottom: 6pt;
+                }
+            }
+
+            blockquote {
+                border-right: 3px solid #374151 !important;
+                border-left: none !important;
+                padding-right: 12pt;
+                padding-left: 0;
+                margin: 12pt 0;
+                color: #374151;
+                font-style: italic;
+            }
+
+            pre.ql-syntax {
+                background: #1e293b;
+                color: #e2e8f0;
+                border-radius: 4px;
+                padding: 12pt;
+                direction: ltr;
+                text-align: left;
+                font-family: 'Consolas', 'Monaco', monospace;
+                font-size: 10pt;
+            }
+
+            a {
+                color: #2563eb;
+                text-decoration: underline;
+            }
+
+            img {
+                max-width: 100%;
+                margin: 12pt 0;
+            }
+
+            // Tables (if added later)
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                margin: 12pt 0;
+
+                td,
+                th {
+                    border: 1px solid #000;
+                    padding: 6pt 8pt;
+                }
+            }
+        }
+    }
+}
+
+// Ruler (Optional visual element)
+.editor-ruler {
+    width: 100%;
+    max-width: 816px;
+    height: 24px;
+    background: #f0f2f5;
+    border-bottom: 1px solid #d1d5db;
+    margin-bottom: 0;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        right: 96px;
+        left: 96px;
+        top: 50%;
+        height: 1px;
+        background: repeating-linear-gradient(to left,
+                #9ca3af 0,
+                #9ca3af 1px,
+                transparent 1px,
+                transparent 10px);
+    }
+}
+
+// Responsive
+@media (max-width: 900px) {
+    .editor-container {
+        padding: 1rem;
+
+        .quill-editor {
+            max-width: 100%;
+            min-height: auto;
+
+            .ql-editor {
+                padding: 48px;
+                min-height: 600px;
+
+                &.ql-blank::before {
+                    right: 48px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .editor-page {
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .editor-header {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.75rem;
+
+        .header-right {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.5rem;
+
+            .btn-back {
+                align-self: flex-start;
+            }
+
+            .document-title {
+                flex-direction: column;
+                align-items: stretch;
+
+                .title-input {
+                    max-width: 100%;
+                }
+
+                .unsaved-badge {
+                    align-self: flex-start;
+                }
+            }
+        }
+
+        .header-left {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            .last-saved {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
+
+            .btn-save,
+            .btn-export {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+    }
+
+    .editor-container {
+        padding: 0.5rem;
+
+        .quill-editor {
+            .ql-toolbar {
+                padding: 4px 8px !important;
+
+                .ql-formats {
+                    margin: 0 2px !important;
+                }
+            }
+
+            .ql-editor {
+                padding: 24px;
+                min-height: 500px;
+                font-size: 12pt;
+
+                &.ql-blank::before {
+                    right: 24px;
+                }
+            }
+        }
+    }
+}
+
+// Print Styles
+@media print {
+
+    .editor-header,
+    .ql-toolbar {
+        display: none !important;
+    }
+
+    .editor-page {
+        background: white;
+        margin: 0;
+        height: auto;
+    }
+
+    .editor-container {
+        padding: 0;
+        background: white;
+
+        .quill-editor {
+            box-shadow: none;
+            max-width: 100%;
+
+            .ql-editor {
+                padding: 0;
+                min-height: auto;
+            }
+        }
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

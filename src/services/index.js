@@ -285,3 +285,72 @@ export const notificationsService = {
   },
 };
 
+/**
+ * خدمات المكتبة
+ * Library API Service
+ */
+export const libraryService = {
+  // جلب محتويات مجلد
+  getItems: async (parentId = null, params = {}) => {
+    const queryParams = { ...params };
+    if (parentId) {
+      queryParams.parentId = parentId;
+    }
+    const response = await api.get('/library', { params: queryParams });
+    return response.data;
+  },
+
+  // إنشاء مجلد جديد
+  createFolder: async (data) => {
+    const response = await api.post('/library/folder', data);
+    return response.data;
+  },
+
+  // رفع ملف
+  uploadFile: async (formData) => {
+    const response = await api.post('/library/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  // إنشاء مستند نصي جديد
+  createEditorFile: async (data) => {
+    const response = await api.post('/library/editor-file', data);
+    return response.data;
+  },
+
+  // جلب محتوى مستند نصي
+  getEditorFile: async (id) => {
+    const response = await api.get(`/library/editor-file/${id}`);
+    return response.data;
+  },
+
+  // حفظ محتوى مستند نصي
+  updateEditorFile: async (id, data) => {
+    const response = await api.put(`/library/editor-file/${id}`, data);
+    return response.data;
+  },
+
+  // تصدير مستند نصي كـ Word
+  exportEditorFile: async (id) => {
+    const response = await api.get(`/library/editor-file/${id}/export`, {
+      responseType: 'blob',
+    });
+    return response;
+  },
+
+  // تحديث عنصر (إعادة تسمية أو نقل)
+  updateItem: async (id, data) => {
+    const response = await api.put(`/library/${id}`, data);
+    return response.data;
+  },
+
+  // حذف عنصر
+  deleteItem: async (id) => {
+    const response = await api.delete(`/library/${id}`);
+    return response.data;
+  },
+};
