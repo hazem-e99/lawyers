@@ -15,51 +15,98 @@
 .auth-layout {
     display: flex;
     min-height: 100vh;
-    background: $bg-secondary;
+    height: 100vh;
+    overflow: hidden;
 
     @include mobile {
         flex-direction: column;
+        overflow-y: auto;
     }
 }
 
-// الجانب الأيسر
+// الجانب الأيمن - الصورة
 .auth-sidebar {
     flex: 1;
-    background: linear-gradient(135deg, $primary-dark 0%, $primary-color 50%, darken($primary-color, 5%) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: $spacing-2xl;
     position: relative;
     overflow: hidden;
+    background: $bg-dark;
 
-    // نمط خلفية
+    // Overlay gradient للصورة
     &::before {
         content: '';
         position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-        animation: float 15s ease-in-out infinite;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg,
+                rgba($primary-dark, 0.15) 0%,
+                rgba($primary-color, 0.1) 50%,
+                rgba($gold-color, 0.05) 100%);
+        z-index: 2;
+        pointer-events: none;
     }
 
+    // تأثير decorative
     &::after {
         content: '';
         position: absolute;
-        bottom: -30%;
-        left: -30%;
-        width: 80%;
-        height: 80%;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
-        animation: float 20s ease-in-out infinite reverse;
+        bottom: -20%;
+        right: -20%;
+        width: 60%;
+        height: 60%;
+        background: radial-gradient(circle, rgba($gold-color, 0.15) 0%, transparent 70%);
+        z-index: 1;
+        animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+
+        50% {
+            opacity: 0.8;
+            transform: scale(1.1);
+        }
     }
 
     @include mobile {
-        padding: $spacing-lg;
-        min-height: 300px;
+        min-height: 200px;
+        order: -1; // الصورة تظهر أولاً في الموبايل
     }
+}
+
+.auth-sidebar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    transition: transform 8s ease-out;
+    animation: slowZoom 20s ease-in-out infinite alternate;
+
+    @keyframes slowZoom {
+        0% {
+            transform: scale(1);
+        }
+
+        100% {
+            transform: scale(1.05);
+        }
+    }
+
+    // تحسين جودة الصورة
+    image-rendering: -webkit-optimize-contrast;
 }
 
 @keyframes float {
@@ -145,12 +192,27 @@
     }
 }
 
-// الجانب الأيمن
+// الجانب الأيسر - النموذج
 .auth-main {
     flex: 1;
     @include flex-center;
     padding: $spacing-2xl;
-    background: $bg-primary;
+    background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+    position: relative;
+
+    // نمط خلفية decorative
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background:
+            radial-gradient(circle at 20% 80%, rgba($primary-color, 0.03) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba($gold-color, 0.03) 0%, transparent 50%);
+        pointer-events: none;
+    }
 
     @include mobile {
         padding: $spacing-lg;
@@ -159,10 +221,30 @@
 
 .auth-form-container {
     width: 100%;
-    max-width: 420px;
+    max-width: 440px;
+    position: relative;
+    z-index: 1;
 }
 
 .auth-form {
+    background: $bg-primary;
+    padding: $spacing-2xl;
+    border-radius: $radius-2xl;
+    box-shadow: $shadow-elegant, 0 0 0 1px rgba($border-color, 0.5);
+    animation: formSlideIn 0.5s ease-out;
+
+    @keyframes formSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     &-header {
         margin-bottom: $spacing-xl;
         text-align: center;
@@ -171,11 +253,17 @@
             font-size: $font-size-2xl;
             color: $text-primary;
             margin-bottom: $spacing-sm;
+            font-weight: 800;
+            background: linear-gradient(135deg, $primary-dark, $primary-color);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         p {
             color: $text-secondary;
             margin: 0;
+            font-size: $font-size-sm;
         }
     }
 
@@ -185,9 +273,10 @@
         label {
             display: block;
             margin-bottom: $spacing-sm;
-            font-weight: 700;
+            font-weight: 600;
             color: $text-primary;
             font-size: $font-size-sm;
+            transition: color $transition-fast;
         }
 
         .input-wrapper {
@@ -199,11 +288,43 @@
                 top: 50%;
                 transform: translateY(-50%);
                 color: $text-muted;
-                font-size: 1.1rem;
+                font-size: 1rem;
+                transition: color $transition-fast;
+                z-index: 2;
             }
 
             input {
+                width: 100%;
+                padding: $spacing-md $spacing-md $spacing-md 2.75rem;
                 padding-right: 2.75rem;
+                border: 2px solid $border-color;
+                border-radius: $radius-lg;
+                font-size: $font-size-base;
+                background: $bg-secondary;
+                transition: all $transition-fast;
+                color: $text-primary;
+
+                &::placeholder {
+                    color: $text-muted;
+                    font-size: $font-size-sm;
+                }
+
+                &:hover {
+                    border-color: rgba($primary-color, 0.3);
+                    background: $bg-primary;
+                }
+
+                &:focus {
+                    outline: none;
+                    border-color: $primary-color;
+                    background: $bg-primary;
+                    box-shadow: 0 0 0 4px rgba($primary-color, 0.1);
+                }
+
+                &:focus+.input-icon,
+                &:focus~.input-icon {
+                    color: $primary-color;
+                }
             }
 
             .password-toggle {
@@ -216,11 +337,20 @@
                 color: $text-muted;
                 cursor: pointer;
                 padding: $spacing-xs;
+                border-radius: $radius-md;
+                transition: all $transition-fast;
+                z-index: 2;
 
                 &:hover {
                     color: $primary-color;
+                    background: rgba($primary-color, 0.1);
                 }
             }
+        }
+
+        // Focus state for label
+        &:focus-within label {
+            color: $primary-color;
         }
     }
 
@@ -233,28 +363,107 @@
             display: flex;
             align-items: center;
             gap: $spacing-sm;
+            cursor: pointer;
 
             input[type="checkbox"] {
-                width: auto;
+                width: 18px;
+                height: 18px;
                 accent-color: $primary-color;
+                cursor: pointer;
+                border-radius: $radius-sm;
+            }
+
+            span {
+                color: $text-secondary;
+                transition: color $transition-fast;
+            }
+
+            &:hover span {
+                color: $text-primary;
             }
         }
 
         a {
             color: $primary-color;
-            font-weight: 500;
+            font-weight: 600;
+            transition: all $transition-fast;
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: $primary-color;
+                transform: scaleX(0);
+                transition: transform $transition-fast;
+            }
 
             &:hover {
-                text-decoration: underline;
+                color: $primary-dark;
+
+                &::after {
+                    transform: scaleX(1);
+                }
             }
         }
     }
 
     .submit-btn {
         width: 100%;
-        padding: $spacing-md;
+        padding: $spacing-md $spacing-lg;
         font-size: $font-size-base;
-        @include button-primary;
+        font-weight: 700;
+        background: linear-gradient(135deg, $primary-color, $primary-dark);
+        color: $text-light;
+        border: none;
+        border-radius: $radius-lg;
+        cursor: pointer;
+        transition: all $transition-base;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        &:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -5px rgba($primary-color, 0.4);
+
+            &::before {
+                left: 100%;
+            }
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        &:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-left: $spacing-sm;
+        }
     }
 
     .form-divider {
@@ -269,27 +478,59 @@
             content: '';
             flex: 1;
             height: 1px;
-            background: $border-color;
+            background: linear-gradient(90deg, transparent, $border-color, transparent);
         }
 
         span {
             padding: 0 $spacing-md;
+            background: $bg-primary;
         }
     }
 
     .form-footer {
         text-align: center;
-        margin-top: $spacing-xl;
         color: $text-secondary;
+        font-size: $font-size-sm;
 
         a {
             color: $primary-color;
             font-weight: 700;
             margin-right: $spacing-xs;
+            transition: all $transition-fast;
 
             &:hover {
+                color: $primary-dark;
                 text-decoration: underline;
             }
+        }
+    }
+
+    // Alert messages enhancement
+    .alert {
+        padding: $spacing-md;
+        border-radius: $radius-lg;
+        margin-bottom: $spacing-lg;
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        animation: alertSlide 0.3s ease-out;
+
+        @keyframes alertSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        &-error {
+            background: rgba($danger-color, 0.1);
+            border: 1px solid rgba($danger-color, 0.3);
+            color: darken($danger-color, 10%);
         }
     }
 }

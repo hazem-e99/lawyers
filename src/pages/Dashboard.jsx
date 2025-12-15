@@ -198,7 +198,7 @@ const Dashboard = () => {
       {/* الإحصائيات المالية */}
       {feesStats && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className="card bg-gradient-to-l from-primary-500 to-primary-600 text-white">
+          <div className="card bg-gradient-to-l from-slate-700 to-slate-800 text-white">
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
                 <FaMoneyBillWave className="text-2xl" />
@@ -210,7 +210,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="card bg-gradient-to-l from-teal-500 to-teal-600 text-white">
+          <div className="card bg-gradient-to-l from-slate-600 to-slate-700 text-white">
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
                 <FaArrowUp className="text-2xl" />
@@ -222,7 +222,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="card bg-gradient-to-l from-rose-500 to-rose-600 text-white">
+          <div className="card bg-gradient-to-l from-slate-500 to-slate-600 text-white">
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
                 <FaArrowDown className="text-2xl" />

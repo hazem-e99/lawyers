@@ -24,42 +24,13 @@ const AuthLayout = () => {
 
   return (
     <div className="auth-layout">
-      {/* الجانب الأيسر - الصورة والمعلومات */}
+      {/* الجانب الأيمن - الصورة */}
       <div className="auth-sidebar">
-        <div className="auth-sidebar-content">
-          <div className="auth-logo">
-            <FaBalanceScale className="logo-icon" />
-            <h1>نظام إدارة مكاتب المحاماة</h1>
-          </div>
-          
-          <div className="auth-features">
-            <div className="feature-item">
-              <FaGavel className="feature-icon" />
-              <div>
-                <h3>إدارة القضايا</h3>
-                <p>تتبع جميع قضاياك ومواعيد الجلسات</p>
-              </div>
-            </div>
-            <div className="feature-item">
-              <FaGavel className="feature-icon" />
-              <div>
-                <h3>إدارة العملاء</h3>
-                <p>احتفظ ببيانات عملائك بشكل منظم</p>
-              </div>
-            </div>
-            <div className="feature-item">
-              <FaGavel className="feature-icon" />
-              <div>
-                <h3>المستندات</h3>
-                <p>رفع وتنظيم جميع الملفات والوثائق</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="auth-footer">
-            <p>© 2024 نظام إدارة مكاتب المحاماة. جميع الحقوق محفوظة.</p>
-          </div>
-        </div>
+        <img 
+          src="/law.png" 
+          alt="نظام إدارة مكاتب المحاماة" 
+          className="auth-sidebar-image"
+        />
       </div>
 
       {/* الجانب الأيمن - نموذج الدخول */}
