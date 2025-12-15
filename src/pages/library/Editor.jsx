@@ -8,22 +8,32 @@ import {
   FaFileWord,
   FaPrint,
   FaExpand,
-  FaCompress,
-  FaMicrophone
+  FaCompress
 } from 'react-icons/fa';
 import VoiceDictation from '../../components/VoiceDictation';
+import LegalAIChat from '../../components/LegalAIChat';
 import toast from 'react-hot-toast';
 import '../../styles/editor.scss';
 
 /**
- * صفحة محرر المستندات - Jodit
- * Editor Page - Professional Word-like Editor (Free)
+ * ======================================
+ * صفحة محرر المستندات مع الأوامر الصوتية الشاملة
+ * Editor Page with Comprehensive Voice Commands
+ * ======================================
+ * 
+ * يدعم أكثر من 80 أمر صوتي للتحكم الكامل في المحرر
+ * Supports 80+ voice commands for full editor control
  */
 const Editor = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const editorRef = useRef(null);
+  const voiceDictationRef = useRef(null);
   
+  // ================================
+  // حالة المكون
+  // Component State
+  // ================================
   const [document, setDocument] = useState(null);
   const [content, setContent] = useState('');
   const [documentName, setDocumentName] = useState('');
@@ -33,8 +43,15 @@ const Editor = () => {
   const [hasChanges, setHasChanges] = useState(false);
   const [lastSaved, setLastSaved] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [fontSize, setFontSize] = useState(14);
+  
+  // تخزين آخر النصوص اللي اتقالت بالصوت عشان نقدر نمسحها
+  const voiceHistoryRef = useRef([]);
 
+  // ================================
   // إعدادات Jodit Editor
+  // Jodit Editor Configuration
+  // ================================
   const config = useMemo(() => ({
     readonly: false,
     language: 'ar',
@@ -42,12 +59,10 @@ const Editor = () => {
     height: 'calc(100vh - 180px)',
     minHeight: 500,
     
-    // شريط الأدوات
     toolbarButtonSize: 'middle',
     toolbarAdaptive: true,
     toolbarSticky: true,
     
-    // الأزرار
     buttons: [
       'source', '|',
       'bold', 'italic', 'underline', 'strikethrough', '|',
@@ -62,7 +77,6 @@ const Editor = () => {
       'fullsize', 'print', 'preview'
     ],
     
-    // أزرار الموبايل
     buttonsMD: [
       'bold', 'italic', '|',
       'ul', 'ol', '|',
@@ -87,7 +101,6 @@ const Editor = () => {
       'dots'
     ],
     
-    // الخطوط
     controls: {
       font: {
         list: {
@@ -108,7 +121,6 @@ const Editor = () => {
       }
     },
     
-    // إعدادات عامة
     spellcheck: false,
     showCharsCounter: true,
     showWordsCounter: true,
@@ -116,17 +128,12 @@ const Editor = () => {
     askBeforePasteHTML: false,
     askBeforePasteFromWord: false,
     
-    // الصور
     imageDefaultWidth: 300,
-    
-    // الجداول
     tableAllowCellResize: true,
     
-    // التنسيق
     defaultMode: 1,
     enter: 'p',
     
-    // الستايل الداخلي
     style: {
       fontFamily: 'Amiri, Times New Roman, serif',
       fontSize: '14pt',
@@ -134,19 +141,15 @@ const Editor = () => {
       textAlign: 'right'
     },
     
-    // أحداث
     events: {
       afterInit: (editor) => {
-        // تطبيق RTL
         editor.editor.style.direction = 'rtl';
         editor.editor.style.textAlign = 'right';
       }
     },
     
-    // إزالة العلامة التجارية
     hidePoweredByJodit: true,
     
-    // الألوان
     colors: {
       greyscale: ['#000000', '#434343', '#666666', '#999999', '#B7B7B7', '#CCCCCC', '#D9D9D9', '#EFEFEF', '#F3F3F3', '#FFFFFF'],
       palette: ['#980000', '#FF0000', '#FF9900', '#FFFF00', '#00FF00', '#00FFFF', '#4A86E8', '#0000FF', '#9900FF', '#FF00FF'],
@@ -160,15 +163,15 @@ const Editor = () => {
       ]
     },
 
-    // placeholder
     placeholder: 'ابدأ الكتابة هنا...',
-    
-    // Size
     allowResizeY: false,
     saveModeInStorage: false,
   }), []);
 
+  // ================================
   // جلب المستند
+  // Fetch Document
+  // ================================
   const fetchDocument = useCallback(async () => {
     try {
       setLoading(true);
@@ -190,8 +193,11 @@ const Editor = () => {
     fetchDocument();
   }, [fetchDocument]);
 
+  // ================================
   // حفظ المستند
-  const handleSave = async () => {
+  // Save Document
+  // ================================
+  const handleSave = useCallback(async () => {
     try {
       setSaving(true);
       await libraryService.updateEditorFile(id, { 
@@ -207,13 +213,15 @@ const Editor = () => {
     } finally {
       setSaving(false);
     }
-  };
+  }, [id, content, documentName]);
 
+  // ================================
   // تصدير كملف Word
-  const handleExport = async () => {
+  // Export as Word
+  // ================================
+  const handleExport = useCallback(async () => {
     try {
       setExporting(true);
-      // حفظ أولاً
       if (hasChanges) {
         await handleSave();
       }
@@ -239,10 +247,13 @@ const Editor = () => {
     } finally {
       setExporting(false);
     }
-  };
+  }, [id, hasChanges, handleSave, documentName]);
 
+  // ================================
   // طباعة المستند
-  const handlePrint = () => {
+  // Print Document
+  // ================================
+  const handlePrint = useCallback(() => {
     const printWindow = window.open('', '_blank');
     printWindow.document.write(`
       <html dir="rtl">
@@ -264,9 +275,12 @@ const Editor = () => {
     `);
     printWindow.document.close();
     printWindow.print();
-  };
+  }, [documentName, content]);
 
+  // ================================
   // العودة للمكتبة
+  // Go Back to Library
+  // ================================
   const handleBack = () => {
     if (hasChanges) {
       if (window.confirm('يوجد تغييرات غير محفوظة. هل تريد المتابعة؟')) {
@@ -277,52 +291,856 @@ const Editor = () => {
     }
   };
 
+  // ================================
   // تحديث المحتوى
+  // Update Content
+  // ================================
   const handleContentChange = (newContent) => {
     setContent(newContent);
     setHasChanges(true);
   };
 
-  // معالجة النص المستلم من الإملاء الصوتي
-  const handleVoiceTextReceived = useCallback((text) => {
-    if (!editorRef.current || !text) return;
+  // ================================
+  // الحصول على مرجع المحرر
+  // Get Editor Reference
+  // ================================
+  const getEditorInstance = useCallback(() => {
+    return editorRef.current || null;
+  }, []);
+
+  // ================================
+  // إدراج نص في المحرر
+  // Insert Text into Editor
+  // ================================
+  const insertTextAtCursor = useCallback((text) => {
+    const editor = getEditorInstance();
+    
+    if (editor && editor.selection) {
+      try {
+        editor.selection.insertHTML(text);
+        setHasChanges(true);
+      } catch (e) {
+        console.error('خطأ في إدراج النص:', e);
+        setContent(prev => prev + text);
+        setHasChanges(true);
+      }
+    } else {
+      setContent(prev => prev + text);
+      setHasChanges(true);
+    }
+  }, [getEditorInstance]);
+
+  // ================================
+  // تنفيذ أمر المحرر - نسخة محسّنة لـ Jodit
+  // Execute Editor Command - Optimized for Jodit
+  // ================================
+  const executeEditorCommand = useCallback((command, value = null) => {
+    const editor = getEditorInstance();
+    
+    if (!editor) {
+      console.warn('المحرر غير متاح');
+      return false;
+    }
     
     try {
-      const editor = editorRef.current;
-      
-      // إدراج النص في موقع المؤشر الحالي
-      if (editor && editor.selection) {
-        // الحصول على التحديد الحالي وإدراج النص
-        editor.selection.insertHTML(text + ' ');
-      } else {
-        // إذا لم يكن هناك تحديد، أضف النص في النهاية
-        setContent(prevContent => {
-          const newContent = prevContent + ' ' + text + ' ';
-          return newContent;
-        });
+      // Jodit يستخدم طرق مختلفة للأوامر
+      switch (command) {
+        case 'undo':
+          // استخدام history للتراجع
+          if (editor.history && typeof editor.history.undo === 'function') {
+            editor.history.undo();
+          } else if (editor.undo) {
+            editor.undo();
+          } else {
+            // fallback - استخدام execCommand
+            editor.execCommand('undo');
+          }
+          toast.success('تم التراجع ↩️');
+          break;
+          
+        case 'redo':
+          if (editor.history && typeof editor.history.redo === 'function') {
+            editor.history.redo();
+          } else if (editor.redo) {
+            editor.redo();
+          } else {
+            editor.execCommand('redo');
+          }
+          toast.success('تم الإعادة ↪️');
+          break;
+          
+        case 'bold':
+          editor.execCommand('bold');
+          break;
+          
+        case 'italic':
+          editor.execCommand('italic');
+          break;
+          
+        case 'underline':
+          editor.execCommand('underline');
+          break;
+          
+        case 'strikethrough':
+          editor.execCommand('strikethrough');
+          break;
+          
+        case 'removeFormat':
+          editor.execCommand('removeFormat');
+          break;
+          
+        case 'justifyLeft':
+          editor.execCommand('justifyleft');
+          break;
+          
+        case 'justifyCenter':
+          editor.execCommand('justifycenter');
+          break;
+          
+        case 'justifyRight':
+          editor.execCommand('justifyright');
+          break;
+          
+        case 'justifyFull':
+          editor.execCommand('justifyfull');
+          break;
+          
+        case 'insertUnorderedList':
+          editor.execCommand('insertUnorderedList');
+          break;
+          
+        case 'insertOrderedList':
+          editor.execCommand('insertOrderedList');
+          break;
+          
+        case 'indent':
+          editor.execCommand('indent');
+          break;
+          
+        case 'outdent':
+          editor.execCommand('outdent');
+          break;
+          
+        case 'selectAll':
+          editor.execCommand('selectAll');
+          break;
+          
+        default:
+          // محاولة تنفيذ الأمر مباشرة
+          if (editor.execCommand) {
+            editor.execCommand(command, false, value);
+          }
       }
       
       setHasChanges(true);
-    } catch (error) {
-      console.error('خطأ في إدراج النص:', error);
-      // Fallback: أضف النص في النهاية
-      setContent(prevContent => prevContent + ' ' + text + ' ');
-      setHasChanges(true);
+      return true;
+    } catch (e) {
+      console.error('خطأ في تنفيذ الأمر:', e);
+      return false;
     }
+  }, [getEditorInstance]);
+  
+  // ================================
+  // حذف النص المحدد أو آخر حرف
+  // Delete Selected Text or Last Character
+  // ================================
+  const deleteText = useCallback(() => {
+    const editor = getEditorInstance();
+    
+    if (!editor) return;
+    
+    try {
+      // محاولة حذف النص المحدد
+      const selection = editor.selection;
+      if (selection) {
+        const selectedText = selection.sel?.toString() || '';
+        
+        if (selectedText) {
+          // حذف النص المحدد
+          selection.remove();
+          toast.success('تم الحذف ✓');
+        } else {
+          // لا يوجد تحديد - استخدام undo
+          if (editor.history && typeof editor.history.undo === 'function') {
+            editor.history.undo();
+            toast.success('تم التراجع ↩️');
+          } else {
+            editor.execCommand('undo');
+            toast.success('تم التراجع ↩️');
+          }
+        }
+        setHasChanges(true);
+      }
+    } catch (e) {
+      console.error('خطأ في الحذف:', e);
+      // fallback to undo
+      try {
+        editor.execCommand('undo');
+        toast.success('تم التراجع ↩️');
+      } catch (e2) {}
+    }
+  }, [getEditorInstance]);
+
+  // ================================
+  // الحصول على التاريخ الحالي
+  // Get Current Date
+  // ================================
+  const getCurrentDate = useCallback(() => {
+    const options = { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    };
+    return new Date().toLocaleDateString('ar-EG', options);
   }, []);
 
+  // ================================
+  // معالجة النص من الإملاء الصوتي
+  // Handle Voice Dictation Text
+  // ================================
+  const handleVoiceTextReceived = useCallback((text) => {
+    if (!text) return;
+    
+    const textWithSpace = text + ' ';
+    const editor = getEditorInstance();
+    
+    // حفظ النص في السجل عشان نقدر نمسحه بعدين
+    voiceHistoryRef.current.push(textWithSpace);
+    
+    // الاحتفاظ بآخر 20 نص فقط
+    if (voiceHistoryRef.current.length > 20) {
+      voiceHistoryRef.current.shift();
+    }
+    
+    // إدراج النص في المحرر
+    if (editor && editor.selection) {
+      try {
+        editor.selection.insertHTML(textWithSpace);
+        setHasChanges(true);
+      } catch (e) {
+        console.error('خطأ في إدراج النص:', e);
+      }
+    }
+  }, [getEditorInstance]);
+  
+  // ================================
+  // مسح آخر نص اتقال بالصوت
+  // Delete Last Voice Text
+  // ================================
+  const deleteLastVoiceText = useCallback(() => {
+    const editor = getEditorInstance();
+    const lastText = voiceHistoryRef.current.pop();
+    
+    if (!lastText) {
+      // لو مفيش في الـ history، نستخدم undo
+      if (editor) {
+        try {
+          if (editor.history && typeof editor.history.undo === 'function') {
+            editor.history.undo();
+            toast.success('تم التراجع ↩️');
+          } else {
+            editor.execCommand('undo');
+            toast.success('تم التراجع ↩️');
+          }
+          setHasChanges(true);
+        } catch (e) {
+          toast.error('مش قادر أمسح!');
+        }
+      }
+      return;
+    }
+    
+    // محاولة مسح النص من المحرر مباشرة
+    if (editor) {
+      try {
+        // الحصول على المحتوى الحالي من المحرر
+        const currentContent = editor.value || '';
+        const trimmedText = lastText.trim();
+        
+        // البحث عن آخر ظهور للنص
+        let lastIndex = currentContent.lastIndexOf(lastText);
+        
+        if (lastIndex === -1) {
+          lastIndex = currentContent.lastIndexOf(trimmedText);
+        }
+        
+        if (lastIndex !== -1) {
+          // حذف النص
+          const textToRemove = lastIndex === currentContent.lastIndexOf(lastText) ? lastText : trimmedText;
+          const newContent = currentContent.substring(0, lastIndex) + 
+                            currentContent.substring(lastIndex + textToRemove.length);
+          
+          // تحديث المحرر
+          editor.value = newContent;
+          setContent(newContent);
+          setHasChanges(true);
+          toast.success(`تم مسح: "${trimmedText}" ✓`);
+        } else {
+          // لو مش لاقي النص، استخدم undo
+          if (editor.history && typeof editor.history.undo === 'function') {
+            editor.history.undo();
+          } else {
+            editor.execCommand('undo');
+          }
+          toast.success('تم التراجع ↩️');
+          setHasChanges(true);
+        }
+      } catch (e) {
+        console.error('خطأ في الحذف:', e);
+        // Fallback to undo
+        try {
+          editor.execCommand('undo');
+          toast.success('تم التراجع ↩️');
+        } catch (e2) {
+          toast.error('مش قادر أمسح!');
+        }
+      }
+    }
+  }, [getEditorInstance]);
+
+  // ================================
+  // معالجة الأوامر الصوتية الشاملة
+  // Handle Comprehensive Voice Commands
+  // ================================
+  const handleVoiceCommand = useCallback((command) => {
+    console.log('تنفيذ الأمر الصوتي:', command);
+    
+    switch (command) {
+      // ========================================
+      // أوامر الأسطر والفقرات
+      // ========================================
+      case 'newLine':
+        insertTextAtCursor('<br>');
+        break;
+      case 'paragraph':
+        insertTextAtCursor('<p>&nbsp;</p>');
+        break;
+      case 'doubleLine':
+        insertTextAtCursor('<br><br>');
+        break;
+        
+      // ========================================
+      // أوامر العناوين
+      // ========================================
+      case 'heading':
+        insertTextAtCursor('<h2 style="font-family: Almarai, sans-serif; color: #1e40af;">عنوان</h2>');
+        break;
+      case 'subheading':
+        insertTextAtCursor('<h3 style="font-family: Almarai, sans-serif; color: #374151;">عنوان فرعي</h3>');
+        break;
+      case 'heading3':
+        insertTextAtCursor('<h4 style="font-family: Almarai, sans-serif;">عنوان ثالث</h4>');
+        break;
+        
+      // ========================================
+      // أوامر التنسيق
+      // ========================================
+      case 'bold':
+        executeEditorCommand('bold');
+        break;
+      case 'italic':
+        executeEditorCommand('italic');
+        break;
+      case 'underline':
+        executeEditorCommand('underline');
+        break;
+      case 'strikethrough':
+        executeEditorCommand('strikethrough');
+        break;
+      case 'highlight':
+        insertTextAtCursor('<mark>نص مظلل</mark>');
+        break;
+      case 'removeFormat':
+        executeEditorCommand('removeFormat');
+        break;
+        
+      // ========================================
+      // أوامر المحاذاة
+      // ========================================
+      case 'alignRight':
+        executeEditorCommand('justifyRight');
+        break;
+      case 'alignLeft':
+        executeEditorCommand('justifyLeft');
+        break;
+      case 'alignCenter':
+        executeEditorCommand('justifyCenter');
+        break;
+      case 'justify':
+        executeEditorCommand('justifyFull');
+        break;
+        
+      // ========================================
+      // أوامر القوائم
+      // ========================================
+      case 'bulletList':
+        executeEditorCommand('insertUnorderedList');
+        break;
+      case 'numberedList':
+        executeEditorCommand('insertOrderedList');
+        break;
+      case 'listItem':
+        insertTextAtCursor('<li>عنصر جديد</li>');
+        break;
+        
+      // ========================================
+      // علامات الترقيم
+      // ========================================
+      case 'period':
+        insertTextAtCursor('.');
+        break;
+      case 'comma':
+        insertTextAtCursor('،');
+        break;
+      case 'question':
+        insertTextAtCursor('؟');
+        break;
+      case 'exclamation':
+        insertTextAtCursor('!');
+        break;
+      case 'colon':
+        insertTextAtCursor(':');
+        break;
+      case 'semicolon':
+        insertTextAtCursor('؛');
+        break;
+      case 'dash':
+        insertTextAtCursor(' - ');
+        break;
+      case 'openBracket':
+        insertTextAtCursor('(');
+        break;
+      case 'closeBracket':
+        insertTextAtCursor(')');
+        break;
+      case 'openQuotes':
+        insertTextAtCursor('"');
+        break;
+      case 'closeQuotes':
+        insertTextAtCursor('"');
+        break;
+        
+      // ========================================
+      // أوامر المسافات
+      // ========================================
+      case 'space':
+        insertTextAtCursor('&nbsp;');
+        break;
+      case 'tab':
+        insertTextAtCursor('&nbsp;&nbsp;&nbsp;&nbsp;');
+        break;
+      case 'indent':
+        executeEditorCommand('indent');
+        break;
+      case 'outdent':
+        executeEditorCommand('outdent');
+        break;
+        
+      // ========================================
+      // أوامر الجداول
+      // ========================================
+      case 'insertTable':
+        insertTextAtCursor(`
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
+            <tr>
+              <th style="border: 1px solid #000; padding: 8px; background: #f3f4f6;">عمود 1</th>
+              <th style="border: 1px solid #000; padding: 8px; background: #f3f4f6;">عمود 2</th>
+              <th style="border: 1px solid #000; padding: 8px; background: #f3f4f6;">عمود 3</th>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #000; padding: 8px;"></td>
+              <td style="border: 1px solid #000; padding: 8px;"></td>
+              <td style="border: 1px solid #000; padding: 8px;"></td>
+            </tr>
+          </table>
+        `);
+        break;
+      case 'tableRow':
+        insertTextAtCursor('<tr><td style="border: 1px solid #000; padding: 8px;"></td><td style="border: 1px solid #000; padding: 8px;"></td><td style="border: 1px solid #000; padding: 8px;"></td></tr>');
+        break;
+        
+      // ========================================
+      // أوامر الخط
+      // ========================================
+      case 'fontBigger':
+        setFontSize(prev => {
+          const newSize = Math.min(prev + 2, 72);
+          insertTextAtCursor(`<span style="font-size: ${newSize}pt">`);
+          return newSize;
+        });
+        break;
+      case 'fontSmaller':
+        setFontSize(prev => {
+          const newSize = Math.max(prev - 2, 8);
+          insertTextAtCursor(`<span style="font-size: ${newSize}pt">`);
+          return newSize;
+        });
+        break;
+      case 'fontRed':
+        insertTextAtCursor('<span style="color: #dc2626;">');
+        break;
+      case 'fontBlue':
+        insertTextAtCursor('<span style="color: #2563eb;">');
+        break;
+      case 'fontGreen':
+        insertTextAtCursor('<span style="color: #059669;">');
+        break;
+      case 'fontBlack':
+        insertTextAtCursor('<span style="color: #000000;">');
+        break;
+        
+      // ========================================
+      // أوامر الإدراج الخاصة
+      // ========================================
+      case 'horizontalLine':
+        insertTextAtCursor('<hr style="border: none; border-top: 2px solid #000; margin: 20px 0;">');
+        break;
+      case 'pageBreak':
+        insertTextAtCursor('<div style="page-break-after: always;"></div>');
+        break;
+      case 'blockquote':
+        insertTextAtCursor('<blockquote style="border-right: 4px solid #1e40af; padding-right: 16px; margin: 16px 0; color: #4b5563; font-style: italic;">نص مقتبس</blockquote>');
+        break;
+      case 'codeBlock':
+        insertTextAtCursor('<pre style="background: #f3f4f6; padding: 16px; border-radius: 8px; font-family: Courier New, monospace; direction: ltr; text-align: left;">// كود برمجي</pre>');
+        break;
+        
+      // ========================================
+      // أوامر التراجع والإعادة
+      // ========================================
+      case 'undo':
+        // مسح آخر نص اتقال بالصوت
+        deleteLastVoiceText();
+        break;
+      case 'redo':
+        executeEditorCommand('redo');
+        break;
+        
+      // ========================================
+      // أوامر الحذف
+      // ========================================
+      case 'deleteLastLine':
+        setContent(prevContent => {
+          const tempDiv = window.document.createElement('div');
+          tempDiv.innerHTML = prevContent;
+          const children = tempDiv.children;
+          if (children.length > 0) {
+            tempDiv.removeChild(children[children.length - 1]);
+          }
+          setHasChanges(true);
+          return tempDiv.innerHTML;
+        });
+        toast.success('تم حذف آخر سطر');
+        break;
+      case 'deleteWord':
+        // حذف آخر كلمة
+        setContent(prevContent => {
+          const newContent = prevContent.replace(/\s*\S+\s*$/, '');
+          setHasChanges(true);
+          return newContent;
+        });
+        toast.success('تم حذف آخر كلمة');
+        break;
+      case 'deleteAll':
+        if (window.confirm('هل أنت متأكد من حذف كل المحتوى؟')) {
+          setContent('');
+          setHasChanges(true);
+          toast.success('تم حذف كل المحتوى');
+        }
+        break;
+      case 'clearFormat':
+        executeEditorCommand('removeFormat');
+        break;
+        
+      // ========================================
+      // أوامر التحديد
+      // ========================================
+      case 'selectAll':
+        executeEditorCommand('selectAll');
+        break;
+        
+      // ========================================
+      // أوامر النسخ واللصق
+      // ========================================
+      case 'copy':
+        window.document.execCommand('copy');
+        toast.success('تم النسخ');
+        break;
+      case 'cut':
+        window.document.execCommand('cut');
+        toast.success('تم القص');
+        break;
+        
+      // ========================================
+      // عبارات قانونية شائعة
+      // ========================================
+      case 'legalArticle':
+        insertTextAtCursor('<p><strong>المادة رقم ( )</strong></p><p></p>');
+        break;
+      case 'legalClause':
+        insertTextAtCursor('<p><strong>البند رقم ( )</strong>: </p>');
+        break;
+      case 'legalWhereas':
+        insertTextAtCursor('<p>حيث أن </p>');
+        break;
+      case 'legalTherefore':
+        insertTextAtCursor('<p>وبناءً عليه، </p>');
+        break;
+      case 'partyFirst':
+        insertTextAtCursor('<strong>الطرف الأول</strong>: ');
+        break;
+      case 'partySecond':
+        insertTextAtCursor('<strong>الطرف الثاني</strong>: ');
+        break;
+      case 'signature':
+        insertTextAtCursor(`
+          <div style="margin-top: 40px;">
+            <p>التوقيع: _______________________</p>
+            <p>الاسم: _______________________</p>
+            <p>التاريخ: _______________________</p>
+          </div>
+        `);
+        break;
+      case 'insertDate':
+        insertTextAtCursor(`<strong>${getCurrentDate()}</strong>`);
+        break;
+      case 'witness':
+        insertTextAtCursor(`
+          <div style="margin-top: 20px;">
+            <p><strong>الشاهد:</strong></p>
+            <p>الاسم: _______________________</p>
+            <p>الرقم القومي: _______________________</p>
+            <p>التوقيع: _______________________</p>
+          </div>
+        `);
+        break;
+      case 'court':
+        insertTextAtCursor('<p style="text-align: center;"><strong>محكمة _______________</strong></p>');
+        break;
+      case 'defendant':
+        insertTextAtCursor('<strong>المدعى عليه</strong>: ');
+        break;
+      case 'plaintiff':
+        insertTextAtCursor('<strong>المدعي</strong>: ');
+        break;
+        
+      // ========================================
+      // أوامر التنسيق القانوني
+      // ========================================
+      case 'legalHeader':
+        insertTextAtCursor(`
+          <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 20px;">
+            <h2 style="margin: 0;">بسم الله الرحمن الرحيم</h2>
+            <p style="margin: 10px 0;">جمهورية مصر العربية</p>
+            <p style="margin: 0;">محكمة _______________</p>
+          </div>
+        `);
+        break;
+      case 'legalFooter':
+        insertTextAtCursor(`
+          <div style="margin-top: 40px; border-top: 1px solid #ccc; padding-top: 20px;">
+            <table style="width: 100%;">
+              <tr>
+                <td style="text-align: right; width: 50%;">
+                  <p>الطرف الأول</p>
+                  <p>التوقيع: _____________</p>
+                </td>
+                <td style="text-align: left; width: 50%;">
+                  <p>الطرف الثاني</p>
+                  <p>التوقيع: _____________</p>
+                </td>
+              </tr>
+            </table>
+          </div>
+        `);
+        break;
+        
+      // ========================================
+      // أوامر البحث
+      // ========================================
+      case 'find':
+        executeEditorCommand('find');
+        break;
+      case 'findReplace':
+        executeEditorCommand('findReplace');
+        break;
+        
+      // ========================================
+      // أوامر العرض
+      // ========================================
+      case 'fullscreen':
+        setIsFullscreen(prev => !prev);
+        break;
+      case 'zoomIn':
+        toast.success('تم التكبير');
+        break;
+      case 'zoomOut':
+        toast.success('تم التصغير');
+        break;
+        
+      // ========================================
+      // أوامر المساعدة
+      // ========================================
+      case 'help':
+        toast.success(
+          `🎤 الأوامر المتاحة بالمصري:
+• نزل سطر، اعمل عنوان، بولد، مايل
+• نقطة، فاصلة، علامة استفهام
+• الطرف الأول، توقيع، النهارده
+• سيڤ، خلاص، كفاية، تمام`,
+          { duration: 6000 }
+        );
+        break;
+        
+      // ========================================
+      // أرقام
+      // ========================================
+      case 'number1':
+        insertTextAtCursor('<p><strong>أولاً:</strong> </p>');
+        break;
+      case 'number2':
+        insertTextAtCursor('<p><strong>ثانياً:</strong> </p>');
+        break;
+      case 'number3':
+        insertTextAtCursor('<p><strong>ثالثاً:</strong> </p>');
+        break;
+      case 'number4':
+        insertTextAtCursor('<p><strong>رابعاً:</strong> </p>');
+        break;
+      case 'number5':
+        insertTextAtCursor('<p><strong>خامساً:</strong> </p>');
+        break;
+        
+      // ========================================
+      // تحيات ونهايات الخطابات
+      // ========================================
+      case 'greetingFormal':
+        insertTextAtCursor('<p>سيادة المستشار/ _______________</p><p>تحية طيبة وبعد،</p>');
+        break;
+      case 'closingFormal':
+        insertTextAtCursor('<p>وتفضلوا بقبول فائق الاحترام والتقدير،</p>');
+        break;
+        
+      // ========================================
+      // الرموز الخاصة
+      // ========================================
+      case 'symbolStar':
+        insertTextAtCursor('★');
+        break;
+      case 'symbolArrow':
+        insertTextAtCursor('←');
+        break;
+      case 'symbolCheck':
+        insertTextAtCursor('✓');
+        break;
+      case 'symbolX':
+        insertTextAtCursor('✗');
+        break;
+      case 'symbolBullet':
+        insertTextAtCursor('●');
+        break;
+        
+      // ========================================
+      // أوامر التأكيد والرفض (عامية مصرية)
+      // Confirmation Commands (Egyptian Dialect)
+      // ========================================
+      case 'confirmYes':
+        toast.success('تمام! 👍');
+        break;
+      case 'confirmNo':
+        toast.success('تم الإلغاء');
+        break;
+        
+      // ========================================
+      // عبارات الكتابة (عامية مصرية)
+      // Writing Phrases (Egyptian Dialect)
+      // ========================================
+      case 'writeBismillah':
+        insertTextAtCursor('<p style="text-align: center; font-size: 18pt; font-weight: bold;">بسم الله الرحمن الرحيم</p>');
+        break;
+      case 'writeThanks':
+        insertTextAtCursor('<p>شكراً جزيلاً،</p>');
+        break;
+      case 'writeRegards':
+        insertTextAtCursor('<p>مع خالص تحياتي،</p>');
+        break;
+        
+      // ========================================
+      // أوامر خاصة (تُعالج في مكان آخر)
+      // ========================================
+      case 'save':
+      case 'stop':
+      case 'print':
+      case 'exportWord':
+        // تُعالج في callbacks منفصلة
+        break;
+        
+      default:
+        console.warn('أمر غير معروف:', command);
+    }
+  }, [insertTextAtCursor, executeEditorCommand, getCurrentDate, deleteLastVoiceText]);
+
+  // ================================
+  // معالجة أمر الحفظ الصوتي
+  // Handle Voice Save Command
+  // ================================
+  const handleVoiceSave = useCallback(() => {
+    handleSave();
+    toast.success('تم تنفيذ أمر الحفظ الصوتي');
+  }, [handleSave]);
+
+  // ================================
+  // معالجة أمر الإيقاف الصوتي
+  // Handle Voice Stop Command
+  // ================================
+  const handleVoiceStop = useCallback(() => {
+    toast.success('تم إيقاف الإملاء الصوتي');
+  }, []);
+
+  // ================================
+  // معالجة أمر الطباعة الصوتي
+  // Handle Voice Print Command
+  // ================================
+  const handleVoicePrint = useCallback(() => {
+    handlePrint();
+    toast.success('جاري الطباعة...');
+  }, [handlePrint]);
+
+  // ================================
+  // معالجة أمر التصدير الصوتي
+  // Handle Voice Export Command
+  // ================================
+  const handleVoiceExport = useCallback(() => {
+    handleExport();
+  }, [handleExport]);
+
+  // ================================
+  // معالجة أمر ملء الشاشة الصوتي
+  // Handle Voice Fullscreen Command
+  // ================================
+  const handleVoiceFullscreen = useCallback(() => {
+    setIsFullscreen(prev => !prev);
+  }, []);
+
+  // ================================
   // حفظ تلقائي
+  // Auto Save
+  // ================================
   useEffect(() => {
     const autoSaveInterval = setInterval(() => {
       if (hasChanges && !saving) {
         handleSave();
       }
-    }, 120000); // كل دقيقتين
+    }, 120000);
 
     return () => clearInterval(autoSaveInterval);
-  }, [hasChanges, saving, content, documentName]);
+  }, [hasChanges, saving, handleSave]);
 
+  // ================================
   // اختصارات لوحة المفاتيح
+  // Keyboard Shortcuts
+  // ================================
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
@@ -333,8 +1151,12 @@ const Editor = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [content, documentName]);
+  }, [handleSave]);
 
+  // ================================
+  // شاشة التحميل
+  // Loading Screen
+  // ================================
   if (loading) {
     return (
       <div className="editor-loading">
@@ -344,6 +1166,10 @@ const Editor = () => {
     );
   }
 
+  // ================================
+  // واجهة المستخدم
+  // User Interface
+  // ================================
   return (
     <div className={`editor-page ${isFullscreen ? 'fullscreen' : ''}`}>
       {/* Header */}
@@ -408,9 +1234,18 @@ const Editor = () => {
 
       {/* Jodit Editor */}
       <div className="editor-container">
-        {/* زر الإملاء الصوتي */}
+        {/* زر الإملاء الصوتي مع الأوامر الشاملة */}
         <div className="voice-dictation-wrapper">
-          <VoiceDictation onTextReceived={handleVoiceTextReceived} />
+          <VoiceDictation 
+            ref={voiceDictationRef}
+            onTextReceived={handleVoiceTextReceived}
+            onCommand={handleVoiceCommand}
+            onSave={handleVoiceSave}
+            onStop={handleVoiceStop}
+            onPrint={handleVoicePrint}
+            onExport={handleVoiceExport}
+            onFullscreen={handleVoiceFullscreen}
+          />
         </div>
         
         <JoditEditor
@@ -420,6 +1255,9 @@ const Editor = () => {
           onBlur={handleContentChange}
           onChange={() => {}}
         />
+        
+        {/* المساعد القانوني الذكي - AI Chatbot */}
+        <LegalAIChat onInsertContent={insertTextAtCursor} />
       </div>
     </div>
   );

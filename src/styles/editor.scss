@@ -715,6 +715,60 @@
     }
 }
 
+// ================================
+// Voice Command Popup - نافذة الأمر المكتشف
+// ================================
+.voice-command-popup {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    animation: popup-slide-in 0.3s ease-out;
+    z-index: 1001;
+
+    .command-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        font-size: 0.75rem;
+        color: white;
+    }
+
+    .command-text {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: white;
+        font-family: 'Almarai', sans-serif;
+        direction: rtl;
+    }
+}
+
+// Animation for popup
+@keyframes popup-slide-in {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
 // Animations - الحركات
 @keyframes pulse-button {
 
