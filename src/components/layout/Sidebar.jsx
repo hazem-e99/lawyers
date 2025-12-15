@@ -9,6 +9,7 @@ import {
   FaCalendarCheck,
   FaFolderOpen,
   FaBook,
+  FaFileAlt,
   FaUsersCog,
   FaCog,
   FaSignOutAlt,
@@ -45,6 +46,7 @@ const Sidebar = ({ isOpen, onToggle, mobileOpen, onMobileClose }) => {
       items: [
         { path: '/documents', icon: FaFolderOpen, label: 'المستندات' },
         { path: '/library', icon: FaBook, label: 'المكتبة' },
+        { path: '/templates', icon: FaFileAlt, label: 'القوالب القانونية' },
       ],
     },
   ];

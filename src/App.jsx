@@ -21,6 +21,7 @@ import Calendar from './pages/calendar/Calendar';
 import Documents from './pages/documents/Documents';
 import Library from './pages/library/Library';
 import Editor from './pages/library/Editor';
+import { Templates } from './pages/templates';
 import Users from './pages/users/Users';
 import UserForm from './pages/users/UserForm';
 import Profile from './pages/Profile';
@@ -100,6 +101,9 @@ function App() {
         {/* المكتبة */}
         <Route path="/library" element={<Library />} />
         <Route path="/library/editor/:id" element={<Editor />} />
+
+        {/* القوالب القانونية */}
+        <Route path="/templates" element={<Templates />} />
 
         {/* المستخدمين */}
         <Route path="/users" element={<Users />} />

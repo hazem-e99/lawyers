@@ -8,8 +8,10 @@ import {
   FaFileWord,
   FaPrint,
   FaExpand,
-  FaCompress
+  FaCompress,
+  FaMicrophone
 } from 'react-icons/fa';
+import VoiceDictation from '../../components/VoiceDictation';
 import toast from 'react-hot-toast';
 import '../../styles/editor.scss';
 
@@ -281,6 +283,34 @@ const Editor = () => {
     setHasChanges(true);
   };
 
+  // معالجة النص المستلم من الإملاء الصوتي
+  const handleVoiceTextReceived = useCallback((text) => {
+    if (!editorRef.current || !text) return;
+    
+    try {
+      const editor = editorRef.current;
+      
+      // إدراج النص في موقع المؤشر الحالي
+      if (editor && editor.selection) {
+        // الحصول على التحديد الحالي وإدراج النص
+        editor.selection.insertHTML(text + ' ');
+      } else {
+        // إذا لم يكن هناك تحديد، أضف النص في النهاية
+        setContent(prevContent => {
+          const newContent = prevContent + ' ' + text + ' ';
+          return newContent;
+        });
+      }
+      
+      setHasChanges(true);
+    } catch (error) {
+      console.error('خطأ في إدراج النص:', error);
+      // Fallback: أضف النص في النهاية
+      setContent(prevContent => prevContent + ' ' + text + ' ');
+      setHasChanges(true);
+    }
+  }, []);
+
   // حفظ تلقائي
   useEffect(() => {
     const autoSaveInterval = setInterval(() => {
@@ -378,6 +408,11 @@ const Editor = () => {
 
       {/* Jodit Editor */}
       <div className="editor-container">
+        {/* زر الإملاء الصوتي */}
+        <div className="voice-dictation-wrapper">
+          <VoiceDictation onTextReceived={handleVoiceTextReceived} />
+        </div>
+        
         <JoditEditor
           ref={editorRef}
           value={content}

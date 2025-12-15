@@ -354,3 +354,33 @@ export const libraryService = {
     return response.data;
   },
 };
+
+/**
+ * خدمات القوالب القانونية
+ * Templates Service
+ */
+export const templatesService = {
+  // جلب جميع القوالب
+  getAll: async (params = {}) => {
+    const response = await api.get('/templates', { params });
+    return response.data;
+  },
+
+  // جلب قالب واحد
+  getById: async (id) => {
+    const response = await api.get(`/templates/${id}`);
+    return response.data;
+  },
+
+  // استخدام قالب (إنشاء مستند جديد)
+  useTemplate: async (id, data = {}) => {
+    const response = await api.post(`/templates/use/${id}`, data);
+    return response.data;
+  },
+
+  // تهيئة القوالب الافتراضية
+  seedTemplates: async () => {
+    const response = await api.post('/templates/seed');
+    return response.data;
+  },
+};
