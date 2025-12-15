@@ -1,24 +1,26 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { libraryService } from '../../services';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import JoditEditor from 'jodit-react';
 import { 
   FaSave, 
-  FaFileDownload, 
   FaArrowRight,
-  FaFileWord
+  FaFileWord,
+  FaPrint,
+  FaExpand,
+  FaCompress
 } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import '../../styles/editor.scss';
 
 /**
- * صفحة محرر المستندات
- * Editor Page - محرر نصوص شبيه بـ Word
+ * صفحة محرر المستندات - Jodit
+ * Editor Page - Professional Word-like Editor (Free)
  */
 const Editor = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const editorRef = useRef(null);
   
   const [document, setDocument] = useState(null);
   const [content, setContent] = useState('');
@@ -28,39 +30,141 @@ const Editor = () => {
   const [exporting, setExporting] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [lastSaved, setLastSaved] = useState(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // إعدادات محرر Quill
-  const quillModules = {
-    toolbar: [
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'font': [] }],
-      [{ 'size': ['small', false, 'large', 'huge'] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'indent': '-1' }, { 'indent': '+1' }],
-      [{ 'direction': 'rtl' }],
-      [{ 'align': [] }],
-      ['blockquote', 'code-block'],
-      ['link', 'image'],
-      ['clean']
+  // إعدادات Jodit Editor
+  const config = useMemo(() => ({
+    readonly: false,
+    language: 'ar',
+    direction: 'rtl',
+    height: 'calc(100vh - 180px)',
+    minHeight: 500,
+    
+    // شريط الأدوات
+    toolbarButtonSize: 'middle',
+    toolbarAdaptive: true,
+    toolbarSticky: true,
+    
+    // الأزرار
+    buttons: [
+      'source', '|',
+      'bold', 'italic', 'underline', 'strikethrough', '|',
+      'font', 'fontsize', 'brush', 'paragraph', '|',
+      'ul', 'ol', 'indent', 'outdent', '|',
+      'align', '|',
+      'table', 'link', 'image', '|',
+      'hr', 'symbol', '|',
+      'undo', 'redo', '|',
+      'find', 'selectall', '|',
+      'copyformat', 'eraser', '|',
+      'fullsize', 'print', 'preview'
     ],
-    clipboard: {
-      matchVisual: false
-    }
-  };
+    
+    // أزرار الموبايل
+    buttonsMD: [
+      'bold', 'italic', '|',
+      'ul', 'ol', '|',
+      'font', 'fontsize', '|',
+      'align', '|',
+      'table', 'link', 'image', '|',
+      'undo', 'redo', '|',
+      'dots'
+    ],
+    
+    buttonsSM: [
+      'bold', 'italic', '|',
+      'ul', 'ol', '|',
+      'align', '|',
+      'image', '|',
+      'dots'
+    ],
+    
+    buttonsXS: [
+      'bold', 'italic', '|',
+      'ul', '|',
+      'dots'
+    ],
+    
+    // الخطوط
+    controls: {
+      font: {
+        list: {
+          'Amiri': 'Amiri',
+          'Almarai': 'Almarai',
+          'Cairo': 'Cairo',
+          'Tajawal': 'Tajawal',
+          'Arial': 'Arial',
+          'Times New Roman': 'Times New Roman',
+          'Courier New': 'Courier New',
+          'Georgia': 'Georgia',
+        }
+      },
+      fontsize: {
+        list: [
+          '8', '10', '12', '14', '16', '18', '20', '24', '28', '32', '36', '48', '72'
+        ]
+      }
+    },
+    
+    // إعدادات عامة
+    spellcheck: false,
+    showCharsCounter: true,
+    showWordsCounter: true,
+    showXPathInStatusbar: false,
+    askBeforePasteHTML: false,
+    askBeforePasteFromWord: false,
+    
+    // الصور
+    imageDefaultWidth: 300,
+    
+    // الجداول
+    tableAllowCellResize: true,
+    
+    // التنسيق
+    defaultMode: 1,
+    enter: 'p',
+    
+    // الستايل الداخلي
+    style: {
+      fontFamily: 'Amiri, Times New Roman, serif',
+      fontSize: '14pt',
+      direction: 'rtl',
+      textAlign: 'right'
+    },
+    
+    // أحداث
+    events: {
+      afterInit: (editor) => {
+        // تطبيق RTL
+        editor.editor.style.direction = 'rtl';
+        editor.editor.style.textAlign = 'right';
+      }
+    },
+    
+    // إزالة العلامة التجارية
+    hidePoweredByJodit: true,
+    
+    // الألوان
+    colors: {
+      greyscale: ['#000000', '#434343', '#666666', '#999999', '#B7B7B7', '#CCCCCC', '#D9D9D9', '#EFEFEF', '#F3F3F3', '#FFFFFF'],
+      palette: ['#980000', '#FF0000', '#FF9900', '#FFFF00', '#00FF00', '#00FFFF', '#4A86E8', '#0000FF', '#9900FF', '#FF00FF'],
+      full: [
+        '#E6B8AF', '#F4CCCC', '#FCE5CD', '#FFF2CC', '#D9EAD3', '#D0E0E3', '#C9DAF8', '#CFE2F3', '#D9D2E9', '#EAD1DC',
+        '#DD7E6B', '#EA9999', '#F9CB9C', '#FFE599', '#B6D7A8', '#A2C4C9', '#A4C2F4', '#9FC5E8', '#B4A7D6', '#D5A6BD',
+        '#CC4125', '#E06666', '#F6B26B', '#FFD966', '#93C47D', '#76A5AF', '#6D9EEB', '#6FA8DC', '#8E7CC3', '#C27BA0',
+        '#A61C00', '#CC0000', '#E69138', '#F1C232', '#6AA84F', '#45818E', '#3C78D8', '#3D85C6', '#674EA7', '#A64D79',
+        '#85200C', '#990000', '#B45F06', '#BF9000', '#38761D', '#134F5C', '#1155CC', '#0B5394', '#351C75', '#733554',
+        '#5B0F00', '#660000', '#783F04', '#7F6000', '#274E13', '#0C343D', '#1C4587', '#073763', '#20124D', '#4C1130'
+      ]
+    },
 
-  const quillFormats = [
-    'header', 'font', 'size',
-    'bold', 'italic', 'underline', 'strike',
-    'color', 'background',
-    'script',
-    'list', 'bullet', 'indent',
-    'direction', 'align',
-    'blockquote', 'code-block',
-    'link', 'image'
-  ];
+    // placeholder
+    placeholder: 'ابدأ الكتابة هنا...',
+    
+    // Size
+    allowResizeY: false,
+    saveModeInStorage: false,
+  }), []);
 
   // جلب المستند
   const fetchDocument = useCallback(async () => {
@@ -83,12 +187,6 @@ const Editor = () => {
   useEffect(() => {
     fetchDocument();
   }, [fetchDocument]);
-
-  // تتبع التغييرات
-  const handleContentChange = (value) => {
-    setContent(value);
-    setHasChanges(true);
-  };
 
   // حفظ المستند
   const handleSave = async () => {
@@ -113,9 +211,13 @@ const Editor = () => {
   const handleExport = async () => {
     try {
       setExporting(true);
+      // حفظ أولاً
+      if (hasChanges) {
+        await handleSave();
+      }
+      
       const response = await libraryService.exportEditorFile(id);
       
-      // إنشاء رابط تحميل
       const blob = new Blob([response.data], { 
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
       });
@@ -137,6 +239,31 @@ const Editor = () => {
     }
   };
 
+  // طباعة المستند
+  const handlePrint = () => {
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <html dir="rtl">
+        <head>
+          <title>${documentName}</title>
+          <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+          <style>
+            body { 
+              font-family: 'Amiri', serif; 
+              direction: rtl; 
+              text-align: right;
+              padding: 40px;
+              line-height: 1.8;
+            }
+          </style>
+        </head>
+        <body>${content}</body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+  };
+
   // العودة للمكتبة
   const handleBack = () => {
     if (hasChanges) {
@@ -148,13 +275,19 @@ const Editor = () => {
     }
   };
 
+  // تحديث المحتوى
+  const handleContentChange = (newContent) => {
+    setContent(newContent);
+    setHasChanges(true);
+  };
+
   // حفظ تلقائي
   useEffect(() => {
     const autoSaveInterval = setInterval(() => {
       if (hasChanges && !saving) {
         handleSave();
       }
-    }, 60000); // كل دقيقة
+    }, 120000); // كل دقيقتين
 
     return () => clearInterval(autoSaveInterval);
   }, [hasChanges, saving, content, documentName]);
@@ -182,7 +315,7 @@ const Editor = () => {
   }
 
   return (
-    <div className="editor-page">
+    <div className={`editor-page ${isFullscreen ? 'fullscreen' : ''}`}>
       {/* Header */}
       <div className="editor-header">
         <div className="header-right">
@@ -211,6 +344,20 @@ const Editor = () => {
             </span>
           )}
           <button 
+            className="btn-action"
+            onClick={() => setIsFullscreen(!isFullscreen)}
+            title={isFullscreen ? 'تصغير' : 'ملء الشاشة'}
+          >
+            {isFullscreen ? <FaCompress /> : <FaExpand />}
+          </button>
+          <button 
+            className="btn-action"
+            onClick={handlePrint}
+            title="طباعة"
+          >
+            <FaPrint />
+          </button>
+          <button 
             className="btn-save"
             onClick={handleSave}
             disabled={saving || !hasChanges}
@@ -229,16 +376,14 @@ const Editor = () => {
         </div>
       </div>
 
-      {/* Editor Container */}
+      {/* Jodit Editor */}
       <div className="editor-container">
-        <ReactQuill
-          theme="snow"
+        <JoditEditor
+          ref={editorRef}
           value={content}
-          onChange={handleContentChange}
-          modules={quillModules}
-          formats={quillFormats}
-          placeholder="ابدأ الكتابة هنا..."
-          className="quill-editor"
+          config={config}
+          onBlur={handleContentChange}
+          onChange={() => {}}
         />
       </div>
     </div>
