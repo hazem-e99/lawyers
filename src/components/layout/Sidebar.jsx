@@ -6,6 +6,7 @@ import {
   FaGavel,
   FaUsers,
   FaCalendarAlt,
+  FaCalendarCheck,
   FaFolderOpen,
   FaUsersCog,
   FaCog,
@@ -35,6 +36,7 @@ const Sidebar = ({ isOpen, onToggle, mobileOpen, onMobileClose }) => {
         { path: '/cases', icon: FaGavel, label: 'القضايا' },
         { path: '/clients', icon: FaUsers, label: 'العملاء' },
         { path: '/sessions', icon: FaCalendarAlt, label: 'الجلسات' },
+        { path: '/calendar', icon: FaCalendarCheck, label: 'تقويم الجلسات' },
       ],
     },
     {
@@ -76,6 +78,17 @@ const Sidebar = ({ isOpen, onToggle, mobileOpen, onMobileClose }) => {
     return roles[role] || role;
   };
 
+  // الحصول على URL الصورة
+  const getAvatarUrl = () => {
+    if (!user?.avatar || user.avatar === 'default-avatar.png') {
+      return null;
+    }
+    if (user.avatar.startsWith('/uploads')) {
+      return `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}${user.avatar}`;
+    }
+    return user.avatar;
+  };
+
   return (
     <aside className={`sidebar ${isOpen ? '' : 'collapsed'} ${mobileOpen ? 'mobile-open' : ''}`}>
       {/* رأس الشريط الجانبي */}
@@ -115,7 +128,11 @@ const Sidebar = ({ isOpen, onToggle, mobileOpen, onMobileClose }) => {
 
       {/* معلومات المستخدم */}
       <div className="sidebar-user">
-        <div className="user-avatar">{getInitials(user?.name)}</div>
+        {getAvatarUrl() ? (
+          <img src={getAvatarUrl()} alt={user?.name} className="user-avatar-img" />
+        ) : (
+          <div className="user-avatar">{getInitials(user?.name)}</div>
+        )}
         {isOpen && (
           <div className="sidebar-user-info">
             <div className="user-name">{user?.name}</div>

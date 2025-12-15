@@ -210,7 +210,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="card bg-gradient-to-l from-emerald-500 to-emerald-600 text-white">
+          <div className="card bg-gradient-to-l from-teal-500 to-teal-600 text-white">
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
                 <FaArrowUp className="text-2xl" />
@@ -222,7 +222,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="card bg-gradient-to-l from-amber-500 to-amber-600 text-white">
+          <div className="card bg-gradient-to-l from-rose-500 to-rose-600 text-white">
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
                 <FaArrowDown className="text-2xl" />

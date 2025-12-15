@@ -116,6 +116,30 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // رفع صورة الملف الشخصي
+  const uploadAvatar = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append('avatar', file);
+      
+      const response = await api.put('/auth/uploadavatar', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      
+      // تحديث بيانات المستخدم مع الصورة الجديدة
+      setUser(prev => ({ ...prev, avatar: response.data.data.avatar }));
+      
+      toast.success('تم تحديث الصورة الشخصية بنجاح');
+      return { success: true, avatar: response.data.data.avatar };
+    } catch (error) {
+      const message = error.response?.data?.message || 'حدث خطأ في رفع الصورة';
+      toast.error(message);
+      return { success: false, message };
+    }
+  };
+
   const value = {
     user,
     loading,
@@ -126,6 +150,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     updateProfile,
     changePassword,
+    uploadAvatar,
     checkAuth,
   };
 

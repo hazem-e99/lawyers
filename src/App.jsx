@@ -17,6 +17,7 @@ import ClientDetails from './pages/clients/ClientDetails';
 import ClientForm from './pages/clients/ClientForm';
 import Sessions from './pages/sessions/Sessions';
 import SessionForm from './pages/sessions/SessionForm';
+import Calendar from './pages/calendar/Calendar';
 import Documents from './pages/documents/Documents';
 import Users from './pages/users/Users';
 import UserForm from './pages/users/UserForm';
@@ -87,6 +88,9 @@ function App() {
         <Route path="/sessions" element={<Sessions />} />
         <Route path="/sessions/new" element={<SessionForm />} />
         <Route path="/sessions/:id/edit" element={<SessionForm />} />
+
+        {/* تقويم الجلسات */}
+        <Route path="/calendar" element={<Calendar />} />
 
         {/* المستندات */}
         <Route path="/documents" element={<Documents />} />

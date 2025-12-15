@@ -228,6 +228,15 @@
         flex-shrink: 0;
     }
 
+    .user-avatar-img {
+        width: 40px;
+        height: 40px;
+        border-radius: $radius-full;
+        object-fit: cover;
+        flex-shrink: 0;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
     .sidebar-user-info {
         flex: 1;
         overflow: hidden;
@@ -402,6 +411,14 @@
         color: white;
         font-size: $font-size-sm;
         font-weight: 700;
+    }
+
+    .user-avatar-sm-img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid $primary-color;
     }
 
     .user-name-sm {

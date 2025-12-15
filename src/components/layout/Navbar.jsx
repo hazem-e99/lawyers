@@ -106,6 +106,17 @@ const Navbar = ({ onMenuClick }) => {
       : parts[0].charAt(0);
   };
 
+  // الحصول على URL الصورة
+  const getAvatarUrl = () => {
+    if (!user?.avatar || user.avatar === 'default-avatar.png') {
+      return null;
+    }
+    if (user.avatar.startsWith('/uploads')) {
+      return `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}${user.avatar}`;
+    }
+    return user.avatar;
+  };
+
   // البحث
   const handleSearch = (e) => {
     e.preventDefault();
@@ -246,7 +257,11 @@ const Navbar = ({ onMenuClick }) => {
             setShowNotifications(false);
           }}
         >
-          <div className="user-avatar-sm">{getInitials(user?.name)}</div>
+          {getAvatarUrl() ? (
+            <img src={getAvatarUrl()} alt={user?.name} className="user-avatar-sm-img" />
+          ) : (
+            <div className="user-avatar-sm">{getInitials(user?.name)}</div>
+          )}
           <span className="user-name-sm">{user?.name?.split(' ')[0]}</span>
         </div>
 

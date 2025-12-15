@@ -1,0 +1,590 @@
+// ==============================
+// أنماط تقويم الجلسات
+// Sessions Calendar Styles
+// ==============================
+
+@import 'variables';
+@import 'mixins';
+
+// صفحة التقويم
+.calendar-page {
+    padding-bottom: $spacing-xl;
+}
+
+// رأس الصفحة
+.calendar-header {
+    margin-bottom: $spacing-lg;
+
+    .header-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: $spacing-lg;
+    }
+
+    .header-title {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+
+        .header-icon {
+            font-size: 2.5rem;
+            color: $primary-color;
+            background: rgba($primary-color, 0.1);
+            padding: $spacing-md;
+            border-radius: $radius-xl;
+        }
+
+        h1 {
+            font-size: $font-size-2xl;
+            font-weight: 700;
+            color: $text-primary;
+            margin-bottom: $spacing-xs;
+        }
+
+        p {
+            font-size: $font-size-sm;
+            color: $text-secondary;
+            margin-bottom: 0;
+        }
+    }
+
+    // دليل الألوان
+    .status-legend {
+        display: flex;
+        align-items: center;
+        gap: $spacing-lg;
+        background: $bg-primary;
+        padding: $spacing-sm $spacing-lg;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-sm;
+
+        .legend-title {
+            font-weight: 700;
+            color: $text-secondary;
+            font-size: $font-size-sm;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: $spacing-xs;
+            font-size: $font-size-sm;
+            color: $text-primary;
+        }
+    }
+}
+
+// حاوية التقويم
+.calendar-wrapper {
+    background: $bg-primary;
+    border-radius: $radius-xl;
+    padding: $spacing-lg;
+    box-shadow: $shadow-elegant;
+}
+
+// حاوية التقويم الداخلية
+.sessions-calendar-container {
+    position: relative;
+
+    // شاشة التحميل
+    .calendar-loading-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba($bg-primary, 0.9);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: $spacing-md;
+        z-index: 100;
+        border-radius: $radius-lg;
+
+        span {
+            color: $text-secondary;
+            font-size: $font-size-sm;
+        }
+    }
+}
+
+// ==============================
+// تخصيص FullCalendar
+// FullCalendar Customization
+// ==============================
+
+.fc {
+    direction: rtl;
+    font-family: $font-family !important;
+
+    // الأزرار
+    .fc-button {
+        font-family: $font-family !important;
+        background: $bg-secondary !important;
+        border: 1px solid $border-color !important;
+        color: $text-primary !important;
+        padding: $spacing-sm $spacing-md !important;
+        border-radius: $radius-md !important;
+        font-weight: 600 !important;
+        transition: all $transition-fast !important;
+
+        &:hover {
+            background: $primary-color !important;
+            color: $text-light !important;
+            border-color: $primary-color !important;
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 3px rgba($primary-color, 0.2) !important;
+        }
+
+        &.fc-button-active {
+            background: $primary-color !important;
+            color: $text-light !important;
+            border-color: $primary-color !important;
+        }
+    }
+
+    // مجموعة الأزرار
+    .fc-button-group {
+        gap: 2px;
+
+        .fc-button {
+            margin: 0 !important;
+
+            &:first-child {
+                border-radius: 0 $radius-md $radius-md 0 !important;
+            }
+
+            &:last-child {
+                border-radius: $radius-md 0 0 $radius-md !important;
+            }
+        }
+    }
+
+    // شريط الأدوات
+    .fc-toolbar {
+        margin-bottom: $spacing-lg !important;
+        flex-wrap: wrap;
+        gap: $spacing-md;
+
+        &-title {
+            font-size: $font-size-xl !important;
+            font-weight: 700 !important;
+            color: $text-primary !important;
+        }
+    }
+
+    // رأس الأيام
+    .fc-col-header {
+        background: $bg-secondary;
+
+        .fc-col-header-cell {
+            padding: $spacing-md !important;
+            font-weight: 700;
+            color: $text-secondary;
+            font-size: $font-size-sm;
+            text-transform: capitalize;
+            border-color: $border-color !important;
+        }
+    }
+
+    // خلايا الأيام
+    .fc-daygrid-day {
+        border-color: $border-color !important;
+        transition: background $transition-fast;
+
+        &:hover {
+            background: rgba($primary-color, 0.03);
+        }
+
+        &.fc-day-today {
+            background: rgba($primary-color, 0.08) !important;
+
+            .fc-daygrid-day-number {
+                background: $primary-color;
+                color: $text-light;
+                border-radius: $radius-full;
+                width: 28px;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        &.fc-day-other {
+            .fc-daygrid-day-number {
+                color: $text-muted;
+            }
+        }
+    }
+
+    // رقم اليوم
+    .fc-daygrid-day-number {
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: $text-primary;
+        padding: $spacing-sm !important;
+    }
+
+    // الأحداث (الجلسات)
+    .fc-event {
+        border-radius: $radius-md !important;
+        padding: $spacing-xs $spacing-sm !important;
+        margin: 2px 4px !important;
+        border: none !important;
+        border-right: 4px solid !important; // حد جانبي للتمييز
+        cursor: pointer;
+        font-size: $font-size-xs !important;
+        font-weight: 600;
+        color: #ffffff !important; // لون النص أبيض
+        transition: transform $transition-fast, box-shadow $transition-fast;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: $shadow-md;
+            filter: brightness(1.05);
+        }
+
+        // التأكد من ظهور لون الخلفية
+        &.fc-event-start,
+        &.fc-event-end,
+        &.fc-daygrid-event,
+        &.fc-timegrid-event {
+            background-color: inherit;
+        }
+
+        .fc-event-main {
+            padding: 2px 0;
+        }
+
+        .fc-event-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            line-height: 1.2;
+            color: #ffffff !important;
+        }
+
+        // عرض الوقت
+        .fc-event-time-text {
+            font-size: 9px;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-bottom: 1px;
+            color: #ffffff !important;
+        }
+
+        .fc-event-title-text {
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #ffffff !important;
+        }
+
+        .fc-event-client {
+            font-size: 10px;
+            opacity: 0.9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #ffffff !important;
+        }
+
+        // جميع العناصر النصية داخل الحدث
+        .fc-event-main,
+        .fc-event-main-frame,
+        .fc-event-title,
+        .fc-event-time {
+            color: #ffffff !important;
+        }
+    }
+
+    // التأكد من عدم وجود override للألوان
+    .fc-daygrid-event-dot {
+        display: none !important;
+    }
+
+    .fc-daygrid-block-event {
+        .fc-event-main {
+            color: #ffffff !important;
+        }
+    }
+
+    // أحداث timegrid
+    .fc-timegrid-event {
+        .fc-event-main {
+            color: #ffffff !important;
+        }
+    }
+
+    // رابط المزيد من الأحداث
+    .fc-more-link {
+        color: $primary-color !important;
+        font-weight: 600 !important;
+        font-size: $font-size-xs !important;
+        padding: $spacing-xs !important;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    // شبكة الأيام
+    .fc-scrollgrid {
+        border-color: $border-color !important;
+        border-radius: $radius-lg;
+        overflow: hidden;
+    }
+
+    // العرض الأسبوعي واليومي
+    .fc-timegrid {
+        .fc-timegrid-slot {
+            height: 48px !important;
+            border-color: $border-color !important;
+        }
+
+        .fc-timegrid-slot-label {
+            font-size: $font-size-xs;
+            color: $text-secondary;
+        }
+
+        .fc-timegrid-axis {
+            border-color: $border-color !important;
+        }
+    }
+
+    // مؤشر الوقت الحالي
+    .fc-timegrid-now-indicator-line {
+        border-color: $danger-color !important;
+    }
+
+    .fc-timegrid-now-indicator-arrow {
+        border-color: $danger-color !important;
+        border-top-color: transparent !important;
+        border-bottom-color: transparent !important;
+    }
+}
+
+// ==============================
+// نافذة تفاصيل الجلسة
+// Session Details Modal
+// ==============================
+
+.session-modal {
+    max-width: 450px;
+
+    .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: $spacing-md;
+        margin-bottom: $spacing-md;
+        border-bottom: 1px solid $border-color;
+
+        h3 {
+            font-size: $font-size-lg;
+            font-weight: 700;
+            color: $text-primary;
+            margin: 0;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: $bg-secondary;
+            border-radius: $radius-full;
+            font-size: $font-size-xl;
+            color: $text-secondary;
+            cursor: pointer;
+            transition: all $transition-fast;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+                background: $danger-color;
+                color: $text-light;
+            }
+        }
+    }
+
+    .modal-body {
+        margin-bottom: $spacing-lg;
+    }
+
+    .session-detail {
+        display: flex;
+        align-items: flex-start;
+        gap: $spacing-md;
+        padding: $spacing-sm 0;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid rgba($border-color, 0.5);
+        }
+
+        &.notes {
+            flex-direction: column;
+            gap: $spacing-xs;
+
+            .detail-value {
+                color: $text-secondary;
+                line-height: 1.6;
+            }
+        }
+
+        .detail-label {
+            font-weight: 700;
+            color: $text-secondary;
+            font-size: $font-size-sm;
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+
+        .detail-value {
+            color: $text-primary;
+            font-weight: 500;
+
+            &.status-badge {
+                padding: $spacing-xs $spacing-sm;
+                border-radius: $radius-full;
+                font-size: $font-size-xs;
+                font-weight: 700;
+            }
+        }
+    }
+
+    .modal-footer {
+        display: flex;
+        gap: $spacing-sm;
+        justify-content: flex-end;
+        padding-top: $spacing-md;
+        border-top: 1px solid $border-color;
+    }
+}
+
+// رسالة المعلومات
+.calendar-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+    margin-top: $spacing-lg;
+    padding: $spacing-md;
+    background: rgba($info-color, 0.1);
+    border-radius: $radius-lg;
+    color: $info-color;
+    font-size: $font-size-sm;
+
+    svg {
+        font-size: $font-size-base;
+    }
+}
+
+// ==============================
+// التجاوب مع الشاشات
+// Responsive Design
+// ==============================
+
+@include tablet {
+    .calendar-header {
+        .header-content {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .status-legend {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    .fc {
+        .fc-toolbar {
+            flex-direction: column;
+            align-items: stretch !important;
+
+            .fc-toolbar-chunk {
+                display: flex;
+                justify-content: center;
+                margin-bottom: $spacing-sm;
+            }
+        }
+    }
+}
+
+@include mobile {
+    .calendar-wrapper {
+        padding: $spacing-md;
+    }
+
+    .calendar-header {
+        .header-title {
+            .header-icon {
+                font-size: 1.5rem;
+                padding: $spacing-sm;
+            }
+
+            h1 {
+                font-size: $font-size-xl;
+            }
+        }
+
+        .status-legend {
+            flex-wrap: wrap;
+            gap: $spacing-sm;
+            padding: $spacing-sm;
+
+            .legend-title {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+
+    .fc {
+        .fc-button {
+            padding: $spacing-xs $spacing-sm !important;
+            font-size: $font-size-xs !important;
+        }
+
+        .fc-toolbar-title {
+            font-size: $font-size-base !important;
+        }
+
+        .fc-daygrid-day-number {
+            font-size: $font-size-xs;
+            padding: $spacing-xs !important;
+        }
+
+        .fc-event {
+            padding: 2px 4px !important;
+            font-size: 10px !important;
+        }
+    }
+
+    .session-modal {
+        margin: $spacing-md;
+
+        .session-detail {
+            flex-direction: column;
+            gap: $spacing-xs;
+
+            .detail-label {
+                min-width: auto;
+            }
+        }
+
+        .modal-footer {
+            flex-direction: column;
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    }
+}

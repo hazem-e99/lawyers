@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { FaUser, FaEnvelope, FaPhone, FaLock, FaSave } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaPhone, FaLock, FaSave, FaCamera, FaSpinner } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 /**
@@ -8,8 +8,11 @@ import toast from 'react-hot-toast';
  * Profile Page
  */
 const Profile = () => {
-  const { user, updateProfile, changePassword } = useAuth();
+  const { user, updateProfile, changePassword, uploadAvatar } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const fileInputRef = useRef(null);
+  
   const [profileData, setProfileData] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -22,6 +25,18 @@ const Profile = () => {
     newPassword: '',
     confirmPassword: '',
   });
+
+  // الحصول على URL الصورة
+  const getAvatarUrl = () => {
+    if (!user?.avatar || user.avatar === 'default-avatar.png') {
+      return null;
+    }
+    // إذا كانت الصورة تبدأ بـ /uploads، أضف base URL
+    if (user.avatar.startsWith('/uploads')) {
+      return `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}${user.avatar}`;
+    }
+    return user.avatar;
+  };
 
   const handleProfileChange = (e) => {
     setProfileData({ ...profileData, [e.target.name]: e.target.value });
@@ -56,6 +71,37 @@ const Profile = () => {
     setLoading(false);
   };
 
+  // معالجة اختيار الصورة
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // رفع الصورة
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // التحقق من نوع الملف
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('نوع الملف غير مسموح. يرجى رفع صورة (JPEG, PNG, GIF, WEBP)');
+      return;
+    }
+
+    // التحقق من حجم الملف (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('حجم الملف كبير جداً. الحد الأقصى 5 ميجابايت');
+      return;
+    }
+
+    setUploadingAvatar(true);
+    await uploadAvatar(file);
+    setUploadingAvatar(false);
+    
+    // مسح قيمة الـ input
+    e.target.value = '';
+  };
+
   const getRoleName = (role) => {
     const roles = { admin: 'مسؤول النظام', lawyer: 'محامي', assistant: 'مساعد', viewer: 'مشاهد' };
     return roles[role] || role;
@@ -69,14 +115,55 @@ const Profile = () => {
         {/* معلومات المستخدم */}
         <div className="card">
           <div className="text-center">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary-500 to-gold-500 flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4">
-              {user?.name?.charAt(0)}
+            {/* صورة الملف الشخصي مع زر التغيير */}
+            <div className="relative inline-block mb-4">
+              {getAvatarUrl() ? (
+                <img
+                  src={getAvatarUrl()}
+                  alt={user?.name}
+                  className="w-24 h-24 rounded-full object-cover border-4 border-primary-100"
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary-500 to-gold-500 flex items-center justify-center text-white text-3xl font-bold">
+                  {user?.name?.charAt(0)}
+                </div>
+              )}
+              
+              {/* زر تغيير الصورة */}
+              <button
+                type="button"
+                onClick={handleAvatarClick}
+                disabled={uploadingAvatar}
+                className="absolute bottom-0 left-0 w-8 h-8 rounded-full bg-primary-500 text-white flex items-center justify-center shadow-lg hover:bg-primary-600 transition-colors disabled:opacity-50"
+                title="تغيير الصورة"
+              >
+                {uploadingAvatar ? (
+                  <FaSpinner className="animate-spin text-sm" />
+                ) : (
+                  <FaCamera className="text-sm" />
+                )}
+              </button>
+              
+              {/* input مخفي لاختيار الملف */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/gif,image/webp"
+                onChange={handleAvatarChange}
+                className="hidden"
+              />
             </div>
+            
             <h2 className="text-xl font-bold text-dark-800">{user?.name}</h2>
             <p className="text-gray-500">{getRoleName(user?.role)}</p>
             {user?.specialization && (
               <p className="text-sm text-gray-500 mt-2">{user.specialization}</p>
             )}
+            
+            {/* رسالة توضيحية */}
+            <p className="text-xs text-gray-400 mt-4">
+              اضغط على أيقونة الكاميرا لتغيير الصورة
+            </p>
           </div>
         </div>
 
