@@ -1,0 +1,438 @@
+// ==============================
+// أنماط التخطيط الرئيسي
+// Main Layout Styles
+// ==============================
+
+@import 'variables';
+@import 'mixins';
+
+.main-layout {
+    display: flex;
+    min-height: 100vh;
+    background: $bg-secondary;
+
+    &.sidebar-collapsed {
+        .main-content {
+            margin-right: $sidebar-collapsed-width;
+
+            @include mobile {
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+// الشريط الجانبي
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: $sidebar-width;
+    height: 100vh;
+    background: linear-gradient(180deg, $bg-sidebar 0%, darken($bg-sidebar, 5%) 100%);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    transition: width $transition-base;
+    overflow: hidden;
+
+    // حالة الإغلاق
+    &.collapsed {
+        width: $sidebar-collapsed-width;
+
+        .sidebar-logo-text,
+        .nav-text,
+        .nav-section-title,
+        .sidebar-user-info,
+        .nav-badge {
+            display: none;
+        }
+
+        .sidebar-header {
+            justify-content: center;
+            padding: $spacing-md;
+            flex-direction: column;
+            gap: $spacing-sm;
+        }
+
+        .sidebar-logo {
+            justify-content: center;
+        }
+
+        .sidebar-toggle {
+            margin: 0;
+        }
+
+        .nav-item {
+            justify-content: center;
+            padding: $spacing-md;
+
+            .nav-icon {
+                font-size: 1.4rem;
+            }
+        }
+
+        .sidebar-user {
+            padding: $spacing-md;
+            flex-direction: column;
+            gap: $spacing-sm;
+
+            .user-avatar {
+                margin: 0;
+            }
+
+            .sidebar-logout {
+                margin: 0;
+            }
+        }
+    }
+
+    @include mobile {
+        transform: translateX(100%);
+        transition: transform $transition-base;
+        width: $sidebar-width;
+
+        &.collapsed {
+            width: $sidebar-width;
+        }
+
+        &.mobile-open {
+            transform: translateX(0);
+        }
+    }
+}
+
+.sidebar-header {
+    @include flex-between;
+    padding: $spacing-lg;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    color: $text-light;
+    text-decoration: none;
+
+    .logo-icon {
+        font-size: 1.75rem;
+        color: $gold-light;
+        flex-shrink: 0;
+    }
+
+    .sidebar-logo-text {
+        font-size: $font-size-lg;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+}
+
+.sidebar-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: $text-light;
+    padding: $spacing-sm;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    @include mobile {
+        display: none;
+    }
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: $spacing-md;
+    overflow-y: auto;
+    @include custom-scrollbar;
+}
+
+.nav-section {
+    margin-bottom: $spacing-lg;
+
+    .nav-section-title {
+        font-size: $font-size-xs;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: $spacing-sm $spacing-md;
+        margin-bottom: $spacing-xs;
+    }
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    border-radius: $radius-lg;
+    margin-bottom: $spacing-xs;
+    transition: all $transition-fast;
+    font-weight: 500;
+
+    .nav-icon {
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+
+    .nav-text {
+        white-space: nowrap;
+    }
+
+    .nav-badge {
+        margin-right: auto;
+        background: $danger-color;
+        color: white;
+        font-size: $font-size-xs;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: $radius-full;
+    }
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: $text-light;
+    }
+
+    &.active {
+        background: linear-gradient(135deg, $primary-color, $primary-dark);
+        color: $text-light;
+        box-shadow: 0 4px 15px rgba($primary-color, 0.3);
+    }
+}
+
+.sidebar-user {
+    padding: $spacing-lg;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: $radius-full;
+        background: linear-gradient(135deg, $primary-color, $gold-color);
+        @include flex-center;
+        color: $text-light;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .sidebar-user-info {
+        flex: 1;
+        overflow: hidden;
+
+        .user-name {
+            color: $text-light;
+            font-weight: 700;
+            @include truncate;
+        }
+
+        .user-role {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: $font-size-sm;
+            @include truncate;
+        }
+    }
+}
+
+.sidebar-logout {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    padding: $spacing-sm;
+    cursor: pointer;
+    border-radius: $radius-md;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: rgba($danger-color, 0.2);
+        color: $danger-color;
+    }
+}
+
+// المحتوى الرئيسي
+.main-content {
+    flex: 1;
+    margin-right: $sidebar-width;
+    display: flex;
+    flex-direction: column;
+    transition: margin $transition-base;
+
+    @include mobile {
+        margin-right: 0;
+    }
+}
+
+// شريط التنقل العلوي
+.navbar {
+    height: $navbar-height;
+    background: $bg-primary;
+    border-bottom: 1px solid $border-color;
+    @include flex-between;
+    padding: 0 $spacing-lg;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: $text-secondary;
+    cursor: pointer;
+    padding: $spacing-sm;
+
+    @include mobile {
+        display: flex;
+    }
+}
+
+.search-box {
+    position: relative;
+    width: 300px;
+
+    @include tablet {
+        width: 200px;
+    }
+
+    @include mobile {
+        display: none;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: $spacing-sm $spacing-md;
+        padding-right: 2.5rem;
+        border: 1px solid $border-color;
+        border-radius: $radius-full;
+        font-size: $font-size-sm;
+        transition: all $transition-fast;
+
+        &:focus {
+            border-color: $primary-color;
+            box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+        }
+    }
+
+    .search-icon {
+        position: absolute;
+        right: $spacing-md;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $text-muted;
+    }
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+}
+
+.nav-btn {
+    position: relative;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: $text-secondary;
+    cursor: pointer;
+    padding: $spacing-sm;
+    border-radius: $radius-full;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: $bg-secondary;
+        color: $primary-color;
+    }
+
+    .notification-badge {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 18px;
+        height: 18px;
+        background: $danger-color;
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        border-radius: 50%;
+        @include flex-center;
+    }
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-xs $spacing-md;
+    background: $bg-secondary;
+    border-radius: $radius-full;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: $border-color;
+    }
+
+    .user-avatar-sm {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, $primary-color, $gold-color);
+        @include flex-center;
+        color: white;
+        font-size: $font-size-sm;
+        font-weight: 700;
+    }
+
+    .user-name-sm {
+        font-weight: 500;
+        color: $text-primary;
+
+        @include mobile {
+            display: none;
+        }
+    }
+}
+
+// محتوى الصفحة
+.page-content {
+    flex: 1;
+    padding: $spacing-lg;
+
+    @include mobile {
+        padding: $spacing-md;
+    }
+}
+
+// Overlay للموبايل
+.mobile-overlay {
+    display: none;
+
+    @include mobile {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 99;
+    }
+}

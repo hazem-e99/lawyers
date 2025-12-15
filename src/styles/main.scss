@@ -1,0 +1,530 @@
+// ==============================
+// الأنماط العامة للتطبيق
+// Global Application Styles
+// ==============================
+
+@import 'variables';
+@import 'mixins';
+
+// Reset وأنماط أساسية
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: $font-family;
+    font-size: $font-size-base;
+    line-height: 1.6;
+    color: $text-primary;
+    background-color: $bg-secondary;
+    direction: rtl;
+    text-align: right;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// الروابط
+a {
+    color: $primary-color;
+    text-decoration: none;
+    transition: color $transition-fast;
+
+    &:hover {
+        color: $primary-dark;
+    }
+}
+
+// العناوين
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: $spacing-sm;
+}
+
+h1 {
+    font-size: $font-size-4xl;
+}
+
+h2 {
+    font-size: $font-size-3xl;
+}
+
+h3 {
+    font-size: $font-size-2xl;
+}
+
+h4 {
+    font-size: $font-size-xl;
+}
+
+h5 {
+    font-size: $font-size-lg;
+}
+
+h6 {
+    font-size: $font-size-base;
+}
+
+// الفقرات
+p {
+    margin-bottom: $spacing-md;
+}
+
+// القوائم
+ul,
+ol {
+    padding-right: $spacing-lg;
+}
+
+// الصور
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+// حقول الإدخال
+input,
+textarea,
+select {
+    @include input-base;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: left $spacing-md center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-left: 2.5rem;
+}
+
+// الأزرار
+button {
+    font-family: $font-family;
+    cursor: pointer;
+}
+
+.btn {
+    @include button-base;
+
+    &-primary {
+        @include button-primary;
+    }
+
+    &-secondary {
+        @include button-secondary;
+    }
+
+    &-gold {
+        @include button-gold;
+    }
+
+    &-danger {
+        @include button-base;
+        background: linear-gradient(135deg, $danger-color, darken($danger-color, 10%));
+        color: $text-light;
+
+        &:hover:not(:disabled) {
+            background: linear-gradient(135deg, darken($danger-color, 5%), darken($danger-color, 15%));
+        }
+    }
+
+    &-success {
+        @include button-base;
+        background: linear-gradient(135deg, $success-color, darken($success-color, 10%));
+        color: $text-light;
+
+        &:hover:not(:disabled) {
+            background: linear-gradient(135deg, darken($success-color, 5%), darken($success-color, 15%));
+        }
+    }
+
+    &-ghost {
+        @include button-base;
+        background: transparent;
+        color: $text-secondary;
+
+        &:hover:not(:disabled) {
+            background: $bg-secondary;
+            color: $text-primary;
+        }
+    }
+
+    &-icon {
+        padding: $spacing-sm;
+        border-radius: $radius-lg;
+        background: transparent;
+        color: $text-secondary;
+        border: none;
+
+        &:hover {
+            background: $bg-secondary;
+            color: $primary-color;
+        }
+    }
+
+    &-sm {
+        padding: $spacing-xs $spacing-sm;
+        font-size: $font-size-sm;
+    }
+
+    &-lg {
+        padding: $spacing-md $spacing-xl;
+        font-size: $font-size-lg;
+    }
+}
+
+// البطاقات
+.card {
+    @include card;
+
+    &-header {
+        @include flex-between;
+        padding-bottom: $spacing-md;
+        margin-bottom: $spacing-md;
+        border-bottom: 1px solid $border-color;
+    }
+
+    &-title {
+        font-size: $font-size-lg;
+        font-weight: 700;
+        color: $text-primary;
+    }
+
+    &-body {
+        // المحتوى الرئيسي
+    }
+
+    &-footer {
+        padding-top: $spacing-md;
+        margin-top: $spacing-md;
+        border-top: 1px solid $border-color;
+    }
+}
+
+// الشارات
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    border-radius: $radius-full;
+    gap: $spacing-xs;
+
+    &-primary {
+        background: rgba($primary-color, 0.1);
+        color: $primary-color;
+    }
+
+    &-success {
+        background: rgba($success-color, 0.1);
+        color: $success-color;
+    }
+
+    &-warning {
+        background: rgba($warning-color, 0.1);
+        color: $warning-color;
+    }
+
+    &-danger {
+        background: rgba($danger-color, 0.1);
+        color: $danger-color;
+    }
+
+    &-info {
+        background: rgba($info-color, 0.1);
+        color: $info-color;
+    }
+
+    &-gold {
+        background: rgba($gold-color, 0.1);
+        color: $gold-dark;
+    }
+}
+
+// قسم التحميل
+.loading {
+    @include flex-center;
+    min-height: 200px;
+
+    &-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid $border-color;
+        border-top-color: $primary-color;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// رسائل التنبيه
+.alert {
+    padding: $spacing-md;
+    border-radius: $radius-lg;
+    margin-bottom: $spacing-md;
+
+    &-success {
+        background: rgba($success-color, 0.1);
+        border: 1px solid $success-color;
+        color: darken($success-color, 10%);
+    }
+
+    &-error {
+        background: rgba($danger-color, 0.1);
+        border: 1px solid $danger-color;
+        color: darken($danger-color, 10%);
+    }
+
+    &-warning {
+        background: rgba($warning-color, 0.1);
+        border: 1px solid $warning-color;
+        color: darken($warning-color, 20%);
+    }
+
+    &-info {
+        background: rgba($info-color, 0.1);
+        border: 1px solid $info-color;
+        color: darken($info-color, 10%);
+    }
+}
+
+// الجداول
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: $bg-primary;
+    border-radius: $radius-lg;
+    overflow: hidden;
+    box-shadow: $shadow-sm;
+
+    th,
+    td {
+        padding: $spacing-md;
+        text-align: right;
+        border-bottom: 1px solid $border-color;
+    }
+
+    th {
+        background: $bg-secondary;
+        font-weight: 700;
+        color: $text-secondary;
+        font-size: $font-size-sm;
+        text-transform: uppercase;
+    }
+
+    tr {
+        transition: background $transition-fast;
+
+        &:hover {
+            background: $bg-secondary;
+        }
+
+        &:last-child td {
+            border-bottom: none;
+        }
+    }
+}
+
+// Scrollbar مخصص
+body {
+    @include custom-scrollbar;
+}
+
+// خفاء للعناصر
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+// Container
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 $spacing-md;
+}
+
+// Grid
+.grid {
+    display: grid;
+    gap: $spacing-lg;
+
+    &-2 {
+        grid-template-columns: repeat(2, 1fr);
+
+        @include mobile {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &-3 {
+        grid-template-columns: repeat(3, 1fr);
+
+        @include tablet {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include mobile {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &-4 {
+        grid-template-columns: repeat(4, 1fr);
+
+        @include tablet {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include mobile {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+// Modal backdrop
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: $spacing-md;
+}
+
+.modal {
+    @include card;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalIn 0.3s ease-out;
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+// Form groups
+.form-group {
+    margin-bottom: $spacing-lg;
+
+    label {
+        display: block;
+        margin-bottom: $spacing-sm;
+        font-weight: 700;
+        color: $text-primary;
+        font-size: $font-size-sm;
+    }
+
+    .help-text {
+        margin-top: $spacing-xs;
+        font-size: $font-size-sm;
+        color: $text-muted;
+    }
+
+    .error-text {
+        margin-top: $spacing-xs;
+        font-size: $font-size-sm;
+        color: $danger-color;
+    }
+}
+
+// Empty state
+.empty-state {
+    @include flex-column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-2xl;
+    text-align: center;
+    color: $text-muted;
+
+    svg {
+        font-size: 4rem;
+        margin-bottom: $spacing-md;
+        opacity: 0.5;
+    }
+
+    h3 {
+        margin-bottom: $spacing-sm;
+        color: $text-secondary;
+    }
+
+    p {
+        max-width: 300px;
+        margin-bottom: $spacing-lg;
+    }
+}
+
+// Tooltip
+.tooltip {
+    position: relative;
+
+    &::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: $spacing-xs $spacing-sm;
+        background: $bg-dark;
+        color: $text-light;
+        font-size: $font-size-xs;
+        border-radius: $radius-md;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all $transition-fast;
+    }
+
+    &:hover::after {
+        opacity: 1;
+        visibility: visible;
+        bottom: calc(100% + 8px);
+    }
+}

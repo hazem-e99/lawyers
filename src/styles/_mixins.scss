@@ -1,0 +1,189 @@
+// ==============================
+// Mixins - دوال SCSS المساعدة
+// ==============================
+
+// Media Queries
+@mixin mobile {
+    @media (max-width: #{$breakpoint-sm - 1}) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (min-width: $breakpoint-sm) and (max-width: #{$breakpoint-lg - 1}) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: $breakpoint-lg) {
+        @content;
+    }
+}
+
+@mixin responsive($breakpoint) {
+    @media (min-width: $breakpoint) {
+        @content;
+    }
+}
+
+// Flexbox
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin flex-start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+// زر أساسي
+@mixin button-base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-sm $spacing-lg;
+    font-family: $font-family;
+    font-weight: 700;
+    font-size: $font-size-sm;
+    border-radius: $radius-lg;
+    border: none;
+    cursor: pointer;
+    transition: all $transition-base;
+    gap: $spacing-sm;
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+// زر primary
+@mixin button-primary {
+    @include button-base;
+    background: linear-gradient(135deg, $primary-color, $primary-dark);
+    color: $text-light;
+    box-shadow: $shadow-md;
+
+    &:hover:not(:disabled) {
+        background: linear-gradient(135deg, $primary-dark, darken($primary-dark, 5%));
+        transform: translateY(-2px);
+        box-shadow: $shadow-lg;
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+    }
+}
+
+// زر secondary
+@mixin button-secondary {
+    @include button-base;
+    background: $bg-secondary;
+    color: $text-primary;
+    border: 1px solid $border-color;
+
+    &:hover:not(:disabled) {
+        background: $border-color;
+    }
+}
+
+// زر ذهبي
+@mixin button-gold {
+    @include button-base;
+    background: linear-gradient(135deg, $gold-color, $gold-dark);
+    color: $text-light;
+    box-shadow: $shadow-md;
+
+    &:hover:not(:disabled) {
+        background: linear-gradient(135deg, $gold-dark, darken($gold-dark, 5%));
+        transform: translateY(-2px);
+        box-shadow: $shadow-lg;
+    }
+}
+
+// بطاقة
+@mixin card {
+    background: $bg-primary;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-md;
+    padding: $spacing-lg;
+    transition: all $transition-base;
+
+    &:hover {
+        box-shadow: $shadow-lg;
+    }
+}
+
+// Glassmorphism
+@mixin glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// حقل إدخال
+@mixin input-base {
+    width: 100%;
+    padding: $spacing-sm $spacing-md;
+    font-family: $font-family;
+    font-size: $font-size-base;
+    border: 1px solid $border-color;
+    border-radius: $radius-lg;
+    background: $bg-primary;
+    color: $text-primary;
+    transition: all $transition-fast;
+
+    &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+    }
+
+    &::placeholder {
+        color: $text-muted;
+    }
+}
+
+// تأثير Truncate
+@mixin truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+// Scrollbar مخصص
+@mixin custom-scrollbar {
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $bg-secondary;
+        border-radius: $radius-full;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $text-muted;
+        border-radius: $radius-full;
+
+        &:hover {
+            background: $text-secondary;
+        }
+    }
+}
