@@ -1,3 +1,5 @@
+@import './styles/themes.scss';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,105 +14,254 @@
   }
 
   body {
-    @apply font-almarai bg-gray-50 text-dark-800;
+    font-family: 'Almarai', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
   }
 }
 
 @layer components {
   /* بطاقات الإحصائيات */
   .stat-card {
-    @apply bg-white rounded-xl p-6 shadow-soft transition-all duration-300 hover:shadow-elegant hover:-translate-y-1;
+    background-color: var(--color-surface);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+  }
+  
+  .stat-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-0.25rem);
   }
 
   /* زر أساسي */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-l from-primary-500 to-primary-600 text-white font-bold rounded-xl shadow-md transition-all duration-300 hover:from-primary-600 hover:to-primary-700 hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: bold;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-0.125rem);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 
   /* زر ثانوي */
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-dark-700 font-bold rounded-xl border border-gray-200 transition-all duration-300 hover:bg-gray-200;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-weight: bold;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-border);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .btn-secondary:hover {
+    background-color: var(--color-surface-hover);
   }
 
   /* زر ذهبي */
   .btn-gold {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-l from-gold-500 to-gold-600 text-white font-bold rounded-xl shadow-md transition-all duration-300 hover:from-gold-600 hover:to-gold-700 hover:-translate-y-0.5 hover:shadow-lg;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(to left, #c8a415, #a16207);
+    color: white;
+    font-weight: bold;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .btn-gold:hover {
+    transform: translateY(-0.125rem);
+    box-shadow: var(--shadow-lg);
   }
 
   /* حقل إدخال */
   .input-field {
-    @apply w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-dark-800 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    color: var(--color-text);
+    transition: all 0.2s ease;
+  }
+  
+  .input-field::placeholder {
+    color: var(--color-text-muted);
+  }
+  
+  .input-field:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary), 0.1);
   }
 
   /* التسمية */
   .input-label {
-    @apply block mb-2 text-sm font-bold text-dark-700;
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: bold;
+    color: var(--color-text);
   }
 
   /* بطاقة */
   .card {
-    @apply bg-white rounded-xl shadow-soft p-6;
+    background-color: var(--color-surface);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-md);
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
   }
 
   /* العنوان الرئيسي للصفحة */
   .page-title {
-    @apply text-2xl font-bold text-dark-800 mb-6;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
   }
 
   /* الشريط الجانبي */
   .sidebar-link {
-    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 font-medium transition-all duration-200 hover:bg-white/10 hover:text-white;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .sidebar-link:hover {
+    background-color: var(--color-surface-hover);
+    color: var(--color-text);
   }
 
   .sidebar-link.active {
-    @apply bg-gradient-to-l from-primary-500 to-primary-600 text-white shadow-md;
+    background-color: var(--color-primary);
+    color: white;
+    box-shadow: var(--shadow-md);
   }
 
   /* الجداول */
   .data-table {
-    @apply w-full bg-white rounded-xl shadow-soft overflow-hidden;
+    width: 100%;
+    background-color: var(--color-surface);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
   }
 
   .data-table th {
-    @apply px-6 py-4 bg-gray-50 text-right text-sm font-bold text-gray-600 uppercase tracking-wider;
+    padding: 1rem 1.5rem;
+    background-color: var(--color-bg);
+    text-align: right;
+    font-size: 0.875rem;
+    font-weight: bold;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .data-table td {
-    @apply px-6 py-4 text-right text-dark-700 border-b border-gray-100;
+    padding: 1rem 1.5rem;
+    text-align: right;
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border-light);
   }
 
   .data-table tr:hover td {
-    @apply bg-gray-50;
+    background-color: var(--color-surface-hover);
   }
 
   /* الشارات */
   .status-badge {
-    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: bold;
   }
 
   .status-badge.success {
-    @apply bg-emerald-100 text-emerald-700;
+    background-color: var(--color-success-light);
+    color: var(--color-success);
   }
 
   .status-badge.warning {
-    @apply bg-amber-100 text-amber-700;
+    background-color: var(--color-warning-light);
+    color: var(--color-warning);
   }
 
   .status-badge.danger {
-    @apply bg-red-100 text-red-700;
+    background-color: var(--color-danger-light);
+    color: var(--color-danger);
   }
 
   .status-badge.info {
-    @apply bg-blue-100 text-blue-700;
+    background-color: var(--color-info-light);
+    color: var(--color-info);
   }
 
   /* Modal */
   .modal-overlay {
-    @apply fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 1rem;
   }
 
   .modal-content {
-    @apply bg-white rounded-2xl shadow-elegant max-w-lg w-full max-h-[90vh] overflow-auto animate-in;
+    background-color: var(--color-surface);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-xl);
+    max-width: 32rem;
+    width: 100%;
+    max-height: 90vh;
+    overflow: auto;
+    animation: fadeIn 0.3s ease-out;
   }
 }
 

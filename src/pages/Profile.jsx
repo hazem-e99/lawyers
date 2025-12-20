@@ -109,7 +109,7 @@ const Profile = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-dark-800 mb-6">الملف الشخصي</h1>
+      <h1 className="text-2xl font-bold text-[var(--color-text)] mb-6">الملف الشخصي</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* معلومات المستخدم */}
@@ -154,7 +154,7 @@ const Profile = () => {
               />
             </div>
             
-            <h2 className="text-xl font-bold text-dark-800">{user?.name}</h2>
+            <h2 className="text-xl font-bold text-[var(--color-text)]">{user?.name}</h2>
             <p className="text-gray-500">{getRoleName(user?.role)}</p>
             {user?.specialization && (
               <p className="text-sm text-gray-500 mt-2">{user.specialization}</p>
@@ -170,7 +170,7 @@ const Profile = () => {
         {/* تعديل المعلومات */}
         <div className="lg:col-span-2 space-y-6">
           <form onSubmit={handleProfileSubmit} className="card">
-            <h2 className="text-lg font-bold text-dark-800 mb-4">المعلومات الشخصية</h2>
+            <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">المعلومات الشخصية</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="input-label">الاسم</label>
@@ -231,7 +231,7 @@ const Profile = () => {
 
           {/* تغيير كلمة المرور */}
           <form onSubmit={handlePasswordSubmit} className="card">
-            <h2 className="text-lg font-bold text-dark-800 mb-4">
+            <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">
               <FaLock className="inline ml-2" />
               تغيير كلمة المرور
             </h2>

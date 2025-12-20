@@ -1,0 +1,293 @@
+// ============================================
+// نظـام الثيمـات الشامـل - Complete Theme System
+// ============================================
+// يدعم 8 ثيمات: 2 وضع (فاتح/داكن) × 4 ألوان (أزرق، أخضر، بنفسجي، برتقالي)
+// Supports 8 themes: 2 modes (light/dark) × 4 colors (blue, green, purple, orange)
+
+// ====================================
+// Light Mode Themes - الثيمات الفاتحة
+// ====================================
+
+// Light Blue - فاتح أزرق
+[data-theme="light-blue"] {
+  // Primary Colors - الألوان الأساسية
+  --color-primary: #1e40af;
+  --color-primary-hover: #1e3a8a;
+  --color-primary-light: #3b82f6;
+  --color-secondary: #60a5fa;
+
+  // Background Colors - ألوان الخلفية
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f1f5f9;
+
+  // Text Colors - ألوان النصوص
+  --color-text: #1e293b;
+  --color-text-muted: #64748b;
+  --color-text-light: #94a3b8;
+
+  // Border Colors - ألوان الحدود
+  --color-border: #e2e8f0;
+  --color-border-light: #f1f5f9;
+
+  // Status Colors - ألوان الحالة
+  --color-success: #10b981;
+  --color-success-light: #d1fae5;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fef3c7;
+  --color-danger: #ef4444;
+  --color-danger-light: #fee2e2;
+  --color-info: #3b82f6;
+  --color-info-light: #dbeafe;
+
+  // Shadows - الظلال
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+// Light Green - فاتح أخضر
+[data-theme="light-green"] {
+  --color-primary: #059669;
+  --color-primary-hover: #047857;
+  --color-primary-light: #10b981;
+  --color-secondary: #34d399;
+
+  --color-bg: #f6fef9;
+  --color-surface: #ffffff;
+  --color-surface-hover: #ecfdf5;
+
+  --color-text: #1e293b;
+  --color-text-muted: #64748b;
+  --color-text-light: #94a3b8;
+
+  --color-border: #d1fae5;
+  --color-border-light: #ecfdf5;
+
+  --color-success: #10b981;
+  --color-success-light: #d1fae5;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fef3c7;
+  --color-danger: #ef4444;
+  --color-danger-light: #fee2e2;
+  --color-info: #3b82f6;
+  --color-info-light: #dbeafe;
+
+  --shadow-sm: 0 1px 2px 0 rgba(5, 150, 105, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(5, 150, 105, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(5, 150, 105, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(5, 150, 105, 0.1);
+}
+
+// Light Purple - فاتح بنفسجي
+[data-theme="light-purple"] {
+  --color-primary: #7c3aed;
+  --color-primary-hover: #6d28d9;
+  --color-primary-light: #8b5cf6;
+  --color-secondary: #a78bfa;
+
+  --color-bg: #faf5ff;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f3e8ff;
+
+  --color-text: #1e293b;
+  --color-text-muted: #64748b;
+  --color-text-light: #94a3b8;
+
+  --color-border: #e9d5ff;
+  --color-border-light: #f3e8ff;
+
+  --color-success: #10b981;
+  --color-success-light: #d1fae5;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fef3c7;
+  --color-danger: #ef4444;
+  --color-danger-light: #fee2e2;
+  --color-info: #3b82f6;
+  --color-info-light: #dbeafe;
+
+  --shadow-sm: 0 1px 2px 0 rgba(124, 58, 237, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(124, 58, 237, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(124, 58, 237, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(124, 58, 237, 0.1);
+}
+
+// Light Orange - فاتح برتقالي
+[data-theme="light-orange"] {
+  --color-primary: #ea580c;
+  --color-primary-hover: #c2410c;
+  --color-primary-light: #f97316;
+  --color-secondary: #fb923c;
+
+  --color-bg: #fff7ed;
+  --color-surface: #ffffff;
+  --color-surface-hover: #ffedd5;
+
+  --color-text: #1e293b;
+  --color-text-muted: #64748b;
+  --color-text-light: #94a3b8;
+
+  --color-border: #fed7aa;
+  --color-border-light: #ffedd5;
+
+  --color-success: #10b981;
+  --color-success-light: #d1fae5;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fef3c7;
+  --color-danger: #ef4444;
+  --color-danger-light: #fee2e2;
+  --color-info: #3b82f6;
+  --color-info-light: #dbeafe;
+
+  --shadow-sm: 0 1px 2px 0 rgba(234, 88, 12, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(234, 88, 12, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(234, 88, 12, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(234, 88, 12, 0.1);
+}
+
+// ====================================
+// Dark Mode Themes - الثيمات الداكنة
+// ====================================
+
+// Dark Blue - داكن أزرق
+[data-theme="dark-blue"] {
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-primary-light: #60a5fa;
+  --color-secondary: #1e40af;
+
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+  --color-surface-hover: #334155;
+
+  --color-text: #ffffff;
+  --color-text-muted: #cbd5e1;
+  --color-text-light: #e2e8f0;
+
+  --color-border: #334155;
+  --color-border-light: #475569;
+
+  --color-success: #22c55e;
+  --color-success-light: #064e3b;
+  --color-warning: #fbbf24;
+  --color-warning-light: #78350f;
+  --color-danger: #f87171;
+  --color-danger-light: #7f1d1d;
+  --color-info: #60a5fa;
+  --color-info-light: #1e3a8a;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+}
+
+// Dark Slate - داكن رمادي فضي (بدلاً من الأخضر)
+[data-theme="dark-slate"] {
+  --color-primary: #64748b;
+  --color-primary-hover: #475569;
+  --color-primary-light: #94a3b8;
+  --color-secondary: #334155;
+
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+  --color-surface-hover: #334155;
+
+  --color-text: #ffffff;
+  --color-text-muted: #cbd5e1;
+  --color-text-light: #e2e8f0;
+
+  --color-border: #334155;
+  --color-border-light: #475569;
+
+  --color-success: #22c55e;
+  --color-success-light: #064e3b;
+  --color-warning: #fbbf24;
+  --color-warning-light: #78350f;
+  --color-danger: #f87171;
+  --color-danger-light: #7f1d1d;
+  --color-info: #60a5fa;
+  --color-info-light: #1e3a8a;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+}
+
+// Dark Purple - داكن بنفسجي
+[data-theme="dark-purple"] {
+  --color-primary: #a78bfa;
+  --color-primary-hover: #8b5cf6;
+  --color-primary-light: #c4b5fd;
+  --color-secondary: #7c3aed;
+
+  --color-bg: #210733;
+  --color-surface: #2d0f47;
+  --color-surface-hover: #3d1a5c;
+
+  --color-text: #ffffff;
+  --color-text-muted: #ddd6fe;
+  --color-text-light: #e9d5ff;
+
+  --color-border: #3d1a5c;
+  --color-border-light: #4c2570;
+
+  --color-success: #22c55e;
+  --color-success-light: #064e3b;
+  --color-warning: #fbbf24;
+  --color-warning-light: #78350f;
+  --color-danger: #f87171;
+  --color-danger-light: #7f1d1d;
+  --color-info: #60a5fa;
+  --color-info-light: #1e3a8a;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+}
+
+// Dark Black - داكن أسود (بدلاً من البرتقالي)
+[data-theme="dark-black"] {
+  --color-primary: #71717a;
+  --color-primary-hover: #52525b;
+  --color-primary-light: #a1a1aa;
+  --color-secondary: #3f3f46;
+
+  --color-bg: #09090b;
+  --color-surface: #18181b;
+  --color-surface-hover: #27272a;
+
+  --color-text: #ffffff;
+  --color-text-muted: #d4d4d8;
+  --color-text-light: #e4e4e7;
+
+  --color-border: #27272a;
+  --color-border-light: #3f3f46;
+
+  --color-success: #22c55e;
+  --color-success-light: #064e3b;
+  --color-warning: #fbbf24;
+  --color-warning-light: #78350f;
+  --color-danger: #f87171;
+  --color-danger-light: #7f1d1d;
+  --color-info: #60a5fa;
+  --color-info-light: #1e3a8a;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+}
+
+// ====================================
+// Global Transitions - الانتقالات العامة
+// ====================================
+
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}

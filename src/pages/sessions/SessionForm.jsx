@@ -95,7 +95,7 @@ const SessionForm = () => {
         >
           <FaArrowRight />
         </Link>
-        <h1 className="text-2xl font-bold text-dark-800">
+        <h1 className="text-2xl font-bold text-[var(--color-text)]">
           {isEdit ? 'تعديل الجلسة' : 'إضافة جلسة جديدة'}
         </h1>
       </div>
@@ -103,7 +103,7 @@ const SessionForm = () => {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="card">
-            <h2 className="text-lg font-bold text-dark-800 mb-4">معلومات الجلسة</h2>
+            <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">معلومات الجلسة</h2>
             <div className="space-y-4">
               <div>
                 <label className="input-label">القضية *</label>
@@ -181,7 +181,7 @@ const SessionForm = () => {
 
           <div className="space-y-6">
             <div className="card">
-              <h2 className="text-lg font-bold text-dark-800 mb-4">معلومات المحكمة</h2>
+              <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">معلومات المحكمة</h2>
               <div className="space-y-4">
                 <div>
                   <label className="input-label">اسم المحكمة</label>
@@ -217,7 +217,7 @@ const SessionForm = () => {
             </div>
 
             <div className="card">
-              <h2 className="text-lg font-bold text-dark-800 mb-4">ملاحظات</h2>
+              <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">ملاحظات</h2>
               <textarea
                 name="notes"
                 value={formData.notes}

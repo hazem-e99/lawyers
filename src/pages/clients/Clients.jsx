@@ -81,7 +81,7 @@ const Clients = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-dark-800">العملاء</h1>
+          <h1 className="text-2xl font-bold text-[var(--color-text)]">العملاء</h1>
           <p className="text-gray-500 mt-1">إدارة بيانات العملاء والموكلين</p>
         </div>
         <div className="flex gap-3">
@@ -127,13 +127,13 @@ const Clients = () => {
             <div key={client._id} className="card hover:shadow-lg transition-shadow">
               <div className="flex items-start justify-between mb-4">
                 <div className="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center">
-                  <FaUsers className="text-primary-500 text-xl" />
+                  <FaUsers className="text-[var(--color-primary) text-xl" />
                 </div>
                 <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
                   {getClientType(client.clientType)}
                 </span>
               </div>
-              <h3 className="text-lg font-bold text-dark-800 mb-2">{client.name}</h3>
+              <h3 className="text-lg font-bold text-[var(--color-text)] mb-2">{client.name}</h3>
               <div className="space-y-2 text-sm text-gray-500 mb-4">
                 <p className="flex items-center gap-2">
                   <FaPhone className="flex-shrink-0" />

@@ -110,7 +110,7 @@ const CaseForm = () => {
         >
           <FaArrowRight />
         </Link>
-        <h1 className="text-2xl font-bold text-dark-800">
+        <h1 className="text-2xl font-bold text-[var(--color-text)]">
           {isEdit ? 'تعديل القضية' : 'إضافة قضية جديدة'}
         </h1>
       </div>
@@ -120,7 +120,7 @@ const CaseForm = () => {
           {/* المعلومات الأساسية */}
           <div className="lg:col-span-2 space-y-6">
             <div className="card">
-              <h2 className="text-lg font-bold text-dark-800 mb-4">المعلومات الأساسية</h2>
+              <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">المعلومات الأساسية</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
                   <label className="input-label">عنوان القضية *</label>
@@ -207,7 +207,7 @@ const CaseForm = () => {
 
             {/* معلومات المحكمة */}
             <div className="card">
-              <h2 className="text-lg font-bold text-dark-800 mb-4">معلومات المحكمة</h2>
+              <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">معلومات المحكمة</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="input-label">اسم المحكمة</label>
@@ -244,7 +244,7 @@ const CaseForm = () => {
 
             {/* الطرف الآخر */}
             <div className="card">
-              <h2 className="text-lg font-bold text-dark-800 mb-4">الطرف الآخر</h2>
+              <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">الطرف الآخر</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="input-label">الاسم</label>
@@ -284,7 +284,7 @@ const CaseForm = () => {
           <div className="space-y-6">
             {/* العميل والمحامي */}
             <div className="card">
-              <h2 className="text-lg font-bold text-dark-800 mb-4">التعيينات</h2>
+              <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">التعيينات</h2>
               <div className="space-y-4">
                 <div>
                   <label className="input-label">العميل *</label>
@@ -324,7 +324,7 @@ const CaseForm = () => {
 
             {/* الأتعاب */}
             <div className="card">
-              <h2 className="text-lg font-bold text-dark-800 mb-4">الأتعاب</h2>
+              <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">الأتعاب</h2>
               <div className="space-y-4">
                 <div>
                   <label className="input-label">المبلغ المتفق عليه</label>

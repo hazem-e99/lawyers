@@ -12,7 +12,7 @@ const NotFound = () => {
         <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-6">
           <FaExclamationTriangle className="text-4xl text-amber-500" />
         </div>
-        <h1 className="text-6xl font-bold text-dark-800 mb-4">404</h1>
+        <h1 className="text-6xl font-bold text-[var(--color-text)] mb-4">404</h1>
         <h2 className="text-2xl font-bold text-gray-600 mb-4">الصفحة غير موجودة</h2>
         <p className="text-gray-500 mb-8 max-w-md mx-auto">
           عذراً، الصفحة التي تبحث عنها غير موجودة أو تم نقلها.

@@ -136,7 +136,7 @@ const Sessions = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-dark-800">الجلسات</h1>
+          <h1 className="text-2xl font-bold text-[var(--color-text)]">الجلسات</h1>
           <p className="text-gray-500 mt-1">إدارة جلسات المحكمة والمواعيد</p>
         </div>
         <div className="flex gap-3">
@@ -284,7 +284,7 @@ const Sessions = () => {
                     <span className="text-2xl font-bold text-primary-600">
                       {format(new Date(session.sessionDate), 'dd')}
                     </span>
-                    <span className="text-sm text-primary-500">
+                    <span className="text-sm text-[var(--color-primary)">
                       {format(new Date(session.sessionDate), 'MMM', { locale: ar })}
                     </span>
                   </div>
@@ -292,7 +292,7 @@ const Sessions = () => {
                   {/* التفاصيل */}
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="font-bold text-dark-800">
+                      <h3 className="font-bold text-[var(--color-text)]">
                         {session.case?.title || 'بدون عنوان'}
                       </h3>
                       <span className={`status-badge ${status.class}`}>

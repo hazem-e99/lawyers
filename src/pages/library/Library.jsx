@@ -297,7 +297,7 @@ const Library = () => {
       {/* Header */}
       <div className="library-header">
         <div>
-          <h1 className="text-2xl font-bold text-dark-800">المكتبة</h1>
+          <h1 className="text-2xl font-bold text-[var(--color-text)]">المكتبة</h1>
           <p className="text-gray-500 mt-1">إدارة الملفات والمستندات</p>
         </div>
         <div className="library-actions">

@@ -71,7 +71,7 @@ const ClientDetails = () => {
             <FaArrowRight />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-dark-800">{client.name}</h1>
+            <h1 className="text-2xl font-bold text-[var(--color-text)]">{client.name}</h1>
             <p className="text-gray-500">
               {client.clientType === 'individual' ? 'عميل فرد' : 
                client.clientType === 'company' ? 'شركة' : 'جهة حكومية'}
@@ -93,7 +93,7 @@ const ClientDetails = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* معلومات التواصل */}
         <div className="card">
-          <h2 className="text-lg font-bold text-dark-800 mb-4">معلومات التواصل</h2>
+          <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">معلومات التواصل</h2>
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
@@ -136,11 +136,11 @@ const ClientDetails = () => {
         {/* القضايا */}
         <div className="lg:col-span-2 card">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-dark-800">
+            <h2 className="text-lg font-bold text-[var(--color-text)]">
               <FaGavel className="inline ml-2" />
               القضايا
             </h2>
-            <Link to={`/cases/new?client=${id}`} className="text-primary-500 hover:underline text-sm">
+            <Link to={`/cases/new?client=${id}`} className="text-[var(--color-primary) hover:underline text-sm">
               + إضافة قضية
             </Link>
           </div>
@@ -154,7 +154,7 @@ const ClientDetails = () => {
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="font-medium text-dark-800">{caseItem.title}</h4>
+                      <h4 className="font-medium text-[var(--color-text)]">{caseItem.title}</h4>
                       <p className="text-sm text-gray-500">{caseItem.caseNumber}</p>
                     </div>
                     <span className={`status-badge ${caseItem.status === 'open' ? 'info' : 'success'}`}>

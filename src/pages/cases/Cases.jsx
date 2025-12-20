@@ -124,7 +124,7 @@ const Cases = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-dark-800">القضايا</h1>
+          <h1 className="text-2xl font-bold text-[var(--color-text)]">القضايا</h1>
           <p className="text-gray-500 mt-1">إدارة جميع القضايا القانونية</p>
         </div>
         <div className="flex gap-3">
@@ -256,7 +256,7 @@ const Cases = () => {
                       <td>
                         <Link
                           to={`/cases/${caseItem._id}`}
-                          className="text-primary-500 hover:underline font-medium"
+                          className="text-[var(--color-primary) hover:underline font-medium"
                         >
                           {caseItem.title}
                         </Link>
@@ -278,7 +278,7 @@ const Cases = () => {
                         <div className="flex items-center gap-2">
                           <Link
                             to={`/cases/${caseItem._id}`}
-                            className="p-2 text-gray-500 hover:text-primary-500 hover:bg-gray-100 rounded-lg transition-colors"
+                            className="p-2 text-gray-500 hover:text-[var(--color-primary) hover:bg-gray-100 rounded-lg transition-colors"
                             title="عرض"
                           >
                             <FaEye />

@@ -1,4 +1,6 @@
-import { FaCog, FaBell, FaDatabase, FaShieldAlt } from 'react-icons/fa';
+import { FaCog, FaBell, FaDatabase, FaShieldAlt, FaPalette } from 'react-icons/fa';
+import ThemeToggle from '../components/ThemeToggle';
+import ThemeDemo from '../components/ThemeDemo';
 
 /**
  * صفحة الإعدادات
@@ -7,16 +9,21 @@ import { FaCog, FaBell, FaDatabase, FaShieldAlt } from 'react-icons/fa';
 const Settings = () => {
   return (
     <div>
-      <h1 className="text-2xl font-bold text-dark-800 mb-6">الإعدادات</h1>
+      <h1 className="text-2xl font-bold text-[var(--color-text)] mb-6">الإعدادات</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* إعدادات المظهر - Theme Settings */}
+        <div className="lg:col-span-2">
+          <ThemeToggle />
+        </div>
+
         {/* إعدادات عامة */}
         <div className="card">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
-              <FaCog className="text-blue-500" />
+            <div className="w-10 h-10 rounded-lg bg-[var(--color-info-light)] flex items-center justify-center">
+              <FaCog className="text-[var(--color-info)]" />
             </div>
-            <h2 className="text-lg font-bold text-dark-800">الإعدادات العامة</h2>
+            <h2 className="text-lg font-bold text-[var(--color-text)]">الإعدادات العامة</h2>
           </div>
           <div className="space-y-4">
             <div>
@@ -50,10 +57,10 @@ const Settings = () => {
         {/* إعدادات الإشعارات */}
         <div className="card">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
-              <FaBell className="text-amber-500" />
+            <div className="w-10 h-10 rounded-lg bg-[var(--color-warning-light)] flex items-center justify-center">
+              <FaBell className="text-[var(--color-warning)]" />
             </div>
-            <h2 className="text-lg font-bold text-dark-800">الإشعارات</h2>
+            <h2 className="text-lg font-bold text-[var(--color-text)]">الإشعارات</h2>
           </div>
           <div className="space-y-4">
             <label className="flex items-center gap-3 cursor-pointer">
@@ -79,12 +86,12 @@ const Settings = () => {
         {/* النسخ الاحتياطي */}
         <div className="card">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-              <FaDatabase className="text-green-500" />
+            <div className="w-10 h-10 rounded-lg bg-[var(--color-success-light)] flex items-center justify-center">
+              <FaDatabase className="text-[var(--color-success)]" />
             </div>
-            <h2 className="text-lg font-bold text-dark-800">النسخ الاحتياطي</h2>
+            <h2 className="text-lg font-bold text-[var(--color-text)]">النسخ الاحتياطي</h2>
           </div>
-          <p className="text-gray-500 mb-4">
+          <p className="text-[var(--color-text-muted)] mb-4">
             قم بإنشاء نسخة احتياطية من بياناتك لحمايتها
           </p>
           <div className="flex gap-3">
@@ -96,10 +103,10 @@ const Settings = () => {
         {/* الأمان */}
         <div className="card">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center">
-              <FaShieldAlt className="text-red-500" />
+            <div className="w-10 h-10 rounded-lg bg-[var(--color-danger-light)] flex items-center justify-center">
+              <FaShieldAlt className="text-[var(--color-danger)]" />
             </div>
-            <h2 className="text-lg font-bold text-dark-800">الأمان</h2>
+            <h2 className="text-lg font-bold text-[var(--color-text)]">الأمان</h2>
           </div>
           <div className="space-y-4">
             <label className="flex items-center gap-3 cursor-pointer">
@@ -117,25 +124,31 @@ const Settings = () => {
 
       {/* معلومات النظام */}
       <div className="card mt-6">
-        <h2 className="text-lg font-bold text-dark-800 mb-4">معلومات النظام</h2>
+        <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">معلومات النظام</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
           <div>
-            <p className="text-gray-500">إصدار النظام</p>
+            <p className="text-[var(--color-text-muted)]">إصدار النظام</p>
             <p className="font-medium">1.0.0</p>
           </div>
           <div>
-            <p className="text-gray-500">آخر تحديث</p>
+            <p className="text-[var(--color-text-muted)]">آخر تحديث</p>
             <p className="font-medium">ديسمبر 2024</p>
           </div>
           <div>
-            <p className="text-gray-500">قاعدة البيانات</p>
+            <p className="text-[var(--color-text-muted)]">قاعدة البيانات</p>
             <p className="font-medium">MongoDB</p>
           </div>
           <div>
-            <p className="text-gray-500">الخادم</p>
+            <p className="text-[var(--color-text-muted)]">الخادم</p>
             <p className="font-medium">Node.js</p>
           </div>
         </div>
+      </div>
+
+      {/* عرض توضيحي للثيمات - Theme Demo */}
+      <div className="mt-8">
+        <h2 className="text-xl font-bold text-[var(--color-text)] mb-4">🎨 معاينة الثيمات</h2>
+        <ThemeDemo />
       </div>
     </div>
   );

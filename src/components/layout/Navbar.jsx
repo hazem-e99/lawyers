@@ -88,7 +88,7 @@ const Navbar = ({ onMenuClick }) => {
   const getNotificationIcon = (type) => {
     switch (type) {
       case 'case_assigned':
-        return <FaGavel className="text-primary-500" />;
+        return <FaGavel className="text-[var(--color-primary)" />;
       case 'session_reminder':
       case 'session_created':
         return <FaCalendarAlt className="text-blue-500" />;
@@ -176,12 +176,12 @@ const Navbar = ({ onMenuClick }) => {
               <div className="fixed inset-0 z-40" onClick={closeMenus} />
               <div className="absolute left-0 top-12 bg-white rounded-xl shadow-elegant z-50 overflow-hidden w-80">
                 <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-                  <h3 className="font-bold text-dark-800">الإشعارات</h3>
+                  <h3 className="font-bold text-[var(--color-text)]">الإشعارات</h3>
                   <div className="flex items-center gap-2">
                     {unreadCount > 0 && (
                       <button
                         onClick={markAllAsRead}
-                        className="text-xs text-primary-500 hover:text-primary-600 flex items-center gap-1"
+                        className="text-xs text-[var(--color-primary) hover:text-primary-600 flex items-center gap-1"
                         title="تحديد الكل كمقروء"
                       >
                         <FaCheckDouble />
@@ -218,7 +218,7 @@ const Navbar = ({ onMenuClick }) => {
                             className={`text-sm ${
                               notif.isRead
                                 ? 'text-gray-500'
-                                : 'font-medium text-dark-800'
+                                : 'font-medium text-[var(--color-text)]'
                             }`}
                           >
                             {notif.title}
@@ -271,7 +271,7 @@ const Navbar = ({ onMenuClick }) => {
             <div className="fixed inset-0 z-40" onClick={closeMenus} />
             <div className="absolute left-4 top-16 bg-white rounded-xl shadow-elegant z-50 overflow-hidden min-w-[200px]">
               <div className="p-4 border-b border-gray-100">
-                <p className="font-bold text-dark-800">{user?.name}</p>
+                <p className="font-bold text-[var(--color-text)]">{user?.name}</p>
                 <p className="text-sm text-gray-500">{user?.email}</p>
               </div>
               <div className="py-2">

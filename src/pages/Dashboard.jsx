@@ -130,10 +130,10 @@ const Dashboard = () => {
     <div className="dashboard">
       {/* الترحيب */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-dark-800 mb-2">
+        <h1 className="text-2xl font-bold text-[var(--color-text)] mb-2">
           مرحباً، {user?.name?.split(' ')[0]} 👋
         </h1>
-        <p className="text-gray-500">
+        <p className="text-[var(--color-text-muted)]">
           إليك نظرة عامة على نشاط مكتبك اليوم
         </p>
       </div>
@@ -142,20 +142,20 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="stat-card">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
-              <FaGavel className="text-xl text-blue-600" />
+            <div className="w-12 h-12 rounded-xl bg-[var(--color-info-light)] flex items-center justify-center">
+              <FaGavel className="text-xl text-[var(--color-info)]" />
             </div>
-            <span className="flex items-center gap-1 text-sm text-green-600">
+            <span className="flex items-center gap-1 text-sm text-[var(--color-success)]">
               <FaArrowUp />
               <span>12%</span>
             </span>
           </div>
-          <h3 className="text-3xl font-bold text-dark-800 mb-1">
+          <h3 className="text-3xl font-bold text-[var(--color-text)] mb-1">
             {stats?.cases?.total || 0}
           </h3>
-          <p className="text-gray-500 text-sm">إجمالي القضايا</p>
-          <div className="mt-4 pt-4 border-t border-gray-100">
-            <span className="text-primary-500 font-medium">
+          <p className="text-[var(--color-text-muted)] text-sm">إجمالي القضايا</p>
+          <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
+            <span className="text-[var(--color-primary) font-medium">
               {stats?.cases?.open || 0} قضية مفتوحة
             </span>
           </div>
@@ -163,19 +163,19 @@ const Dashboard = () => {
 
         <div className="stat-card">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
-              <FaUsers className="text-xl text-emerald-600" />
+            <div className="w-12 h-12 rounded-xl bg-[var(--color-success-light)] flex items-center justify-center">
+              <FaUsers className="text-xl text-[var(--color-success)]" />
             </div>
             <span className="flex items-center gap-1 text-sm text-green-600">
               <FaArrowUp />
               <span>8%</span>
             </span>
           </div>
-          <h3 className="text-3xl font-bold text-dark-800 mb-1">
+          <h3 className="text-3xl font-bold text-[var(--color-text)] mb-1">
             {stats?.clients?.total || 0}
           </h3>
-          <p className="text-gray-500 text-sm">إجمالي العملاء</p>
-          <div className="mt-4 pt-4 border-t border-gray-100">
+          <p className="text-[var(--color-text-muted)] text-sm">إجمالي العملاء</p>
+          <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
             <span className="text-emerald-500 font-medium">
               {stats?.clients?.active || 0} عميل نشط
             </span>
@@ -184,19 +184,19 @@ const Dashboard = () => {
 
         <div className="stat-card">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center">
-              <FaCalendarAlt className="text-xl text-amber-600" />
+            <div className="w-12 h-12 rounded-xl bg-[var(--color-warning-light)] flex items-center justify-center">
+              <FaCalendarAlt className="text-xl text-[var(--color-warning)]" />
             </div>
-            <span className="flex items-center gap-1 text-sm text-amber-600">
+            <span className="flex items-center gap-1 text-sm text-[var(--color-warning)]">
               <FaClock />
               <span>اليوم</span>
             </span>
           </div>
-          <h3 className="text-3xl font-bold text-dark-800 mb-1">
+          <h3 className="text-3xl font-bold text-[var(--color-text)] mb-1">
             {stats?.sessions?.today || 0}
           </h3>
-          <p className="text-gray-500 text-sm">جلسات اليوم</p>
-          <div className="mt-4 pt-4 border-t border-gray-100">
+          <p className="text-[var(--color-text-muted)] text-sm">جلسات اليوم</p>
+          <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
             <span className="text-amber-500 font-medium">
               {stats?.sessions?.upcoming || 0} جلسة هذا الأسبوع
             </span>
@@ -205,16 +205,16 @@ const Dashboard = () => {
 
         <div className="stat-card">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
-              <FaFolderOpen className="text-xl text-purple-600" />
+            <div className="w-12 h-12 rounded-xl bg-[var(--color-primary)] bg-opacity-10 flex items-center justify-center">
+              <FaFolderOpen className="text-xl text-[var(--color-primary)]" />
             </div>
           </div>
-          <h3 className="text-3xl font-bold text-dark-800 mb-1">
+          <h3 className="text-3xl font-bold text-[var(--color-text)] mb-1">
             {stats?.documents?.total || 0}
           </h3>
-          <p className="text-gray-500 text-sm">المستندات المحفوظة</p>
-          <div className="mt-4 pt-4 border-t border-gray-100">
-            <Link to="/documents" className="text-purple-500 font-medium hover:underline">
+          <p className="text-[var(--color-text-muted)] text-sm">المستندات المحفoظة</p>
+          <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
+            <Link to="/documents" className="text-[var(--color-primary)] font-medium hover:underline">
               عرض المستندات
             </Link>
           </div>
@@ -224,37 +224,37 @@ const Dashboard = () => {
       {/* الإحصائيات المالية */}
       {feesStats && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className="card bg-gradient-to-l from-slate-700 to-slate-800 text-white">
+          <div className="card">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
-                <FaMoneyBillWave className="text-2xl" />
+              <div className="w-14 h-14 rounded-xl bg-[var(--color-primary)] bg-opacity-10 flex items-center justify-center">
+                <FaMoneyBillWave className="text-2xl text-[var(--color-primary)]" />
               </div>
               <div>
-                <p className="text-white/80 text-sm mb-1">إجمالي الأتعاب المتفق عليها</p>
+                <p className="text-[var(--color-text-muted)] text-sm mb-1">إجمالي الأتعاب المتفق عليها</p>
                 <h3 className="text-2xl font-bold">{formatCurrency(feesStats.totalAgreed)}</h3>
               </div>
             </div>
           </div>
 
-          <div className="card bg-gradient-to-l from-slate-600 to-slate-700 text-white">
+          <div className="card">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
-                <FaArrowUp className="text-2xl" />
+              <div className="w-14 h-14 rounded-xl bg-[var(--color-success-light)] flex items-center justify-center">
+                <FaArrowUp className="text-2xl text-[var(--color-success)]" />
               </div>
               <div>
-                <p className="text-white/80 text-sm mb-1">المبالغ المحصلة</p>
+                <p className="text-[var(--color-text-muted)] text-sm mb-1">المبالغ المحصلة</p>
                 <h3 className="text-2xl font-bold">{formatCurrency(feesStats.totalPaid)}</h3>
               </div>
             </div>
           </div>
 
-          <div className="card bg-gradient-to-l from-slate-500 to-slate-600 text-white">
+          <div className="card">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
-                <FaArrowDown className="text-2xl" />
+              <div className="w-14 h-14 rounded-xl bg-[var(--color-warning-light)] flex items-center justify-center">
+                <FaArrowDown className="text-2xl text-[var(--color-warning)]" />
               </div>
               <div>
-                <p className="text-white/80 text-sm mb-1">المبالغ المتبقية</p>
+                <p className="text-[var(--color-text-muted)] text-sm mb-1">المبالغ المتبقية</p>
                 <h3 className="text-2xl font-bold">{formatCurrency(feesStats.totalRemaining)}</h3>
               </div>
             </div>
@@ -267,10 +267,10 @@ const Dashboard = () => {
         {/* الجلسات القادمة */}
         <div className="card">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-bold text-dark-800">الجلسات القادمة</h2>
+            <h2 className="text-lg font-bold text-[var(--color-text)]">الجلسات القادمة</h2>
             <Link
               to="/sessions"
-              className="text-primary-500 hover:text-primary-600 text-sm font-medium flex items-center gap-1"
+              className="text-[var(--color-primary) hover:text-primary-600 text-sm font-medium flex items-center gap-1"
             >
               عرض الكل
               <FaChevronLeft />
@@ -282,30 +282,30 @@ const Dashboard = () => {
               {upcomingSessions.map((session) => (
                 <div
                   key={session._id}
-                  className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+                  className="flex items-center gap-4 p-4 bg-[var(--color-bg)] rounded-xl hover:bg-[var(--color-surface-hover)] transition-colors"
                 >
                   <div className="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center flex-shrink-0">
-                    <FaCalendarAlt className="text-primary-500" />
+                    <FaCalendarAlt className="text-[var(--color-primary)" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-dark-800 truncate">
+                    <h4 className="font-bold text-[var(--color-text)] truncate">
                       {session.case?.title}
                     </h4>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-[var(--color-text-muted)]">
                       {session.case?.client?.name}
                     </p>
                   </div>
                   <div className="text-left">
-                    <p className="font-medium text-dark-800">
+                    <p className="font-medium text-[var(--color-text)]">
                       {formatDate(session.sessionDate)}
                     </p>
-                    <p className="text-sm text-gray-500">{session.sessionTime}</p>
+                    <p className="text-sm text-[var(--color-text-muted)]">{session.sessionTime}</p>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-[var(--color-text-muted)]">
               <FaCalendarAlt className="text-4xl mx-auto mb-3 opacity-30" />
               <p>لا توجد جلسات قادمة</p>
             </div>
@@ -315,10 +315,10 @@ const Dashboard = () => {
         {/* آخر القضايا */}
         <div className="card">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-bold text-dark-800">آخر القضايا</h2>
+            <h2 className="text-lg font-bold text-[var(--color-text)]">آخر القضايا</h2>
             <Link
               to="/cases"
-              className="text-primary-500 hover:text-primary-600 text-sm font-medium flex items-center gap-1"
+              className="text-[var(--color-primary) hover:text-primary-600 text-sm font-medium flex items-center gap-1"
             >
               عرض الكل
               <FaChevronLeft />
@@ -331,16 +331,16 @@ const Dashboard = () => {
                 <Link
                   key={caseItem._id}
                   to={`/cases/${caseItem._id}`}
-                  className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+                  className="flex items-center gap-4 p-4 bg-[var(--color-bg)] rounded-xl hover:bg-[var(--color-surface-hover)] transition-colors"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
-                    <FaGavel className="text-amber-500" />
+                  <div className="w-12 h-12 rounded-xl bg-[var(--color-warning-light)] flex items-center justify-center flex-shrink-0">
+                    <FaGavel className="text-[var(--color-warning)]" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-dark-800 truncate">
+                    <h4 className="font-bold text-[var(--color-text)] truncate">
                       {caseItem.title}
                     </h4>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-[var(--color-text-muted)]">
                       {caseItem.caseNumber} • {caseItem.client?.name}
                     </p>
                   </div>
@@ -363,7 +363,8 @@ const Dashboard = () => {
       <div className="fixed left-6 bottom-6 flex flex-col gap-3">
         <Link
           to="/cases/new"
-          className="w-14 h-14 rounded-full bg-gradient-to-l from-primary-500 to-primary-600 text-white shadow-lg flex items-center justify-center hover:shadow-xl transition-all hover:-translate-y-1"
+          className="w-14 h-14 rounded-full text-white shadow-lg flex items-center justify-center hover:shadow-xl transition-all hover:-translate-y-1"
+          style={{ background: 'linear-gradient(to left, var(--color-primary), var(--color-primary-hover))' }}
           title="إضافة قضية جديدة"
         >
           <FaPlus className="text-xl" />
@@ -403,7 +404,7 @@ const Dashboard = () => {
             {/* Body */}
             <div className="p-6">
               <div className="mb-6">
-                <h4 className="text-lg font-bold text-dark-800 mb-3">
+                <h4 className="text-lg font-bold text-[var(--color-text)] mb-3">
                   هل أنت متأكد من حذف بيانات القضايا والعملاء والجلسات؟
                 </h4>
                 <p className="text-gray-600 mb-4">
@@ -423,7 +424,7 @@ const Dashboard = () => {
                     <span>جميع الجلسات والمواعيد</span>
                   </li>
                 </ul>
-                <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div className="mt-4 p-4 bg-[var(--color-warning-light)] border border-[var(--color-warning)] rounded-lg">
                   <p className="text-sm text-yellow-800">
                     <strong>ملاحظة:</strong> سيتم الحفاظ على حسابات المستخدمين، جميع المستندات والملفات، والقوالب.
                   </p>
@@ -435,7 +436,7 @@ const Dashboard = () => {
                 <button
                   onClick={() => setShowClearConfirm(false)}
                   disabled={clearingDatabase}
-                  className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-colors disabled:opacity-50"
+                  className="flex-1 px-6 py-3 bg-[var(--color-surface)] text-[var(--color-text)] rounded-xl font-medium hover:bg-[var(--color-surface-hover)] transition-colors disabled:opacity-50 border border-[var(--color-border)]"
                 >
                   إلغاء
                 </button>

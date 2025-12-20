@@ -161,7 +161,7 @@ const Documents = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-dark-800">المستندات</h1>
+          <h1 className="text-2xl font-bold text-[var(--color-text)]">المستندات</h1>
           <p className="text-gray-500 mt-1">إدارة الملفات والوثائق</p>
         </div>
         <button onClick={() => setShowUploadModal(true)} className="btn-primary">
@@ -215,7 +215,7 @@ const Documents = () => {
                   <FaFile className="text-blue-500 text-xl" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-dark-800 truncate">{doc.name}</h3>
+                  <h3 className="font-bold text-[var(--color-text)] truncate">{doc.name}</h3>
                   <p className="text-sm text-gray-500">{getDocumentType(doc.documentType)}</p>
                 </div>
               </div>
@@ -269,7 +269,7 @@ const Documents = () => {
         <div className="modal-overlay" onClick={() => setShowUploadModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="p-6">
-              <h2 className="text-xl font-bold text-dark-800 mb-6">رفع مستند جديد</h2>
+              <h2 className="text-xl font-bold text-[var(--color-text)] mb-6">رفع مستند جديد</h2>
               <form onSubmit={handleUpload}>
                 <div className="space-y-4">
                   <div>

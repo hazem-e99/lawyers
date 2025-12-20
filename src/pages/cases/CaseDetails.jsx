@@ -120,7 +120,7 @@ const CaseDetails = () => {
           </Link>
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-dark-800">{caseData.title}</h1>
+              <h1 className="text-2xl font-bold text-[var(--color-text)]">{caseData.title}</h1>
               <span className={`status-badge ${status.class}`}>{status.text}</span>
             </div>
             <p className="text-gray-500">{caseData.caseNumber}</p>
@@ -143,7 +143,7 @@ const CaseDetails = () => {
         <div className="lg:col-span-2 space-y-6">
           {/* التفاصيل */}
           <div className="card">
-            <h2 className="text-lg font-bold text-dark-800 mb-4">تفاصيل القضية</h2>
+            <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">تفاصيل القضية</h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm text-gray-500 mb-1">نوع القضية</p>
@@ -177,7 +177,7 @@ const CaseDetails = () => {
           {/* معلومات المحكمة */}
           {caseData.court?.name && (
             <div className="card">
-              <h2 className="text-lg font-bold text-dark-800 mb-4">
+              <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">
                 <FaGavel className="inline ml-2" />
                 معلومات المحكمة
               </h2>
@@ -201,13 +201,13 @@ const CaseDetails = () => {
           {/* الجلسات */}
           <div className="card">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-dark-800">
+              <h2 className="text-lg font-bold text-[var(--color-text)]">
                 <FaCalendarAlt className="inline ml-2" />
                 الجلسات
               </h2>
               <Link
                 to={`/sessions/new?case=${id}`}
-                className="text-primary-500 hover:text-primary-600 text-sm font-medium"
+                className="text-[var(--color-primary) hover:text-primary-600 text-sm font-medium"
               >
                 <FaPlus className="inline ml-1" />
                 إضافة جلسة
@@ -246,7 +246,7 @@ const CaseDetails = () => {
         <div className="space-y-6">
           {/* العميل */}
           <div className="card">
-            <h2 className="text-lg font-bold text-dark-800 mb-4">
+            <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">
               <FaUser className="inline ml-2" />
               العميل
             </h2>
@@ -254,7 +254,7 @@ const CaseDetails = () => {
               <div>
                 <Link
                   to={`/clients/${caseData.client._id}`}
-                  className="text-primary-500 hover:underline font-medium text-lg"
+                  className="text-[var(--color-primary) hover:underline font-medium text-lg"
                 >
                   {caseData.client.name}
                 </Link>
@@ -270,7 +270,7 @@ const CaseDetails = () => {
 
           {/* الأتعاب */}
           <div className="card">
-            <h2 className="text-lg font-bold text-dark-800 mb-4">
+            <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">
               <FaMoneyBillWave className="inline ml-2" />
               الأتعاب
             </h2>
@@ -297,7 +297,7 @@ const CaseDetails = () => {
           {/* الطرف الآخر */}
           {caseData.opposingParty?.name && (
             <div className="card">
-              <h2 className="text-lg font-bold text-dark-800 mb-4">الطرف الآخر</h2>
+              <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">الطرف الآخر</h2>
               <div className="space-y-2">
                 <p>
                   <span className="text-gray-500">الاسم: </span>

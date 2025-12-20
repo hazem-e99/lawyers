@@ -88,7 +88,7 @@ const UserForm = () => {
         >
           <FaArrowRight />
         </Link>
-        <h1 className="text-2xl font-bold text-dark-800">
+        <h1 className="text-2xl font-bold text-[var(--color-text)]">
           {isEdit ? 'تعديل بيانات المستخدم' : 'إضافة مستخدم جديد'}
         </h1>
       </div>
@@ -96,7 +96,7 @@ const UserForm = () => {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="card">
-            <h2 className="text-lg font-bold text-dark-800 mb-4">المعلومات الأساسية</h2>
+            <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">المعلومات الأساسية</h2>
             <div className="space-y-4">
               <div>
                 <label className="input-label">الاسم *</label>
@@ -148,7 +148,7 @@ const UserForm = () => {
 
           <div className="space-y-6">
             <div className="card">
-              <h2 className="text-lg font-bold text-dark-800 mb-4">الدور والصلاحيات</h2>
+              <h2 className="text-lg font-bold text-[var(--color-text)] mb-4">الدور والصلاحيات</h2>
               <div className="space-y-4">
                 <div>
                   <label className="input-label">الدور</label>

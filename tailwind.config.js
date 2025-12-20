@@ -7,7 +7,32 @@ export default {
   theme: {
     extend: {
       colors: {
-        // ألوان النظام الأساسية
+        // ألوان النظام الأساسية - استخدام المتغيرات
+        // Primary system colors - using CSS variables
+        theme: {
+          primary: 'var(--color-primary)',
+          'primary-hover': 'var(--color-primary-hover)',
+          'primary-light': 'var(--color-primary-light)',
+          secondary: 'var(--color-secondary)',
+          bg: 'var(--color-bg)',
+          surface: 'var(--color-surface)',
+          'surface-hover': 'var(--color-surface-hover)',
+          text: 'var(--color-text)',
+          'text-muted': 'var(--color-text-muted)',
+          'text-light': 'var(--color-text-light)',
+          border: 'var(--color-border)',
+          'border-light': 'var(--color-border-light)',
+          success: 'var(--color-success)',
+          'success-light': 'var(--color-success-light)',
+          warning: 'var(--color-warning)',
+          'warning-light': 'var(--color-warning-light)',
+          danger: 'var(--color-danger)',
+          'danger-light': 'var(--color-danger-light)',
+          info: 'var(--color-info)',
+          'info-light': 'var(--color-info-light)',
+        },
+        
+        // الألوان القديمة للتوافق - Old colors for compatibility
         primary: {
           50: '#f0f4ff',
           100: '#e0e9ff',
@@ -53,6 +78,10 @@ export default {
       boxShadow: {
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
         'elegant': '0 10px 40px -10px rgba(0, 0, 0, 0.15)',
+        'theme-sm': 'var(--shadow-sm)',
+        'theme-md': 'var(--shadow-md)',
+        'theme-lg': 'var(--shadow-lg)',
+        'theme-xl': 'var(--shadow-xl)',
       },
       borderRadius: {
         'xl': '1rem',
