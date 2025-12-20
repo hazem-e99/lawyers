@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { casesService } from '../../services';
-import { FaPlus, FaSearch, FaFilter, FaGavel, FaEye, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaSearch, FaFilter, FaGavel, FaEye, FaEdit, FaTrash, FaFileExcel } from 'react-icons/fa';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import toast from 'react-hot-toast';
+import { exportCasesToExcel } from '../../utils/excelExport';
 
 /**
  * صفحة القضايا
@@ -79,6 +80,19 @@ const Cases = () => {
     }
   };
 
+  const handleExportToExcel = () => {
+    if (cases.length === 0) {
+      toast.error('لا توجد بيانات للتصدير');
+      return;
+    }
+    try {
+      exportCasesToExcel(cases);
+      toast.success('تم تصدير البيانات بنجاح');
+    } catch (error) {
+      toast.error('حدث خطأ في تصدير البيانات');
+    }
+  };
+
   const getStatusBadge = (status) => {
     const badges = {
       open: { class: 'info', text: 'مفتوحة' },
@@ -113,10 +127,20 @@ const Cases = () => {
           <h1 className="text-2xl font-bold text-dark-800">القضايا</h1>
           <p className="text-gray-500 mt-1">إدارة جميع القضايا القانونية</p>
         </div>
-        <Link to="/cases/new" className="btn-primary">
-          <FaPlus />
-          إضافة قضية
-        </Link>
+        <div className="flex gap-3">
+          <button
+            onClick={handleExportToExcel}
+            className="btn-secondary"
+            disabled={cases.length === 0}
+          >
+            <FaFileExcel />
+            تصدير Excel
+          </button>
+          <Link to="/cases/new" className="btn-primary">
+            <FaPlus />
+            إضافة قضية
+          </Link>
+        </div>
       </div>
 
       {/* Search and Filters */}

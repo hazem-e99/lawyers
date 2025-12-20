@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { clientsService } from '../../services';
-import { FaPlus, FaSearch, FaUsers, FaEye, FaEdit, FaTrash, FaPhone, FaEnvelope } from 'react-icons/fa';
+import { FaPlus, FaSearch, FaUsers, FaEye, FaEdit, FaTrash, FaPhone, FaEnvelope, FaFileExcel } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import { exportClientsToExcel } from '../../utils/excelExport';
 
 /**
  * صفحة العملاء
@@ -62,6 +63,19 @@ const Clients = () => {
     return types[type] || type;
   };
 
+  const handleExportToExcel = () => {
+    if (clients.length === 0) {
+      toast.error('لا توجد بيانات للتصدير');
+      return;
+    }
+    try {
+      exportClientsToExcel(clients);
+      toast.success('تم تصدير البيانات بنجاح');
+    } catch (error) {
+      toast.error('حدث خطأ في تصدير البيانات');
+    }
+  };
+
   return (
     <div>
       {/* Header */}
@@ -70,10 +84,20 @@ const Clients = () => {
           <h1 className="text-2xl font-bold text-dark-800">العملاء</h1>
           <p className="text-gray-500 mt-1">إدارة بيانات العملاء والموكلين</p>
         </div>
-        <Link to="/clients/new" className="btn-primary">
-          <FaPlus />
-          إضافة عميل
-        </Link>
+        <div className="flex gap-3">
+          <button
+            onClick={handleExportToExcel}
+            className="btn-secondary"
+            disabled={clients.length === 0}
+          >
+            <FaFileExcel />
+            تصدير Excel
+          </button>
+          <Link to="/clients/new" className="btn-primary">
+            <FaPlus />
+            إضافة عميل
+          </Link>
+        </div>
       </div>
 
       {/* Search */}

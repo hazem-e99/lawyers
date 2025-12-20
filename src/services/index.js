@@ -384,3 +384,22 @@ export const templatesService = {
     return response.data;
   },
 };
+
+/**
+ * خدمات قاعدة البيانات
+ * Database Service
+ */
+export const databaseService = {
+  // الحصول على إحصائيات قاعدة البيانات
+  getStats: async () => {
+    const response = await api.get('/database/stats');
+    return response.data;
+  },
+
+  // تفريغ قاعدة البيانات بالكامل
+  clearAll: async () => {
+    const response = await api.delete('/database/clear-all');
+    return response.data;
+  },
+};
+
