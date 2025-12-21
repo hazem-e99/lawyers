@@ -99,6 +99,7 @@ const Users = () => {
                   <th>البريد الإلكتروني</th>
                   <th>الهاتف</th>
                   <th>الدور</th>
+                  <th>حالة الاشتراك</th>
                   <th>الحالة</th>
                   <th>الإجراءات</th>
                 </tr>
@@ -113,6 +114,25 @@ const Users = () => {
                       <span className={`status-badge ${user.role === 'admin' ? 'warning' : 'info'}`}>
                         {getRoleName(user.role)}
                       </span>
+                    </td>
+                    <td>
+                      {user.role === 'admin' ? (
+                        <span className="status-badge success">دائم</span>
+                      ) : user.subscription?.isActive ? (
+                        <div className="flex flex-col gap-1">
+                          <span className="status-badge success">نشط</span>
+                          {user.subscription.isTrial && (
+                            <span className="text-xs text-yellow-600">تجريبي</span>
+                          )}
+                        </div>
+                      ) : (
+                        <Link 
+                          to="/admin/subscriptions"
+                          className="status-badge danger hover:bg-red-600 hover:text-white transition-colors"
+                        >
+                          غير نشط
+                        </Link>
+                      )}
                     </td>
                     <td>
                       <button

@@ -1,5 +1,7 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
+import { useSubscription } from './context/SubscriptionContext';
+import SubscriptionLockScreen from './components/SubscriptionLockScreen';
 
 // Layouts
 import MainLayout from './layouts/MainLayout';
@@ -26,6 +28,11 @@ import Users from './pages/users/Users';
 import UserForm from './pages/users/UserForm';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
+import SubscriptionPage from './pages/SubscriptionPage';
+import AdminSubscriptions from './pages/admin/AdminSubscriptions';
+import PlanSettings from './pages/admin/PlanSettings';
+import PaymentSuccess from './pages/payment/PaymentSuccess';
+import PaymentFailure from './pages/payment/PaymentFailure';
 import NotFound from './pages/NotFound';
 
 /**
@@ -33,6 +40,47 @@ import NotFound from './pages/NotFound';
  * Protected Route Component
  */
 const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated, loading, user } = useAuth();
+  const { isActive, loading: subscriptionLoading, subscription } = useSubscription();
+  const navigate = useNavigate();
+
+  if (loading || subscriptionLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // استثناء: الأدمنز لديهم وصول دائم بدون فحص الاشتراك
+  const isAdmin = user?.role === 'admin';
+
+  // التحقق من حالة الاشتراك (للمستخدمين العاديين فقط)
+  if (!isAdmin && !isActive) {
+    const handleRenew = () => {
+      navigate('/subscription');
+    };
+
+    return (
+      <SubscriptionLockScreen 
+        subscription={subscription} 
+        onRenew={handleRenew}
+      />
+    );
+  }
+
+  return children;
+};
+
+/**
+ * مكون حماية بالتوثيق فقط (بدون فحص الاشتراك)
+ * Auth-Only Protected Route
+ */
+const ProtectedRouteAuthOnly = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
@@ -50,6 +98,7 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+
 /**
  * مكون التطبيق الرئيسي
  * Main App Component
@@ -61,6 +110,21 @@ function App() {
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+      </Route>
+
+      {/* صفحات الدفع (بدون layout) */}
+      <Route path="/payment/success" element={<PaymentSuccess />} />
+      <Route path="/payment/failure" element={<PaymentFailure />} />
+
+      {/* صفحة الاشتراك (محمية بـ auth فقط، بدون فحص الاشتراك) */}
+      <Route
+        element={
+          <ProtectedRouteAuthOnly>
+            <MainLayout />
+          </ProtectedRouteAuthOnly>
+        }
+      >
+        <Route path="/subscription" element={<SubscriptionPage />} />
       </Route>
 
       {/* المسارات المحمية */}
@@ -115,6 +179,12 @@ function App() {
 
         {/* الإعدادات */}
         <Route path="/settings" element={<Settings />} />
+
+        {/* إدارة الاشتراكات (للأدمن) */}
+        <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
+        
+        {/* إدارة خطة الاشتراك (للأدمن) */}
+        <Route path="/admin/plan" element={<PlanSettings />} />
       </Route>
 
       {/* صفحة غير موجودة */}

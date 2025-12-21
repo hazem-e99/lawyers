@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { SubscriptionProvider } from './context/SubscriptionContext';
 import './styles/main.scss';
 import './styles/calendar.scss';
 import './index.css';
@@ -14,30 +15,32 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <ThemeProvider>
         <AuthProvider>
-          <App />
-          <Toaster
-            position="top-left"
-            reverseOrder={false}
-            toastOptions={{
-              duration: 4000,
-              style: {
-                fontFamily: 'Almarai, sans-serif',
-                direction: 'rtl',
-              },
-              success: {
-                iconTheme: {
-                  primary: '#10b981',
-                  secondary: '#fff',
+          <SubscriptionProvider>
+            <App />
+            <Toaster
+              position="top-left"
+              reverseOrder={false}
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  fontFamily: 'Almarai, sans-serif',
+                  direction: 'rtl',
                 },
-              },
-              error: {
-                iconTheme: {
-                  primary: '#ef4444',
-                  secondary: '#fff',
+                success: {
+                  iconTheme: {
+                    primary: '#10b981',
+                    secondary: '#fff',
+                  },
                 },
-              },
-            }}
-          />
+                error: {
+                  iconTheme: {
+                    primary: '#ef4444',
+                    secondary: '#fff',
+                  },
+                },
+              }}
+            />
+          </SubscriptionProvider>
         </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>

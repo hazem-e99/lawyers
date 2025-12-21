@@ -11,7 +11,6 @@ import {
   FaCompress
 } from 'react-icons/fa';
 import VoiceDictation from '../../components/VoiceDictation';
-import LegalAIChat from '../../components/LegalAIChat';
 import toast from 'react-hot-toast';
 import '../../styles/editor.scss';
 
@@ -1256,8 +1255,7 @@ const Editor = () => {
           onChange={() => {}}
         />
         
-        {/* المساعد القانوني الذكي - AI Chatbot */}
-        <LegalAIChat onInsertContent={insertTextAtCursor} />
+
       </div>
     </div>
   );

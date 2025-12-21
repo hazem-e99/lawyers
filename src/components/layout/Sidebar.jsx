@@ -15,6 +15,8 @@ import {
   FaSignOutAlt,
   FaChevronLeft,
   FaChevronRight,
+  FaCreditCard,
+  FaShieldAlt,
 } from 'react-icons/fa';
 
 /**
@@ -57,10 +59,20 @@ const Sidebar = ({ isOpen, onToggle, mobileOpen, onMobileClose }) => {
       section: 'الإدارة',
       items: [
         { path: '/users', icon: FaUsersCog, label: 'المستخدمين' },
+        { path: '/admin/subscriptions', icon: FaShieldAlt, label: 'إدارة الاشتراكات' },
+        { path: '/admin/plan', icon: FaCog, label: 'إعدادات الخطة' },
         { path: '/settings', icon: FaCog, label: 'الإعدادات' },
       ],
     });
   }
+
+  // إضافة قسم الحساب لجميع المستخدمين
+  menuItems.push({
+    section: 'الحساب',
+    items: [
+      { path: '/subscription', icon: FaCreditCard, label: 'اشتراكي' },
+    ],
+  });
 
   // الحصول على الأحرف الأولى من الاسم
   const getInitials = (name) => {
