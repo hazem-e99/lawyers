@@ -22,6 +22,7 @@ const SubscriptionPage = () => {
   const [myRequests, setMyRequests] = useState([]);
   const [screenshot, setScreenshot] = useState(null);
   const [screenshotPreview, setScreenshotPreview] = useState(null);
+  const [referenceNumber, setReferenceNumber] = useState('');
 
   useEffect(() => {
     fetchSubscriptionStatus();
@@ -92,12 +93,18 @@ const SubscriptionPage = () => {
       return;
     }
 
+    if (!referenceNumber.trim()) {
+      toast.error('يرجى إدخال رقم مرجع العملية');
+      return;
+    }
+
     try {
       setProcessing(true);
       
       const formData = new FormData();
       formData.append('screenshot', screenshot);
       formData.append('planDuration', selectedPlan);
+      formData.append('referenceNumber', referenceNumber.trim());
 
       const response = await api.post('/payments/instapay/request', formData, {
         headers: {
@@ -109,6 +116,7 @@ const SubscriptionPage = () => {
         toast.success('تم إرسال طلب الدفع بنجاح! سيتم مراجعته قريباً.');
         setScreenshot(null);
         setScreenshotPreview(null);
+        setReferenceNumber('');
         fetchMyRequests();
       }
     } catch (error) {
@@ -302,8 +310,9 @@ const SubscriptionPage = () => {
                   </div>
                   <div className="mt-4 text-sm text-blue-800 dark:text-blue-200 space-y-1">
                     <p>✓ قم بتحويل المبلغ إلى الحساب أعلاه</p>
+                    <p>✓ احفظ رقم مرجع العملية من الإيصال</p>
                     <p>✓ التقط صورة لإيصال التحويل</p>
-                    <p>✓ ارفع الصورة أدناه واضغط إرسال</p>
+                    <p>✓ أدخل رقم المرجع وارفع الصورة أدناه</p>
                   </div>
                 </div>
               ) : (
@@ -313,6 +322,24 @@ const SubscriptionPage = () => {
                   </p>
                 </div>
               )}
+
+              {/* رقم مرجع العملية */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium mb-2">
+                  🔢 رقم مرجع العملية (Reference Number)
+                </label>
+                <input
+                  type="text"
+                  value={referenceNumber}
+                  onChange={(e) => setReferenceNumber(e.target.value)}
+                  className="input w-full"
+                  placeholder="أدخل رقم مرجع عملية InstaPay"
+                  dir="ltr"
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  ستجد رقم المرجع في إيصال التحويل من تطبيق InstaPay
+                </p>
+              </div>
 
               {/* رفع صورة الإيصال */}
               <div className="mb-6">
@@ -393,6 +420,9 @@ const SubscriptionPage = () => {
                         </div>
                         {getStatusBadge(request.status)}
                       </div>
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">
+                        <strong>رقم المرجع:</strong> <span className="font-mono">{request.referenceNumber}</span>
+                      </p>
                       <p className="text-xs text-slate-500 mb-2">
                         {new Date(request.createdAt).toLocaleDateString('ar-EG', {
                           year: 'numeric',

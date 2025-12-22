@@ -309,6 +309,7 @@ const AdminPaymentsPage = () => {
                 <h3 className="font-bold mb-2">معلومات الدفع</h3>
                 <p><strong>المبلغ:</strong> {selectedPayment.amount} ج.م</p>
                 <p><strong>الخطة:</strong> {selectedPayment.planDuration === 'monthly' ? 'شهري (30 يوم)' : 'سنوي (365 يوم)'}</p>
+                <p><strong>رقم مرجع العملية:</strong> <span className="font-mono text-blue-600 dark:text-blue-400">{selectedPayment.referenceNumber}</span></p>
                 <p><strong>تاريخ الطلب:</strong> {new Date(selectedPayment.createdAt).toLocaleDateString('ar-EG', {
                   year: 'numeric',
                   month: 'long',
