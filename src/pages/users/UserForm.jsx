@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { usersService } from '../../services';
+import { useAuth } from '../../context/AuthContext';
 import { FaArrowRight } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
@@ -11,6 +12,7 @@ import toast from 'react-hot-toast';
 const UserForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { isAdmin, isSuperAdmin } = useAuth();
   const isEdit = Boolean(id);
 
   const [loading, setLoading] = useState(false);
@@ -157,12 +159,26 @@ const UserForm = () => {
                     value={formData.role}
                     onChange={handleChange}
                     className="input-field"
+                    required
                   >
-                    <option value="lawyer">محامي</option>
-                    <option value="assistant">مساعد</option>
-                    <option value="viewer">مشاهد</option>
-                    <option value="superadmin">مدير النظام (Super Admin)</option>
-                    <option value="admin">مسؤول (Admin)</option>
+                    <option value="" disabled>اختر الدور</option>
+                    
+                    {/* خيارات المدير العام */}
+                    {isSuperAdmin && (
+                      <>
+                        <option value="admin">صاحب مكتب (Admin)</option>
+                        <option value="superadmin">مدير النظام (Super Admin)</option>
+                      </>
+                    )}
+
+                    {/* خيارات صاحب المكتب */}
+                    {isAdmin && (
+                      <>
+                        <option value="lawyer">محامي</option>
+                        <option value="assistant">مساعد</option>
+                        <option value="viewer">مشاهد</option>
+                      </>
+                    )}
                   </select>
                 </div>
                 <div>
