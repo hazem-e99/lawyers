@@ -96,7 +96,7 @@ const AdminSubscriptions = () => {
   };
 
   const getSubscriptionStatus = (user) => {
-    if (user.role === 'admin') return 'admin';
+    if (user.role === 'admin' || user.role === 'superadmin') return 'admin';
     if (!user.subscription || !user.subscription.isActive) return 'inactive';
     
     const now = new Date();
@@ -278,9 +278,35 @@ const AdminSubscriptions = () => {
                         </div>
                       </td>
                       <td>
-                        <span className={`status-badge ${user.role === 'admin' ? 'warning' : 'info'}`}>
-                          {user.role === 'admin' ? 'مسؤول' : user.role === 'lawyer' ? 'محامي' : 'مساعد'}
+                        <span className={`status-badge ${
+                          user.role === 'superadmin' ? 'danger' : 
+                          user.role === 'admin' ? 'warning' : 'info'
+                        }`}>
+                          {user.role === 'superadmin' ? 'مدير النظام' : 
+                           user.role === 'admin' ? 'صاحب مكتب' : 
+                           user.role === 'lawyer' ? 'محامي' : 
+                           user.role === 'assistant' ? 'مساعد' : user.role}
                         </span>
+                        
+                        {/* زر ترقية سريع لتصحيح الأخطاء */}
+                        {user.role !== 'admin' && user.role !== 'superadmin' && (
+                          <button
+                            onClick={async () => {
+                              if(window.confirm('هل تريد ترقية هذا المستخدم إلى "صاحب مكتب" (Admin)؟ هذا سيمنحه صلاحية الدفع والاشتراك.')) {
+                                try {
+                                  await api.put(`/users/${user._id}`, { role: 'admin' });
+                                  toast.success('تمت الترقية بنجاح');
+                                  fetchUsers();
+                                } catch (err) {
+                                  toast.error('حدث خطأ');
+                                }
+                              }
+                            }}
+                            className="mr-2 text-xs text-blue-600 hover:underline"
+                          >
+                            (ترقية لمدير)
+                          </button>
+                        )}
                       </td>
                       <td>
                         {status === 'admin' && (
