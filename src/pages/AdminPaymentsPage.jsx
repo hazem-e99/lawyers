@@ -323,9 +323,13 @@ const AdminPaymentsPage = () => {
                 <h3 className="font-bold mb-2">صورة إثبات الدفع</h3>
                 <div className="border border-slate-300 dark:border-slate-600 rounded-lg overflow-hidden">
                   <img 
-                    src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${selectedPayment.screenshotUrl}`}
+                    src={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}${selectedPayment.screenshotUrl}`}
                     alt="إثبات الدفع"
                     className="w-full max-h-96 object-contain bg-slate-50 dark:bg-slate-900"
+                    onError={(e) => {
+                      console.error('Image load error:', e.target.src);
+                      e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23ddd" width="200" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999"%3EImage Not Found%3C/text%3E%3C/svg%3E';
+                    }}
                   />
                 </div>
               </div>
