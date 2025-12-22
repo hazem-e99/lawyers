@@ -296,6 +296,26 @@ const AdminSubscriptions = () => {
                                 try {
                                   await api.put(`/users/${user._id}`, { role: 'admin' });
                                   toast.success('تمت الترقية بنجاح');
+                                  window.location.reload();
+                                } catch (err) {
+                                  toast.error('حدث خطأ');
+                                }
+                              }
+                            }}
+                            className="mr-2 text-xs text-blue-600 hover:underline"
+                          >
+                            (ترقية لمدير)
+                          </button>
+                        )}
+                        
+                        {/* زر ترقية سريع لتصحيح الأخطاء */}
+                        {user.role !== 'admin' && user.role !== 'superadmin' && (
+                          <button
+                            onClick={async () => {
+                              if(window.confirm('هل تريد ترقية هذا المستخدم إلى "صاحب مكتب" (Admin)؟ هذا سيمنحه صلاحية الدفع والاشتراك.')) {
+                                try {
+                                  await api.put(`/users/${user._id}`, { role: 'admin' });
+                                  toast.success('تمت الترقية بنجاح');
                                   fetchUsers();
                                 } catch (err) {
                                   toast.error('حدث خطأ');
