@@ -65,8 +65,10 @@ const Sidebar = ({ isOpen, onToggle, mobileOpen, onMobileClose }) => {
       section: 'إدارة المنصة',
       items: [
         { path: '/admin/subscriptions', icon: FaShieldAlt, label: 'إدارة الاشتراكات' },
+        { path: '/admin/payments', icon: FaCreditCard, label: 'طلبات الدفع' },
         { path: '/users', icon: FaUsersCog, label: 'إدارة المستخدمين' },
         { path: '/admin/plan', icon: FaCog, label: 'إعدادات الخطط' },
+        { path: '/admin/settings', icon: FaCog, label: 'إعدادات InstaPay' },
       ],
     },
     {

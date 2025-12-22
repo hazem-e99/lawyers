@@ -31,6 +31,8 @@ import Settings from './pages/Settings';
 import SubscriptionPage from './pages/SubscriptionPage';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import PlanSettings from './pages/admin/PlanSettings';
+import AdminPaymentsPage from './pages/AdminPaymentsPage';
+import AdminSettingsPage from './pages/AdminSettingsPage';
 import PaymentSuccess from './pages/payment/PaymentSuccess';
 import PaymentFailure from './pages/payment/PaymentFailure';
 import NotFound from './pages/NotFound';
@@ -195,6 +197,8 @@ function App() {
           <Route path="/users/:id/edit" element={<UserForm />} />
           <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
           <Route path="/admin/plan" element={<PlanSettings />} />
+          <Route path="/admin/payments" element={<AdminPaymentsPage />} />
+          <Route path="/admin/settings" element={<AdminSettingsPage />} />
         </Route>
 
         {/* الملف الشخصي */}
