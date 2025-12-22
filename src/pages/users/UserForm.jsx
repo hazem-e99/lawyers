@@ -21,7 +21,7 @@ const UserForm = () => {
     email: '',
     password: '',
     phone: '',
-    role: 'lawyer',
+    role: isSuperAdmin ? 'admin' : 'lawyer', // القيمة الافتراضية حسب دور المستخدم الحالي
     specialization: '',
     licenseNumber: '',
     isActive: true,
@@ -163,22 +163,20 @@ const UserForm = () => {
                   >
                     <option value="" disabled>اختر الدور</option>
                     
-                    {/* خيارات المدير العام */}
-                    {isSuperAdmin && (
+                    {/* خيارات المدير العام - فقط للسوبر أدمن */}
+                    {isSuperAdmin ? (
                       <>
                         <option value="admin">صاحب مكتب (Admin)</option>
                         <option value="superadmin">مدير النظام (Super Admin)</option>
                       </>
-                    )}
-
-                    {/* خيارات صاحب المكتب */}
-                    {isAdmin && (
+                    ) : isAdmin ? (
+                      /* خيارات صاحب المكتب العادي - فقط للأدمن */
                       <>
                         <option value="lawyer">محامي</option>
                         <option value="assistant">مساعد</option>
                         <option value="viewer">مشاهد</option>
                       </>
-                    )}
+                    ) : null}
                   </select>
                 </div>
                 <div>
