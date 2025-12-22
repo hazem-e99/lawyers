@@ -373,46 +373,47 @@ const AdminSubscriptions = () => {
                         )}
                       </td>
                       <td>
-                        {user.role !== 'admin' && (
-                          <div className="flex items-center gap-2 flex-wrap">
-                            {(status === 'inactive' || status === 'expired') && (
-                              <>
-                                <button
-                                  onClick={() => activateSubscription(user._id, true)}
-                                  disabled={activatingUser === user._id}
-                                  className="btn-sm bg-yellow-500 hover:bg-yellow-600 text-white disabled:opacity-50"
-                                >
-                                  تجريبي 7 أيام
-                                </button>
-                                <button
-                                  onClick={() => activateSubscription(user._id, false)}
-                                  disabled={activatingUser === user._id}
-                                  className="btn-sm bg-green-500 hover:bg-green-600 text-white disabled:opacity-50"
-                                >
-                                  مدفوع 30 يوم
-                                </button>
-                              </>
-                            )}
-                            {(status === 'active' || status === 'trial') && (
-                              <>
-                                <button
-                                  onClick={() => renewSubscription(user._id)}
-                                  disabled={activatingUser === user._id}
-                                  className="btn-sm bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50"
-                                >
-                                  تجديد
-                                </button>
-                                <button
-                                  onClick={() => cancelSubscription(user._id)}
-                                  disabled={activatingUser === user._id}
-                                  className="btn-sm bg-red-500 hover:bg-red-600 text-white disabled:opacity-50"
-                                >
-                                  إلغاء
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        )}
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {/* للمستخدمين غير النشطين أو المنتهية اشتراكاتهم */}
+                          {(status === 'inactive' || status === 'expired') && (
+                            <>
+                              <button
+                                onClick={() => activateSubscription(user._id, true)}
+                                disabled={activatingUser === user._id}
+                                className="btn-sm bg-yellow-500 hover:bg-yellow-600 text-white disabled:opacity-50"
+                              >
+                                تجريبي 7 أيام
+                              </button>
+                              <button
+                                onClick={() => activateSubscription(user._id, false)}
+                                disabled={activatingUser === user._id}
+                                className="btn-sm bg-green-500 hover:bg-green-600 text-white disabled:opacity-50"
+                              >
+                                مدفوع 30 يوم
+                              </button>
+                            </>
+                          )}
+                          
+                          {/* للمستخدمين النشطين */}
+                          {(status === 'active' || status === 'trial' || status === 'admin') && (
+                            <>
+                              <button
+                                onClick={() => renewSubscription(user._id)}
+                                disabled={activatingUser === user._id}
+                                className="btn-sm bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50"
+                              >
+                                تجديد
+                              </button>
+                              <button
+                                onClick={() => cancelSubscription(user._id)}
+                                disabled={activatingUser === user._id}
+                                className="btn-sm bg-red-500 hover:bg-red-600 text-white disabled:opacity-50"
+                              >
+                                إلغاء
+                              </button>
+                            </>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   );
