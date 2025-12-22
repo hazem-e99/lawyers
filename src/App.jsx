@@ -118,13 +118,14 @@ function App() {
 
       {/* صفحة الاشتراك (محمية بـ auth فقط، بدون فحص الاشتراك) */}
       <Route
+        path="/subscription"
         element={
           <ProtectedRouteAuthOnly>
             <MainLayout />
           </ProtectedRouteAuthOnly>
         }
       >
-        <Route path="/subscription" element={<SubscriptionPage />} />
+        <Route index element={<SubscriptionPage />} />
       </Route>
 
       {/* المسارات المحمية */}
@@ -185,9 +186,12 @@ function App() {
         
         {/* إدارة خطة الاشتراك (للأدمن) */}
         <Route path="/admin/plan" element={<PlanSettings />} />
+        
+        {/* صفحة غير موجودة داخل المسارات المحمية */}
+        <Route path="*" element={<NotFound />} />
       </Route>
 
-      {/* صفحة غير موجودة */}
+      {/* صفحة غير موجودة خارج المسارات المحمية */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
