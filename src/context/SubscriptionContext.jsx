@@ -38,8 +38,8 @@ export const SubscriptionProvider = ({ children }) => {
     try {
       setLoading(true);
       
-      // استثناء: الأدمنز لديهم وصول دائم
-      if (user?.role === 'admin') {
+      // استثناء: فقط Super Admin لديه وصول دائم
+      if (user?.role === 'superadmin') {
         setSubscription({
           isActive: true,
           startedAt: new Date(),
