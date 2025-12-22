@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSubscription } from '../context/SubscriptionContext';
 import { useAuth } from '../context/AuthContext';
+import { LogOut, Home, CheckCircle, XCircle, Clock } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../services/api';
 
@@ -11,7 +12,7 @@ import api from '../services/api';
  */
 const SubscriptionPage = () => {
   const { subscription, loading, fetchSubscriptionStatus } = useSubscription();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   
   const [selectedPlan, setSelectedPlan] = useState('monthly');
@@ -91,15 +92,48 @@ const SubscriptionPage = () => {
   const isActive = subscription?.isActive && !subscription?.isExpired;
 
   return (
-    <div className="min-h-screen p-6">
+    <div className="min-h-screen p-6 bg-slate-50 dark:bg-[#0f172a]">
       <div className="max-w-4xl mx-auto">
-        {/* العنوان */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
+        {/* Header البسيط */}
+        <div className="flex justify-between items-center mb-12">
+          <div className="flex items-center gap-3">
+             {/* يمكنك إضافة شعار هنا */}
+             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+               ⚖️
+             </div>
+             <div>
+               <h1 className="text-xl font-bold text-slate-900 dark:text-white">نظام المحاماة</h1>
+               <p className="text-xs text-slate-500">Law Office Management</p>
+             </div>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            {isActive && (
+              <button 
+                onClick={() => navigate('/')}
+                className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium px-4 py-2 transition-colors"
+              >
+                <Home size={18} />
+                <span>رجوع للرئيسية</span>
+              </button>
+            )}
+            <button 
+              onClick={logout}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            >
+              <LogOut size={18} />
+              <span>تسجيل خروج</span>
+            </button>
+          </div>
+        </div>
+
+        {/* العنوان الرئيسي */}
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
             خطة الاشتراك Professional
           </h1>
-          <p className="text-slate-600 dark:text-slate-400">
-            احصل على وصول كامل لجميع ميزات نظام إدارة المحاماة
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+            احصل على وصول كامل لجميع ميزات نظام إدارة المحاماة، بما في ذلك إدارة القضايا، العملاء، وتتبع الجلسات.
           </p>
         </div>
 

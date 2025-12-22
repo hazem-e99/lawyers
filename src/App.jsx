@@ -134,16 +134,17 @@ function App() {
       <Route path="/payment/failure" element={<PaymentFailure />} />
 
       {/* صفحة الاشتراك (محمية بـ auth فقط، بدون فحص الاشتراك) */}
+      {/* صفحة الاشتراك (محمية بـ auth فقط، بدون MainLayout) */}
       <Route
         path="/subscription"
         element={
           <ProtectedRouteAuthOnly>
-            <MainLayout />
+             <div className="bg-slate-50 dark:bg-[#0f172a] min-h-screen">
+                <SubscriptionPage />
+             </div>
           </ProtectedRouteAuthOnly>
         }
-      >
-        <Route index element={<SubscriptionPage />} />
-      </Route>
+      />
 
       {/* المسارات المحمية */}
       <Route
