@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { dashboardService, databaseService } from '../services';
 import {
@@ -25,6 +25,7 @@ import { ar } from 'date-fns/locale';
  */
 const Dashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate(); // لا تنسى استيراده فوق
   const [stats, setStats] = useState(null);
   const [upcomingSessions, setUpcomingSessions] = useState([]);
   const [recentCases, setRecentCases] = useState([]);
@@ -34,8 +35,13 @@ const Dashboard = () => {
   const [clearingDatabase, setClearingDatabase] = useState(false);
 
   useEffect(() => {
+    // توجيه الـ Super Admin لصفحة الإدارة مباشرة إذا حاول الوصول للداشبورد العادي
+    if (user?.role === 'superadmin') {
+      navigate('/admin/subscriptions');
+      return;
+    }
     fetchDashboardData();
-  }, []);
+  }, [user]);
 
   const fetchDashboardData = async () => {
     try {

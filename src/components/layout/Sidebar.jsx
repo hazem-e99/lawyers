@@ -26,8 +26,8 @@ import {
 const Sidebar = ({ isOpen, onToggle, mobileOpen, onMobileClose }) => {
   const { user, logout, isAdmin } = useAuth();
 
-  // عناصر القائمة
-  const menuItems = [
+  // قوائم المحامي / مدير المكتب
+  const lawyerMenuItems = [
     {
       section: 'الرئيسية',
       items: [
@@ -51,32 +51,34 @@ const Sidebar = ({ isOpen, onToggle, mobileOpen, onMobileClose }) => {
         { path: '/templates', icon: FaFileAlt, label: 'القوالب القانونية' },
       ],
     },
+    {
+      section: 'الحساب',
+      items: [
+        { path: '/subscription', icon: FaCreditCard, label: 'اشتراكي' },
+      ],
+    }
   ];
 
-  // إضافة قسم الإدارة للمسؤول (Super Admin) فقط
-  if (user?.role === 'superadmin') {
-    menuItems.push({
-      section: 'الإدارة',
+  // قوائم الـ Super Admin (صاحب المنصة)
+  const superAdminMenuItems = [
+    {
+      section: 'إدارة المنصة',
       items: [
-        { path: '/users', icon: FaUsersCog, label: 'المستخدمين' },
         { path: '/admin/subscriptions', icon: FaShieldAlt, label: 'إدارة الاشتراكات' },
-        { path: '/admin/plan', icon: FaCog, label: 'إعدادات الخطة' },
+        { path: '/users', icon: FaUsersCog, label: 'إدارة المستخدمين' },
+        { path: '/admin/plan', icon: FaCog, label: 'إعدادات الخطط' },
       ],
-    });
-  }
+    },
+    {
+      section: 'الإعدادات',
+      items: [
+        { path: '/profile', icon: FaCog, label: 'الملف الشخصي' },
+      ],
+    }
+  ];
 
-  // إعدادات عامة للأدمن (مدير المكتب) و Super Admin
-  if (user?.role === 'admin' || user?.role === 'superadmin') {
-     // يمكن إضافة إعدادات خاصة هنا إذا لزم الأمر، حاليًا الإعدادات متاحة للجميع في الأسفل
-  }
-
-  // إضافة قسم الحساب لجميع المستخدمين
-  menuItems.push({
-    section: 'الحساب',
-    items: [
-      { path: '/subscription', icon: FaCreditCard, label: 'اشتراكي' },
-    ],
-  });
+  // تحديد القائمة المناسبة بناءً على الدور
+  const menuItems = user?.role === 'superadmin' ? superAdminMenuItems : lawyerMenuItems;
 
   // الحصول على الأحرف الأولى من الاسم
   const getInitials = (name) => {

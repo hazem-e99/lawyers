@@ -51,7 +51,13 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       
       toast.success('تم تسجيل الدخول بنجاح');
-      navigate('/dashboard');
+      
+      // توجيه الـ Super Admin لصفحة الإدارة مباشرة
+      if (userData.role === 'superadmin') {
+        navigate('/admin/subscriptions');
+      } else {
+        navigate('/dashboard');
+      }
       
       return { success: true };
     } catch (error) {
