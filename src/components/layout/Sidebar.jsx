@@ -53,17 +53,21 @@ const Sidebar = ({ isOpen, onToggle, mobileOpen, onMobileClose }) => {
     },
   ];
 
-  // إضافة قسم الإدارة للمسؤول فقط
-  if (isAdmin) {
+  // إضافة قسم الإدارة للمسؤول (Super Admin) فقط
+  if (user?.role === 'superadmin') {
     menuItems.push({
       section: 'الإدارة',
       items: [
         { path: '/users', icon: FaUsersCog, label: 'المستخدمين' },
         { path: '/admin/subscriptions', icon: FaShieldAlt, label: 'إدارة الاشتراكات' },
         { path: '/admin/plan', icon: FaCog, label: 'إعدادات الخطة' },
-        { path: '/settings', icon: FaCog, label: 'الإعدادات' },
       ],
     });
+  }
+
+  // إعدادات عامة للأدمن (مدير المكتب) و Super Admin
+  if (user?.role === 'admin' || user?.role === 'superadmin') {
+     // يمكن إضافة إعدادات خاصة هنا إذا لزم الأمر، حاليًا الإعدادات متاحة للجميع في الأسفل
   }
 
   // إضافة قسم الحساب لجميع المستخدمين

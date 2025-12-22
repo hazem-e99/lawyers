@@ -8,15 +8,15 @@ import api from '../../services/api';
  * Plan Management Page (Admin Only)
  */
 const PlanSettings = () => {
-  const { isAdmin } = useAuth();
+  const { isSuperAdmin } = useAuth();
   const [plan, setPlan] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [newFeature, setNewFeature] = useState('');
 
   useEffect(() => {
-    if (isAdmin) fetchPlan();
-  }, [isAdmin]);
+    if (isSuperAdmin) fetchPlan();
+  }, [isSuperAdmin]);
 
   const fetchPlan = async () => {
     try {
@@ -71,11 +71,11 @@ const PlanSettings = () => {
     }
   };
 
-  if (!isAdmin) {
+  if (!isSuperAdmin) {
     return (
       <div className="card text-center py-12">
         <h2 className="text-xl font-bold text-gray-600">غير مصرح</h2>
-        <p className="text-gray-500 mt-2">هذه الصفحة متاحة للمسؤولين فقط</p>
+        <p className="text-gray-500 mt-2">هذه الصفحة متاحة لمدير النظام فقط</p>
       </div>
     );
   }

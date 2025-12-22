@@ -145,6 +145,8 @@ export const AuthProvider = ({ children }) => {
     loading,
     isAuthenticated: !!user,
     isAdmin: user?.role === 'admin',
+    isSuperAdmin: user?.role === 'superadmin',
+    isAdminOrSuperAdmin: user?.role === 'admin' || user?.role === 'superadmin',
     login,
     register,
     logout,
@@ -158,3 +160,4 @@ export const AuthProvider = ({ children }) => {
 };
 
 export default AuthContext;
+

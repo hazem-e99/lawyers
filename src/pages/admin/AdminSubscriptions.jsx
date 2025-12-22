@@ -18,7 +18,7 @@ import api from '../../services/api';
  * Admin Subscriptions Management Page
  */
 const AdminSubscriptions = () => {
-  const { isAdmin } = useAuth();
+  const { isSuperAdmin } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -26,16 +26,18 @@ const AdminSubscriptions = () => {
   const [activatingUser, setActivatingUser] = useState(null);
 
   useEffect(() => {
-    if (isAdmin) fetchUsers();
-  }, [isAdmin]);
+    if (isSuperAdmin) fetchUsers();
+  }, [isSuperAdmin]);
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await usersService.getAll({ limit: 100 });
-      setUsers(response.data);
+      // استخدام نقطة النهاية المخصصة للاشتراكات
+      const response = await api.get('/subscription/all');
+      setUsers(response.data.data);
     } catch (error) {
       toast.error('حدث خطأ في جلب المستخدمين');
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -150,11 +152,11 @@ const AdminSubscriptions = () => {
     }).length,
   };
 
-  if (!isAdmin) {
+  if (!isSuperAdmin) {
     return (
       <div className="card text-center py-12">
         <h2 className="text-xl font-bold text-gray-600">غير مصرح</h2>
-        <p className="text-gray-500 mt-2">هذه الصفحة متاحة للمسؤولين فقط</p>
+        <p className="text-gray-500 mt-2">هذه الصفحة متاحة لمدير النظام فقط</p>
       </div>
     );
   }
