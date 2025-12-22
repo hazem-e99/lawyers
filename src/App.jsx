@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate, Outlet } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { useSubscription } from './context/SubscriptionContext';
 import SubscriptionLockScreen from './components/SubscriptionLockScreen';
@@ -56,11 +56,11 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  // استثناء: الأدمنز لديهم وصول دائم بدون فحص الاشتراك
-  const isAdmin = user?.role === 'admin';
+  // استثناء: الأدمنز والـ Super Admin لديهم وصول دائم بدون فحص الاشتراك
+  const isAdminOrSuper = user?.role === 'admin' || user?.role === 'superadmin';
 
   // التحقق من حالة الاشتراك (للمستخدمين العاديين فقط)
-  if (!isAdmin && !isActive) {
+  if (!isAdminOrSuper && !isActive) {
     const handleRenew = () => {
       navigate('/subscription');
     };
@@ -75,6 +75,23 @@ const ProtectedRoute = ({ children }) => {
 
   return children;
 };
+
+/**
+ * مكون حماية بـ Super Admin فقط
+ * Super Admin Protected Route
+ */
+const ProtectedSuperAdminRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  
+  if (loading) return <div className="loading-spinner"></div>;
+  
+  if (user?.role !== 'superadmin') {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return children;
+};
+
 
 /**
  * مكون حماية بالتوثيق فقط (بدون فحص الاشتراك)
@@ -169,22 +186,20 @@ function App() {
         {/* القوالب القانونية */}
         <Route path="/templates" element={<Templates />} />
 
-        {/* المستخدمين */}
-        <Route path="/users" element={<Users />} />
-        <Route path="/users/new" element={<UserForm />} />
-        <Route path="/users/:id/edit" element={<UserForm />} />
+        {/* مسارات Super Admin - المستخدمين والإدارة */}
+        <Route element={<ProtectedSuperAdminRoute><Outlet /></ProtectedSuperAdminRoute>}>
+          <Route path="/users" element={<Users />} />
+          <Route path="/users/new" element={<UserForm />} />
+          <Route path="/users/:id/edit" element={<UserForm />} />
+          <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
+          <Route path="/admin/plan" element={<PlanSettings />} />
+        </Route>
 
         {/* الملف الشخصي */}
         <Route path="/profile" element={<Profile />} />
 
         {/* الإعدادات */}
         <Route path="/settings" element={<Settings />} />
-
-        {/* إدارة الاشتراكات (للأدمن) */}
-        <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
-        
-        {/* إدارة خطة الاشتراك (للأدمن) */}
-        <Route path="/admin/plan" element={<PlanSettings />} />
       </Route>
 
       {/* صفحة غير موجودة */}
