@@ -130,70 +130,88 @@ const SubscriptionPage = () => {
           </div>
         )}
 
-        {/* اختيار الخطة */}
-        <div className="card mb-6">
-          <h2 className="text-2xl font-bold mb-6">اختر مدة الاشتراك</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {/* شهري */}
-            <div
-              onClick={() => setSelectedPlan('monthly')}
-              className={`p-6 border-2 rounded-xl cursor-pointer transition-all ${
-                selectedPlan === 'monthly'
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                  : 'border-slate-200 dark:border-slate-700'
-              }`}
-            >
-              <h3 className="text-xl font-bold mb-2">اشتراك شهري</h3>
-              <p className="text-3xl font-bold text-blue-600 mb-2">
-                {plans.monthly.price} ج.م
-              </p>
-              <p className="text-sm text-slate-500">كل 30 يوم</p>
+        {/* خيارات الدفع وتجديد الاشتراك - تظهر للمسؤول فقط */}
+        {user?.role === 'admin' ? (
+          <div className="card mb-6">
+            <h2 className="text-2xl font-bold mb-6">اختر مدة الاشتراك</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              {/* شهري */}
+              <div
+                onClick={() => setSelectedPlan('monthly')}
+                className={`p-6 border-2 rounded-xl cursor-pointer transition-all ${
+                  selectedPlan === 'monthly'
+                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                    : 'border-slate-200 dark:border-slate-700'
+                }`}
+              >
+                <h3 className="text-xl font-bold mb-2">اشتراك شهري</h3>
+                <p className="text-3xl font-bold text-blue-600 mb-2">
+                  {plans.monthly.price} ج.م
+                </p>
+                <p className="text-sm text-slate-500">كل 30 يوم</p>
+              </div>
+
+              {/* سنوي */}
+              <div
+                onClick={() => setSelectedPlan('yearly')}
+                className={`p-6 border-2 rounded-xl cursor-pointer transition-all relative ${
+                  selectedPlan === 'yearly'
+                    ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                    : 'border-slate-200 dark:border-slate-700'
+                }`}
+              >
+                <div className="absolute top-0 right-4 -translate-y-1/2 bg-green-500 text-white px-3 py-1 rounded-full text-sm">
+                  وفر {plans.yearly.savings}
+                </div>
+                <h3 className="text-xl font-bold mb-2">اشتراك سنوي</h3>
+                <p className="text-3xl font-bold text-green-600 mb-2">
+                  {plans.yearly.price} ج.م
+                </p>
+                <p className="text-sm text-slate-500">كل 365 يوم</p>
+                <p className="text-xs text-green-600 mt-2">
+                  بدلاً من {plans.monthly.price * 12} ج.م
+                </p>
+              </div>
             </div>
 
-            {/* سنوي */}
-            <div
-              onClick={() => setSelectedPlan('yearly')}
-              className={`p-6 border-2 rounded-xl cursor-pointer transition-all relative ${
-                selectedPlan === 'yearly'
-                  ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                  : 'border-slate-200 dark:border-slate-700'
-              }`}
+            {/* زر الدفع */}
+            <button
+              onClick={handlePayment}
+              disabled={processing}
+              className="w-full btn-primary py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <div className="absolute top-0 right-4 -translate-y-1/2 bg-green-500 text-white px-3 py-1 rounded-full text-sm">
-                وفر {plans.yearly.savings}
+              {processing ? (
+                <span className="flex items-center justify-center gap-2">
+                  <div className="loading-spinner-sm"></div>
+                  جاري التحويل للدفع...
+                </span>
+              ) : (
+                `اشترك الآن - ${plans[selectedPlan].price} ج.م`
+              )}
+            </button>
+
+            <p className="text-center text-sm text-slate-500 mt-4">
+              🔒 الدفع آمن ومشفر عبر Paymob
+            </p>
+          </div>
+        ) : (
+          <div className="card mb-6 bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-800">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-blue-100 dark:bg-blue-800 rounded-full">
+                <svg className="w-6 h-6 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">اشتراك سنوي</h3>
-              <p className="text-3xl font-bold text-green-600 mb-2">
-                {plans.yearly.price} ج.م
-              </p>
-              <p className="text-sm text-slate-500">كل 365 يوم</p>
-              <p className="text-xs text-green-600 mt-2">
-                بدلاً من {plans.monthly.price * 12} ج.م
-              </p>
+              <div>
+                <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100">إدارة الاشتراك</h3>
+                <p className="text-blue-700 dark:text-blue-300">
+                  تتم إدارة اشتراك المنصة ودفع الرسوم من خلال مسؤول المكتب (Admin). لا يتطلب منك أي إجراء هنا.
+                </p>
+              </div>
             </div>
           </div>
-
-          {/* زر الدفع */}
-          <button
-            onClick={handlePayment}
-            disabled={processing}
-            className="w-full btn-primary py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {processing ? (
-              <span className="flex items-center justify-center gap-2">
-                <div className="loading-spinner-sm"></div>
-                جاري التحويل للدفع...
-              </span>
-            ) : (
-              `اشترك الآن - ${plans[selectedPlan].price} ج.م`
-            )}
-          </button>
-
-          <p className="text-center text-sm text-slate-500 mt-4">
-            🔒 الدفع آمن ومشفر عبر Paymob
-          </p>
-        </div>
+        )}
 
         {/* المميزات */}
         <div className="card">
