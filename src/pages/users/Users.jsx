@@ -10,17 +10,20 @@ import toast from 'react-hot-toast';
  * Users Page
  */
 const Users = () => {
-  const { isAdmin } = useAuth();
+  const { isSuperAdmin } = useAuth(); // استخدام isSuperAdmin بدلاً من isAdmin
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isAdmin) fetchUsers();
-  }, [isAdmin]);
+    if (isSuperAdmin) fetchUsers();
+  }, [isSuperAdmin]);
 
   const fetchUsers = async () => {
     try {
-      const response = await usersService.getAll({ limit: 50 });
+      // استخدام API المخصص لجلب جميع الاشتراكات والمستخدمين للـ Super Admin
+      // أو استخدام usersService إذا تم تحديث الـ endpoint الخاص به
+      // سأستخدم usersService كما هو، مفترضًا أنه يوجه لـ /api/users الذي يعمل للـ superadmin
+      const response = await usersService.getAll(); 
       setUsers(response.data);
     } catch (error) {
       toast.error('حدث خطأ في جلب المستخدمين');
@@ -53,7 +56,8 @@ const Users = () => {
 
   const getRoleName = (role) => {
     const roles = {
-      admin: 'مسؤول',
+      superadmin: 'مدير النظام',
+      admin: 'مدير مكتب',
       lawyer: 'محامي',
       assistant: 'مساعد',
       viewer: 'مشاهد',
@@ -61,7 +65,7 @@ const Users = () => {
     return roles[role] || role;
   };
 
-  if (!isAdmin) {
+  if (!isSuperAdmin) {
     return (
       <div className="card text-center py-12">
         <h2 className="text-xl font-bold text-gray-600">غير مصرح</h2>

@@ -161,7 +161,8 @@ const UserForm = () => {
                     <option value="lawyer">محامي</option>
                     <option value="assistant">مساعد</option>
                     <option value="viewer">مشاهد</option>
-                    <option value="admin">مسؤول</option>
+                    <option value="superadmin">مدير النظام (Super Admin)</option>
+                    <option value="admin">مسؤول (Admin)</option>
                   </select>
                 </div>
                 <div>
