@@ -96,7 +96,10 @@ const AdminSubscriptions = () => {
   };
 
   const getSubscriptionStatus = (user) => {
-    if (user.role === 'admin' || user.role === 'superadmin') return 'admin';
+    // فقط Super Admin له اشتراك دائم
+    if (user.role === 'superadmin') return 'superadmin';
+    
+    // Admin يجب أن يدفع مثل الجميع
     if (!user.subscription || !user.subscription.isActive) return 'inactive';
     
     const now = new Date();
@@ -130,7 +133,7 @@ const AdminSubscriptions = () => {
     
     const status = getSubscriptionStatus(user);
     
-    if (filterStatus === 'active') return status === 'active' || status === 'admin';
+    if (filterStatus === 'active') return status === 'active' || status === 'superadmin';
     if (filterStatus === 'inactive') return status === 'inactive';
     if (filterStatus === 'trial') return status === 'trial';
     if (filterStatus === 'expired') return status === 'expired';
@@ -143,7 +146,7 @@ const AdminSubscriptions = () => {
     total: users.length,
     active: users.filter(u => {
       const status = getSubscriptionStatus(u);
-      return status === 'active' || status === 'admin';
+      return status === 'active' || status === 'superadmin';
     }).length,
     trial: users.filter(u => getSubscriptionStatus(u) === 'trial').length,
     inactive: users.filter(u => {
@@ -329,7 +332,7 @@ const AdminSubscriptions = () => {
                         )}
                       </td>
                       <td>
-                        {status === 'admin' && (
+                        {status === 'superadmin' && (
                           <span className="status-badge success">دائم</span>
                         )}
                         {status === 'active' && (
@@ -358,7 +361,7 @@ const AdminSubscriptions = () => {
                         )}
                       </td>
                       <td>
-                        {status === 'admin' ? (
+                        {status === 'superadmin' ? (
                           <span className="text-gray-400">∞</span>
                         ) : daysRemaining > 0 ? (
                           <span className={`font-semibold ${
@@ -395,7 +398,7 @@ const AdminSubscriptions = () => {
                           )}
                           
                           {/* للمستخدمين النشطين */}
-                          {(status === 'active' || status === 'trial' || status === 'admin') && (
+                          {(status === 'active' || status === 'trial' || status === 'superadmin') && (
                             <>
                               <button
                                 onClick={() => renewSubscription(user._id)}

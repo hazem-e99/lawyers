@@ -120,7 +120,7 @@ const Users = () => {
                       </span>
                     </td>
                     <td>
-                      {user.role === 'admin' ? (
+                      {user.role === 'superadmin' ? (
                         <span className="status-badge success">دائم</span>
                       ) : user.subscription?.isActive ? (
                         <div className="flex flex-col gap-1">
