@@ -56,11 +56,11 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  // استثناء: الأدمنز والـ Super Admin لديهم وصول دائم بدون فحص الاشتراك
-  const isAdminOrSuper = user?.role === 'admin' || user?.role === 'superadmin';
+  // استثناء: فقط Super Admin لديه وصول دائم بدون فحص الاشتراك
+  const isSuperAdmin = user?.role === 'superadmin';
 
-  // التحقق من حالة الاشتراك (للمستخدمين العاديين فقط)
-  if (!isAdminOrSuper && !isActive) {
+  // التحقق من حالة الاشتراك (للجميع ما عدا Super Admin)
+  if (!isSuperAdmin && !isActive) {
     const handleRenew = () => {
       navigate('/subscription');
     };
