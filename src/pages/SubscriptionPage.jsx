@@ -159,17 +159,17 @@ const SubscriptionPage = () => {
   const isActive = subscription?.isActive && !subscription?.isExpired;
 
   return (
-    <div className="min-h-screen p-6 bg-slate-50 dark:bg-[#0f172a]">
+    <div className="min-h-screen p-6" style={{ backgroundColor: 'var(--color-bg)' }}>
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-12">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-xl" style={{ backgroundColor: 'var(--color-primary)' }}>
               ⚖️
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-900 dark:text-white">نظام المحاماة</h1>
-              <p className="text-xs text-slate-500">Law Office Management</p>
+              <h1 className="text-xl font-bold" style={{ color: 'var(--color-text)' }}>نظام المحاماة</h1>
+              <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Law Office Management</p>
             </div>
           </div>
           
@@ -177,7 +177,8 @@ const SubscriptionPage = () => {
             {isActive && (
               <button 
                 onClick={() => navigate('/')}
-                className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium px-4 py-2 transition-colors"
+                className="flex items-center gap-2 text-sm font-medium px-4 py-2 transition-colors hover:opacity-80"
+                style={{ color: 'var(--color-text-muted)' }}
               >
                 <Home size={18} />
                 <span>رجوع للرئيسية</span>
@@ -185,7 +186,8 @@ const SubscriptionPage = () => {
             )}
             <button 
               onClick={logout}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors hover:opacity-80"
+              style={{ border: '1px solid var(--color-border)', color: 'var(--color-text-muted)' }}
             >
               <LogOut size={18} />
               <span>تسجيل خروج</span>
@@ -195,33 +197,33 @@ const SubscriptionPage = () => {
 
         {/* العنوان الرئيسي */}
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
+          <h1 className="text-4xl font-bold mb-4" style={{ color: 'var(--color-text)' }}>
             خطة الاشتراك Professional
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: 'var(--color-text-muted)' }}>
             احصل على وصول كامل لجميع ميزات نظام إدارة المحاماة عبر الدفع بواسطة InstaPay
           </p>
         </div>
 
         {/* الحالة الحالية */}
         {subscription && (
-          <div className="card mb-6 bg-white dark:bg-slate-800">
+          <div className="card mb-6" style={{ backgroundColor: 'var(--color-surface)' }}>
             <h2 className="text-xl font-bold mb-4">حالة الاشتراك الحالي</h2>
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <p className="text-sm text-slate-500">الحالة</p>
+                <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>الحالة</p>
                 <p className="font-bold">{isActive ? '✅ نشط' : '❌ غير نشط'}</p>
               </div>
               {subscription.expiresAt && (
                 <div>
-                  <p className="text-sm text-slate-500">تاريخ الانتهاء</p>
+                  <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>تاريخ الانتهاء</p>
                   <p className="font-bold">
                     {new Date(subscription.expiresAt).toLocaleDateString('ar-EG')}
                   </p>
                 </div>
               )}
               <div>
-                <p className="text-sm text-slate-500">الأيام المتبقية</p>
+                <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>الأيام المتبقية</p>
                 <p className="font-bold">
                   {isActive ? `${subscription.daysRemaining || 0} يوم` : '0 يوم'}
                 </p>
@@ -241,18 +243,18 @@ const SubscriptionPage = () => {
                 {/* شهري */}
                 <div
                   onClick={() => setSelectedPlan('monthly')}
-                  className={`p-4 border-2 rounded-xl cursor-pointer transition-all ${
-                    selectedPlan === 'monthly'
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-slate-200 dark:border-slate-700'
-                  }`}
+                  className="p-4 rounded-xl cursor-pointer transition-all"
+                  style={{ 
+                    border: selectedPlan === 'monthly' ? '2px solid var(--color-primary)' : '2px solid var(--color-border)',
+                    backgroundColor: selectedPlan === 'monthly' ? 'var(--color-info-light)' : 'transparent'
+                  }}
                 >
                   <div className="flex justify-between items-center">
                     <div>
                       <h3 className="text-lg font-bold">اشتراك شهري</h3>
-                      <p className="text-sm text-slate-500">كل 30 يوم</p>
+                      <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>كل 30 يوم</p>
                     </div>
-                    <p className="text-2xl font-bold text-blue-600">
+                    <p className="text-2xl font-bold" style={{ color: 'var(--color-primary)' }}>
                       {plans.monthly.price} ج.م
                     </p>
                   </div>
@@ -261,11 +263,11 @@ const SubscriptionPage = () => {
                 {/* سنوي */}
                 <div
                   onClick={() => setSelectedPlan('yearly')}
-                  className={`p-4 border-2 rounded-xl cursor-pointer transition-all relative ${
-                    selectedPlan === 'yearly'
-                      ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                      : 'border-slate-200 dark:border-slate-700'
-                  }`}
+                  className="p-4 rounded-xl cursor-pointer transition-all relative"
+                  style={{ 
+                    border: selectedPlan === 'yearly' ? '2px solid var(--color-success)' : '2px solid var(--color-border)',
+                    backgroundColor: selectedPlan === 'yearly' ? 'var(--color-success-light)' : 'transparent'
+                  }}
                 >
                   <div className="absolute top-0 right-4 -translate-y-1/2 bg-green-500 text-white px-3 py-1 rounded-full text-xs">
                     وفر {plans.yearly.savings}
@@ -273,7 +275,7 @@ const SubscriptionPage = () => {
                   <div className="flex justify-between items-center">
                     <div>
                       <h3 className="text-lg font-bold">اشتراك سنوي</h3>
-                      <p className="text-sm text-slate-500">كل 365 يوم</p>
+                      <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>كل 365 يوم</p>
                     </div>
                     <p className="text-2xl font-bold text-green-600">
                       {plans.yearly.price} ج.م
@@ -284,14 +286,14 @@ const SubscriptionPage = () => {
 
               {/* معلومات InstaPay */}
               {paymentSettings?.instaPayIdentifier ? (
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mb-6">
-                  <h3 className="font-bold text-blue-900 dark:text-blue-100 mb-3">
+                <div className="rounded-xl p-4 mb-6" style={{ backgroundColor: 'var(--color-info-light)', border: '1px solid var(--color-primary)' }}>
+                  <h3 className="font-bold mb-3" style={{ color: 'var(--color-primary)' }}>
                     📱 معلومات الدفع عبر InstaPay
                   </h3>
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between bg-white dark:bg-slate-800 p-3 rounded-lg">
+                    <div className="flex items-center justify-between p-3 rounded-lg" style={{ backgroundColor: 'var(--color-surface)' }}>
                       <div>
-                        <p className="text-xs text-slate-500">معرف InstaPay</p>
+                        <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>معرف InstaPay</p>
                         <p className="font-bold text-lg" dir="ltr">{paymentSettings.instaPayIdentifier}</p>
                       </div>
                       <button
@@ -301,14 +303,14 @@ const SubscriptionPage = () => {
                         <Copy size={18} />
                       </button>
                     </div>
-                    <div className="bg-white dark:bg-slate-800 p-3 rounded-lg">
-                      <p className="text-xs text-slate-500 mb-1">المبلغ المطلوب</p>
+                    <div className="p-3 rounded-lg" style={{ backgroundColor: 'var(--color-surface)' }}>
+                      <p className="text-xs mb-1" style={{ color: 'var(--color-text-muted)' }}>المبلغ المطلوب</p>
                       <p className="font-bold text-2xl text-green-600">
                         {plans[selectedPlan].price} ج.م
                       </p>
                     </div>
                   </div>
-                  <div className="mt-4 text-sm text-blue-800 dark:text-blue-200 space-y-1">
+                  <div className="mt-4 text-sm space-y-1" style={{ color: 'var(--color-primary)' }}>
                     <p>✓ قم بتحويل المبلغ إلى الحساب أعلاه</p>
                     <p>✓ احفظ رقم مرجع العملية من الإيصال</p>
                     <p>✓ التقط صورة لإيصال التحويل</p>
@@ -316,8 +318,8 @@ const SubscriptionPage = () => {
                   </div>
                 </div>
               ) : (
-                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4 mb-6">
-                  <p className="text-yellow-800 dark:text-yellow-200">
+                <div className="rounded-xl p-4 mb-6" style={{ backgroundColor: 'var(--color-warning-light)', border: '1px solid var(--color-warning)' }}>
+                  <p style={{ color: 'var(--color-warning)' }}>
                     ⚠️ لم يتم تعيين معرف InstaPay بعد. يرجى التواصل مع الإدارة.
                   </p>
                 </div>
@@ -336,7 +338,7 @@ const SubscriptionPage = () => {
                   placeholder="أدخل رقم مرجع عملية InstaPay"
                   dir="ltr"
                 />
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>
                   ستجد رقم المرجع في إيصال التحويل من تطبيق InstaPay
                 </p>
               </div>
@@ -346,7 +348,7 @@ const SubscriptionPage = () => {
                 <label className="block text-sm font-medium mb-2">
                   📸 صورة إثبات الدفع
                 </label>
-                <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-6 text-center">
+                <div className="border-2 border-dashed rounded-xl p-6 text-center" style={{ borderColor: 'var(--color-border)' }}>
                   {screenshotPreview ? (
                     <div className="space-y-3">
                       <img 
@@ -366,11 +368,11 @@ const SubscriptionPage = () => {
                     </div>
                   ) : (
                     <label className="cursor-pointer">
-                      <Upload className="mx-auto mb-2 text-slate-400" size={32} />
-                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">
+                      <Upload className="mx-auto mb-2" size={32} style={{ color: 'var(--color-text-muted)' }} />
+                      <p className="text-sm mb-1" style={{ color: 'var(--color-text-muted)' }}>
                         اضغط لرفع صورة إثبات الدفع
                       </p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs" style={{ color: 'var(--color-text-light)' }}>
                         JPG, PNG (حد أقصى 5MB)
                       </p>
                       <input
@@ -409,21 +411,22 @@ const SubscriptionPage = () => {
                   {myRequests.map((request) => (
                     <div 
                       key={request._id} 
-                      className="border border-slate-200 dark:border-slate-700 rounded-lg p-4"
+                      className="rounded-lg p-4"
+                      style={{ border: '1px solid var(--color-border)' }}
                     >
                       <div className="flex justify-between items-start mb-2">
                         <div>
                           <p className="font-bold">{request.amount} ج.م</p>
-                          <p className="text-sm text-slate-500">
+                          <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
                             {request.planDuration === 'monthly' ? 'شهري' : 'سنوي'}
                           </p>
                         </div>
                         {getStatusBadge(request.status)}
                       </div>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">
+                      <p className="text-sm mb-1" style={{ color: 'var(--color-text-muted)' }}>
                         <strong>رقم المرجع:</strong> <span className="font-mono">{request.referenceNumber}</span>
                       </p>
-                      <p className="text-xs text-slate-500 mb-2">
+                      <p className="text-xs mb-2" style={{ color: 'var(--color-text-light)' }}>
                         {new Date(request.createdAt).toLocaleDateString('ar-EG', {
                           year: 'numeric',
                           month: 'long',
@@ -433,11 +436,11 @@ const SubscriptionPage = () => {
                         })}
                       </p>
                       {request.adminNote && (
-                        <div className="mt-2 p-2 bg-slate-100 dark:bg-slate-800 rounded text-sm">
-                          <p className="font-medium text-slate-700 dark:text-slate-300">
+                        <div className="mt-2 p-2 rounded text-sm" style={{ backgroundColor: 'var(--color-surface-hover)' }}>
+                          <p className="font-medium" style={{ color: 'var(--color-text)' }}>
                             ملاحظة الإدارة:
                           </p>
-                          <p className="text-slate-600 dark:text-slate-400">
+                          <p style={{ color: 'var(--color-text-muted)' }}>
                             {request.adminNote}
                           </p>
                         </div>
@@ -446,7 +449,7 @@ const SubscriptionPage = () => {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8 text-slate-500">
+                <div className="text-center py-8" style={{ color: 'var(--color-text-muted)' }}>
                   <Clock className="mx-auto mb-2" size={48} />
                   <p>لا توجد طلبات دفع سابقة</p>
                 </div>
@@ -454,16 +457,16 @@ const SubscriptionPage = () => {
             </div>
           </div>
         ) : (
-          <div className="card mb-6 bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-800">
+          <div className="card mb-6" style={{ backgroundColor: 'var(--color-info-light)', border: '1px solid var(--color-primary)' }}>
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-blue-100 dark:bg-blue-800 rounded-full">
-                <svg className="w-6 h-6 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-3 rounded-full" style={{ backgroundColor: 'var(--color-primary)', opacity: 0.2 }}>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--color-primary)' }}>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100">إدارة الاشتراك</h3>
-                <p className="text-blue-700 dark:text-blue-300">
+                <h3 className="text-lg font-bold" style={{ color: 'var(--color-primary)' }}>إدارة الاشتراك</h3>
+                <p style={{ color: 'var(--color-text-muted)' }}>
                   تتم إدارة اشتراك المنصة ودفع الرسوم من خلال مسؤول المكتب (Admin). لا يتطلب منك أي إجراء هنا.
                 </p>
               </div>

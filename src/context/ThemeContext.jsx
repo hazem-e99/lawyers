@@ -47,14 +47,11 @@ export const ThemeProvider = ({ children }) => {
       console.error('Error loading saved theme:', error);
     }
 
-    // في حالة عدم وجود ثيم محفوظ، استخدم تفضيل النظام
-    // If no saved theme, use system preference
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialMode = prefersDark ? 'dark' : 'light';
-    
-    setMode(initialMode);
+    // في حالة عدم وجود ثيم محفوظ، استخدم الثيم الافتراضي (أزرق فاتح)
+    // If no saved theme, use default theme (light blue)
+    setMode(DEFAULT_MODE);
     setColor(DEFAULT_COLOR);
-    applyThemeToDocument(initialMode, DEFAULT_COLOR);
+    applyThemeToDocument(DEFAULT_MODE, DEFAULT_COLOR);
   }, []);
 
   /**
